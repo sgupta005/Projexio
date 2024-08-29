@@ -61,28 +61,12 @@ export default function Component() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="bg-primary-foreground h-1/5 absolute w-full" />
+      <div className="bg-primary/15 h-1/5 absolute w-full" />
       <div className="container mx-auto p-4 relative z-10 flex-grow flex flex-col">
         <h1 className="text-3xl font-bold mb-6 text-primary">
           Your Organizations
         </h1>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
-          {organizations.map((org) => (
-            <Card key={org.id} className="flex flex-col justify-between h-40">
-              <CardHeader className="p-4">
-                <CardTitle className="text-lg">{org.name}</CardTitle>
-                <CardDescription className="text-xs">
-                  ID: {org.id}
-                </CardDescription>
-              </CardHeader>
-              <CardFooter className="p-2">
-                <Button size="sm" className="w-full text-xs">
-                  Select
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-
           <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
             <DialogTrigger asChild>
               <Card className="flex flex-col items-center justify-center cursor-pointer hover:bg-accent h-40">
@@ -178,6 +162,21 @@ export default function Component() {
               </Form> */}
             </DialogContent>
           </Dialog>
+          {organizations.map((org) => (
+            <Card key={org.id} className="flex flex-col justify-between h-40">
+              <CardHeader className="p-4">
+                <CardTitle className="text-lg">{org.name}</CardTitle>
+                <CardDescription className="text-xs">
+                  ID: {org.id}
+                </CardDescription>
+              </CardHeader>
+              <CardFooter className="p-2">
+                <Button size="sm" className="w-full text-xs">
+                  Select
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       </div>
     </div>
