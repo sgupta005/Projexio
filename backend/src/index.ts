@@ -4,11 +4,13 @@ import connectDb from './db/connectDb';
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import logger from './middlewares/logger';
 import appRouter from './routes/auth.route';
+import cors from 'cors';
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.use(logger);
 
