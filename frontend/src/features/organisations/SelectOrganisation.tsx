@@ -63,9 +63,7 @@ export default function Component() {
     <div className="min-h-screen flex flex-col">
       <div className="bg-primary/15 h-1/5 absolute w-full" />
       <div className="container mx-auto p-4 relative z-10 flex-grow flex flex-col">
-        <h1 className="text-3xl font-bold mb-6 text-primary">
-          Your Organizations
-        </h1>
+        <h1 className="text-3xl font-bold mb-6">Your Organizations</h1>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
           <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
             <DialogTrigger asChild>
