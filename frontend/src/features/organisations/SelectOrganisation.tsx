@@ -28,12 +28,12 @@ import {
 } from '@/ui/shadcn/ui/dialog';
 import { PlusCircle, UserPlus } from 'lucide-react';
 
+//{ id: 1, name: 'Acme Corp' },
+//{ id: 2, name: 'Globex' },
+//{ id: 3, name: 'Initech' },
+
 export default function Component() {
-  const [organizations, setOrganizations] = useState([
-    { id: 1, name: 'Acme Corp' },
-    { id: 2, name: 'Globex' },
-    { id: 3, name: 'Initech' },
-  ]);
+  const [organizations, setOrganizations] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
 
@@ -63,7 +63,7 @@ export default function Component() {
     <div className="min-h-screen flex flex-col">
       <div className="bg-primary/15 h-1/5 absolute w-full" />
       <div className="container mx-auto p-4 relative z-10 flex-grow flex flex-col">
-        <h1 className="text-3xl font-bold mb-6">Your Organizations</h1>
+        <h1 className="text-3xl font-bold mb-6 ml-4">Your Organizations</h1>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
           <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
             <DialogTrigger asChild>
@@ -160,7 +160,7 @@ export default function Component() {
               </Form> */}
             </DialogContent>
           </Dialog>
-          {organizations.map((org) => (
+          {/* {organizations.map((org) => (
             <Card key={org.id} className="flex flex-col justify-between h-40">
               <CardHeader className="p-4">
                 <CardTitle className="text-lg">{org.name}</CardTitle>
@@ -174,7 +174,7 @@ export default function Component() {
                 </Button>
               </CardFooter>
             </Card>
-          ))}
+          ))} */}
         </div>
       </div>
     </div>

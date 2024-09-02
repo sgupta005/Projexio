@@ -12,6 +12,14 @@ export const registerUser = async function (userData: SignupFormFields) {
     body: JSON.stringify(userData),
   });
   const responseBody = await res.json();
-  console.log(responseBody);
   if (!responseBody.success) throw new Error(responseBody.message);
+};
+
+export const verifyLogin = async function () {
+  const response = await fetch(`${API_BASE_URL}/api/auth/verify-login`, {
+    credentials: 'include',
+  });
+  if (!response.ok) throw new Error('Invalid Token');
+  const responseBody = await response.json();
+  return responseBody;
 };
