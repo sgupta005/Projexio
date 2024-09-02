@@ -5,14 +5,16 @@ import globalErrorHandler from './middlewares/globalErrorHandler';
 import logger from './middlewares/logger';
 import appRouter from './routes/auth.route';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Specify the allowed origin
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );

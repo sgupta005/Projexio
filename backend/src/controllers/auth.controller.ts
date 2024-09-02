@@ -50,3 +50,11 @@ export const login = asyncHandler(async function (
   generateTokenSetCookie(res, user._id);
   return res.status(200).json(new ApiResponse(200, { userID: user.id }));
 });
+
+export const verifyLogin = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  return res.status(200).json({ userId: req.userId });
+});
