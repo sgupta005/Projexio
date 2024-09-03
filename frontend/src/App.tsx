@@ -26,7 +26,7 @@ function App() {
     <>
       <Toaster
         toastOptions={{
-          className: 'bg-primary text-background',
+          className: 'bg-primary text-background font-semibold',
         }}
       />
       <Routes>

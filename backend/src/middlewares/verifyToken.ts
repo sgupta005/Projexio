@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../utils/CustomError';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import UserModel from '../models/user.model';
 
 declare global {
   namespace Express {
@@ -10,18 +11,20 @@ declare global {
   }
 }
 
-export default function verifyToken(
+export default async function verifyToken(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   const token = req.cookies['auth_token'];
-  if (!token) throw new CustomError('Unauthorized', 401);
+  if (!token) next(new CustomError('Unauthorized', 401));
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string);
-    req.userId = (decoded as JwtPayload).userId;
+    const user = await UserModel.findById((decoded as JwtPayload).userId);
+    if (!user) next(new CustomError('Unauthorized', 401));
+    req.userId = user!.id;
     next();
   } catch (err) {
-    throw new CustomError('Unauthorized', 401);
+    next(new CustomError('Unauthorized', 401));
   }
 }

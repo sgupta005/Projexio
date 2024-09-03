@@ -10,8 +10,11 @@ import { Input } from '@/ui/shadcn/ui/input';
 import { Label } from '@/ui/shadcn/ui/label';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useLoginUser } from './useLoginUser';
+import SpinnerMini from '@/ui/SpinnerMini';
+import { useAuthStore } from './authStore';
 
-type FormFields = {
+export type LoginFormFields = {
   email: string;
   password: string;
 };
@@ -22,12 +25,15 @@ export function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormFields>();
+  } = useForm<LoginFormFields>();
 
   const errorClassName = 'text-red-400 text-sm';
+  const { loginUser, islogging } = useLoginUser();
+  const setLoggedIn = useAuthStore((state) => state.setLoggedIn);
 
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<LoginFormFields> = (data) => {
+    loginUser(data);
+    setLoggedIn(true);
   };
   return (
     <div className="flex h-screen justify-center items-center">
@@ -87,7 +93,7 @@ export function LoginForm() {
                 )}
               </div>
               <Button type="submit" className="w-full">
-                Login
+                {islogging ? <SpinnerMini /> : 'Login'}
               </Button>
               <Button variant="outline" className="w-full">
                 Login with Google
