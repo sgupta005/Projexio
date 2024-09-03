@@ -1,5 +1,5 @@
 import { verifyLogin } from '@/api-client/auth';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export default function useVerifyLogin() {
   const { isError, isLoading: isVerifying } = useQuery({
