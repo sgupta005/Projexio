@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import connectDb from './db/connectDb';
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import logger from './middlewares/logger';
-import appRouter from './routes/auth.route';
+import authRouter from './routes/auth.route';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 dotenv.config();
@@ -21,7 +21,7 @@ app.use(
 
 app.use(logger);
 
-app.use('/api/auth', appRouter);
+app.use('/api/auth', authRouter);
 
 app.use(globalErrorHandler);
 
