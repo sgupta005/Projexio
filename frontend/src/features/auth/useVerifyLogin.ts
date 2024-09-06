@@ -7,5 +7,5 @@ export default function useVerifyLogin() {
     queryFn: verifyLogin,
     retry: false,
   });
-  return { isError, isVerifying };
+  return { isLoggedIn: !isError, isVerifying };
 }

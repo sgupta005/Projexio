@@ -12,7 +12,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useLoginUser } from './useLoginUser';
 import SpinnerMini from '@/ui/SpinnerMini';
-import { useAuthStore } from './authStore';
 
 export type LoginFormFields = {
   email: string;
@@ -29,11 +28,9 @@ export function LoginForm() {
 
   const errorClassName = 'text-red-400 text-sm';
   const { loginUser, islogging } = useLoginUser();
-  const setLoggedIn = useAuthStore((state) => state.setLoggedIn);
 
   const onSubmit: SubmitHandler<LoginFormFields> = (data) => {
     loginUser(data);
-    setLoggedIn(true);
   };
   return (
     <div className="flex h-screen justify-center items-center">

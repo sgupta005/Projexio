@@ -1,8 +1,10 @@
 import { Navigate } from 'react-router-dom';
-import { useAuthStore } from './authStore';
+import useVerifyLogin from './useVerifyLogin';
+import { LoadingSpinner } from '@/ui/Spinner';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const { isLoggedIn, isVerifying } = useVerifyLogin();
+  if (isVerifying) return <LoadingSpinner />;
   if (!isLoggedIn) return <Navigate to="/login" replace />;
   return children;
 }

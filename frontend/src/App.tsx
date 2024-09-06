@@ -6,22 +6,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './features/auth/ProtectedRoute';
-import useVerifyLogin from './features/auth/useVerifyLogin';
-import { LoadingSpinner } from './ui/Spinner';
-import { useEffect } from 'react';
-import { useAuthStore } from './features/auth/authStore';
 
 function App() {
-  const { isVerifying, isError } = useVerifyLogin();
-  const setLoggedIn = useAuthStore((state) => state.setLoggedIn);
-  useEffect(
-    function () {
-      if (!isError) setLoggedIn(true);
-      else setLoggedIn(false);
-    },
-    [setLoggedIn, isError]
-  );
-  if (isVerifying) return <LoadingSpinner />;
   return (
     <>
       <Toaster
