@@ -58,3 +58,13 @@ export const verifyLogin = asyncHandler(async function (
 ) {
   return res.status(200).json({ userId: req.userId });
 });
+
+export const logout = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  return res
+    .clearCookie('auth_token')
+    .json(new ApiResponse(200, {}, 'User logged out successfully.'));
+});

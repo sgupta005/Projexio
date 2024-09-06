@@ -37,3 +37,10 @@ export const verifyLogin = async function () {
   const responseBody = await response.json();
   return responseBody;
 };
+
+export const logoutUser = async function () {
+  const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+    credentials: 'include',
+  });
+  if (!response.ok) throw new Error('An error occured while logging out user.');
+};

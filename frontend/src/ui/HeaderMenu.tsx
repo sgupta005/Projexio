@@ -1,7 +1,7 @@
 import { User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './shadcn/ui/avatar';
 import { Button } from './shadcn/ui/button';
-// import LogoutIcon from '@/features/authentication/LogoutIcon';
+import LogoutButton from '@/features/auth/LogoutButton';
 import { ThemeToggle } from '@/features/theme/ThemeToggle';
 
 function HeaderMenu() {
@@ -19,7 +19,7 @@ function HeaderMenu() {
           <User />
         </Button>
         <ThemeToggle />
-        {/* <LogoutIcon /> */}
+        <LogoutButton />
       </div>
     </div>
   );
