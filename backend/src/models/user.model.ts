@@ -1,11 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { Organisation } from './organisation.model';
 
 export interface User {
+  _id: string;
   email: string;
   password: string;
   firstName: string;
   lastName: string;
+  organisations: [Organisation['_id']];
 }
 
 const UserSchema = new Schema(
@@ -27,6 +30,12 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    organisations: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Organisation',
+      },
+    ],
   },
   { timestamps: true }
 );

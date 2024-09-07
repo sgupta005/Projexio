@@ -21,13 +21,13 @@ export const signup = asyncHandler(async function (
   if (existingUserByEmail)
     throw new CustomError('An user with that email already exists', 400);
 
-  const user = new UserModel({
+  const user = await UserModel.create({
     email,
     password,
     firstName,
     lastName,
   });
-  user.save();
+
   generateTokenSetCookie(res, user._id);
   return res
     .status(201)

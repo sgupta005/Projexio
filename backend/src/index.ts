@@ -4,6 +4,7 @@ import connectDb from './db/connectDb';
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import logger from './middlewares/logger';
 import authRouter from './routes/auth.route';
+import organisationRouter from './routes/organisation.router';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(
 app.use(logger);
 
 app.use('/api/auth', authRouter);
+app.use('/api/organisation', organisationRouter);
 
 app.use(globalErrorHandler);
 
