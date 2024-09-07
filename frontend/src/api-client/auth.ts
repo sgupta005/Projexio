@@ -4,7 +4,7 @@ import { SignupFormFields } from '@/features/auth/SignupForm';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const registerUser = async function (userData: SignupFormFields) {
-  const res = await fetch(`${API_BASE_URL}/api/auth/signup`, {
+  const res = await fetch(`${API_BASE_URL}/auth/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ export const registerUser = async function (userData: SignupFormFields) {
 };
 
 export const loginUser = async function (userData: LoginFormFields) {
-  const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+  const res = await fetch(`${API_BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,16 +30,16 @@ export const loginUser = async function (userData: LoginFormFields) {
 };
 
 export const verifyLogin = async function () {
-  const response = await fetch(`${API_BASE_URL}/api/auth/verify-login`, {
+  const response = await fetch(`${API_BASE_URL}/auth/verify-login`, {
     credentials: 'include',
   });
   if (!response.ok) throw new Error('Invalid Token');
   const responseBody = await response.json();
-  return responseBody;
+  return responseBody.userId;
 };
 
 export const logoutUser = async function () {
-  const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+  const response = await fetch(`${API_BASE_URL}/auth/logout`, {
     credentials: 'include',
   });
   if (!response.ok) throw new Error('An error occured while logging out user.');
