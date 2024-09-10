@@ -1,9 +1,8 @@
+import { formatDistanceToNow } from 'date-fns';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
-  CardHeader,
   CardTitle,
 } from '@/ui/shadcn/ui/card';
 import { Button } from '@/ui/shadcn/ui/button';
@@ -31,6 +30,8 @@ import useGetAllOrganisations from './useGetAllOrganisations';
 export type Organisation = {
   name: string;
   admin: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export default function SelectOrganisation() {
@@ -48,19 +49,23 @@ export default function SelectOrganisation() {
   } = useForm<Organisation>();
   function onCreateFormSubmit({ name }: { name: string }) {
     createOrganisation({ name, admin: userId });
-    setIsCreateModalOpen(false);
+    if (!isCreatingOrganisation) {
+      setIsCreateModalOpen(false);
+    }
   }
   const isLoading = isGettingOrganisations;
   if (isLoading) return <LoadingSpinner />;
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="bg-primary/15 h-1/5 absolute w-full" />
+    <div className="min-h-screen flex flex-col ">
+      <div className="bg-primary/15 h-1/5 xl:h-1/4 absolute w-full" />
       <div className="container mx-auto p-4 relative z-10 flex-grow flex flex-col">
-        <h1 className="text-3xl font-bold mb-6 ml-4">Your Organizations</h1>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
+        <h1 className="text-3xl font-bold mb-6 ml-4 xl:ml-[21%] xl:mt-10 xl:mb-8">
+          Your Organizations
+        </h1>
+        <div className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-custom-xl gap-4  mb-8 justify-center ">
           <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
             <DialogTrigger asChild>
-              <Card className="flex flex-col items-center justify-center cursor-pointer hover:bg-accent h-40">
+              <Card className="flex flex-col items-center justify-center cursor-pointer hover:bg-accent h-40 xl:w-96 xl:h-32">
                 <CardContent className="flex flex-col items-center p-4">
                   <PlusCircle className="h-8 w-8 mb-2 text-muted-foreground" />
                   <CardTitle className="text-sm mb-1">Create</CardTitle>
@@ -100,7 +105,7 @@ export default function SelectOrganisation() {
 
           <Dialog open={isJoinModalOpen} onOpenChange={setIsJoinModalOpen}>
             <DialogTrigger asChild>
-              <Card className="flex flex-col items-center justify-center cursor-pointer hover:bg-accent h-40">
+              <Card className="flex flex-col items-center justify-center cursor-pointer hover:bg-accent h-40 xl:w-96 xl:h-32">
                 <CardContent className="flex flex-col items-center p-4">
                   <UserPlus className="h-8 w-8 mb-2 text-muted-foreground" />
                   <CardTitle className="text-sm mb-1">Join</CardTitle>
@@ -120,15 +125,20 @@ export default function SelectOrganisation() {
             </DialogContent>
           </Dialog>
           {organisations?.map((org: Organisation) => (
-            <Card key={org.name} className="flex flex-col justify-between h-40">
-              <CardHeader className="p-4">
-                <CardTitle className="text-lg">{org.name}</CardTitle>
-              </CardHeader>
-              <CardFooter className="p-2">
-                <Button size="sm" className="w-full text-xs">
-                  Select
-                </Button>
-              </CardFooter>
+            <Card
+              key={org.name}
+              className="flex text-lg  gap-4 justify-center items-center h-40 xl:w-96 xl:h-32 hover:bg-accent"
+            >
+              <div>
+                <p>{org.name}</p>
+                {org.updatedAt && (
+                  <p className="text-sm text-muted-foreground">
+                    {formatDistanceToNow(new Date(org.updatedAt), {
+                      addSuffix: true,
+                    })}
+                  </p>
+                )}
+              </div>
             </Card>
           ))}
         </div>
