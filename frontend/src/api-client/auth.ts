@@ -44,3 +44,16 @@ export const logoutUser = async function () {
   });
   if (!response.ok) throw new Error('An error occured while logging out user.');
 };
+
+export const googleAuth = async function (code: string) {
+  const response = await fetch(`${API_BASE_URL}/auth/google`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({ code }),
+  });
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+};

@@ -14,6 +14,9 @@ import { useLoginUser } from './useLoginUser';
 import SpinnerMini from '@/ui/SpinnerMini';
 import { motion } from 'framer-motion';
 import GoogleLogo from '@/ui/GoogleLogo';
+import { LoadingSpinner } from '@/ui/Spinner';
+import { useGoogleAuthQuery } from './useGoogleAuthQuery';
+import { useGoogleAuth } from './useGoogleAuth';
 
 export type LoginFormFields = {
   email: string;
@@ -28,19 +31,22 @@ export function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormFields>();
 
-  const errorClassName = 'text-red-400 text-sm';
   const { loginUser, islogging } = useLoginUser();
+  const { isLoggingGoogle } = useGoogleAuthQuery();
 
   const onSubmit: SubmitHandler<LoginFormFields> = (data) => {
     loginUser(data);
   };
+  const handleLoginWithGoogle = useGoogleAuth();
 
   const popInVariants = {
     hidden: { scale: 0.8, opacity: 0 },
     visible: { scale: 1, opacity: 1, transition: { duration: 0.5 } },
     exit: { scale: 0.8, opacity: 0, transition: { duration: 0.3 } },
   };
+  const errorClassName = 'text-red-400 text-sm';
 
+  if (isLoggingGoogle) return <LoadingSpinner />;
   return (
     <div className="flex h-screen justify-center items-center">
       <motion.div
@@ -103,12 +109,16 @@ export function LoginForm() {
                 <Button type="submit" className="w-full">
                   {islogging ? <SpinnerMini /> : 'Login'}
                 </Button>
-                <Button variant="outline" className="w-full">
-                  <GoogleLogo />
-                  Login with Google
-                </Button>
               </div>
             </form>
+            <Button
+              variant="outline"
+              className="w-full mt-4"
+              onClick={handleLoginWithGoogle}
+            >
+              <GoogleLogo />
+              Login with Google
+            </Button>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{' '}
               <span

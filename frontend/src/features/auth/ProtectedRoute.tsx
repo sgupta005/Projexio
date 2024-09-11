@@ -4,8 +4,9 @@ import { LoadingSpinner } from '@/ui/Spinner';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isLoggedIn, isVerifying } = useVerifyLogin();
+  console.log(isLoggedIn, isVerifying);
   if (isVerifying) return <LoadingSpinner />;
-  if (!isLoggedIn) return <Navigate to="/login" replace />;
+  if (!isVerifying && !isLoggedIn) return <Navigate to="/login" />;
   return children;
 }
 
