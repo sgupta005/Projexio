@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { Organisation } from './organisation.model';
+import CustomError from '../utils/CustomError';
 
 export interface User {
   _id: string;
@@ -8,6 +9,7 @@ export interface User {
   password: string;
   firstName: string;
   lastName: string;
+  googleId?: string;
   organisations: [Organisation['_id']];
 }
 
@@ -20,7 +22,6 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
     },
     firstName: {
       type: String,
@@ -29,6 +30,9 @@ const UserSchema = new Schema(
     lastName: {
       type: String,
       required: true,
+    },
+    googleId: {
+      type: String,
     },
     organisations: [
       {
@@ -42,9 +46,21 @@ const UserSchema = new Schema(
 
 UserSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10);
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, 10);
+    }
   }
   next();
+});
+
+UserSchema.pre('save', function (next) {
+  if (!this.googleId && !this.password) {
+    next(
+      new CustomError('Password is required unless using Google login', 400)
+    );
+  } else {
+    next();
+  }
 });
 
 const UserModel = mongoose.model<User>('User', UserSchema);
