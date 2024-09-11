@@ -26,6 +26,7 @@ import SpinnerMini from '@/ui/SpinnerMini';
 import useVerifyLogin from '../auth/useVerifyLogin';
 import useCreateOrganisation from './useCreateOrganisation';
 import useGetAllOrganisations from './useGetAllOrganisations';
+import { AvatarImage, Avatar, AvatarFallback } from '@/ui/shadcn/ui/avatar';
 
 export type Organisation = {
   name: string;
@@ -79,26 +80,43 @@ export default function SelectOrganisation() {
               <DialogHeader>
                 <DialogTitle>Create a New Organization</DialogTitle>
                 <DialogDescription>
-                  You can start by creating a new organisation.
+                  Select a name and Avatar Image for your organisation.
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleSubmit(onCreateFormSubmit)}>
                 <Label className="text-md">Name</Label>
                 <Input
+                  className="mt-2 mb-4"
                   type="text"
-                  className="mt-2"
                   {...register('name', {
                     required: 'Name is required',
                   })}
+                />
+                <Label className="text-md">Avatar</Label>
+                <Input
+                  className="mt-2 file:text-primary text-muted-foreground"
+                  type="file"
+                  // {...register('image', {
+                  //   required: isEditSession ? false : 'This field is required',
+                  // })}
                 />
                 {errors.name && (
                   <div className="text-red-400 text-sm mt-1 ml-1">
                     {errors.name.message}
                   </div>
                 )}
-                <Button type="submit" className="w-full mt-8">
-                  {isCreatingOrganisation ? <SpinnerMini /> : 'Create'}
-                </Button>
+                <div className="mt-8 space-x-2">
+                  <Button type="submit">
+                    {isCreatingOrganisation ? <SpinnerMini /> : 'Create'}
+                  </Button>
+                  <Button
+                    variant={'secondary'}
+                    type="reset"
+                    onClick={() => setIsCreateModalOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </form>
             </DialogContent>
           </Dialog>
@@ -127,8 +145,13 @@ export default function SelectOrganisation() {
           {organisations?.map((org: Organisation) => (
             <Card
               key={org.name}
-              className="flex text-lg  gap-4 justify-center items-center h-40 xl:w-96 xl:h-32 hover:bg-accent"
+              className="flex flex-col xl:flex-row text-lg  gap-4 justify-center items-center h-40 xl:w-96 xl:h-32 hover:bg-accent"
             >
+              <Avatar className="h-10 w-10">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+
               <div>
                 <p>{org.name}</p>
                 {org.updatedAt && (
