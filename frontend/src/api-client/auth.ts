@@ -29,13 +29,13 @@ export const loginUser = async function (userData: LoginFormFields) {
   if (!responseBody.success) throw new Error(responseBody.message);
 };
 
-export const verifyLogin = async function () {
-  const response = await fetch(`${API_BASE_URL}/auth/verify-login`, {
+export const getCurrentUser = async function () {
+  const response = await fetch(`${API_BASE_URL}/auth/user`, {
     credentials: 'include',
   });
-  if (!response.ok) throw new Error('Invalid Token');
+  if (!response.ok) throw new Error('Unauthorized');
   const responseBody = await response.json();
-  return responseBody.userId;
+  return responseBody.data;
 };
 
 export const logoutUser = async function () {

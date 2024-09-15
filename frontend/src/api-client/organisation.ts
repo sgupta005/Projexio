@@ -1,4 +1,4 @@
-import { Organisation } from '@/features/organisations/SelectOrganisation';
+import { Organisation } from '@/features/organisations/DisplayOrganisation';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

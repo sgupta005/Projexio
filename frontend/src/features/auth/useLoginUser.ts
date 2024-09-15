@@ -11,7 +11,7 @@ export function useLoginUser() {
       toast.error(err.message);
     },
     onSuccess: () => {
-      navigate('/');
+      navigate('/organisations');
     },
   });
   return { loginUser, islogging };

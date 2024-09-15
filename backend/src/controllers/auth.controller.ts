@@ -52,12 +52,15 @@ export const login = asyncHandler(async function (
   return res.status(200).json(new ApiResponse(200, { userID: user.id }));
 });
 
-export const verifyLogin = asyncHandler(async function (
+export const getCurrentUser = asyncHandler(async function (
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  return res.status(200).json({ userId: req.userId });
+  const user = await UserModel.findById(req.userId).select(
+    '-password -googleId'
+  );
+  return res.status(200).json(new ApiResponse(200, user as object));
 });
 
 export const logout = asyncHandler(async function (

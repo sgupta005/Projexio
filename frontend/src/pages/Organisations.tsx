@@ -1,7 +1,7 @@
-import SelectOrganisation from '@/features/organisations/SelectOrganisation';
+import DisplayOrganisation from '@/features/organisations/DisplayOrganisation';
 
 function Organisations() {
-  return <SelectOrganisation />;
+  return <DisplayOrganisation />;
 }
 
 export default Organisations;
