@@ -35,16 +35,26 @@ function CreateOrganisation({
 }: PropTypes) {
   const { createOrganisation, isCreatingOrganisation } =
     useCreateOrganisation();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Organisation>();
-  function onCreateFormSubmit({ name }: { name: string }) {
-    createOrganisation({ name, admin: userId });
-    if (!isCreatingOrganisation) {
-      setIsCreateModalOpen(false);
-    }
+  function onCreateFormSubmit({
+    name,
+    avatar,
+  }: {
+    name: string;
+    avatar: string;
+  }) {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('admin', userId);
+    formData.append('avatar', avatar[0]);
+    createOrganisation(formData, {
+      onSuccess: () => setIsCreateModalOpen(false),
+    });
   }
   return (
     <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
@@ -79,16 +89,14 @@ function CreateOrganisation({
           <Input
             className="mt-2 file:text-primary text-muted-foreground"
             type="file"
-            // {...register('image', {
-            //   required: isEditSession ? false : 'This field is required',
-            // })}
+            {...register('avatar')}
           />
           {errors.name && (
             <div className="text-red-400 text-sm mt-1 ml-1">
               {errors.name.message}
             </div>
           )}
-          <div className="mt-8 space-x-2">
+          <div className="mt-8 space-x-2 flex items-center">
             <Button type="submit">
               {isCreatingOrganisation ? <SpinnerMini /> : 'Create'}
             </Button>

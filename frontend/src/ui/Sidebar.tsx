@@ -17,8 +17,12 @@ export default function Sidebar() {
           onClick={() => navigate('/organisations')}
           className="w-[270px] h-[150px] mx-auto mt-4 flex flex-col gap-2 text-lg cursor-pointer justify-center items-center hover:bg-accent"
         >
-          <Avatar className="h-10 w-10">
-            <AvatarImage src="https://github.com/shadcn.png" />
+          <Avatar className="size-14">
+            {currentOrg?.avatar ? (
+              <AvatarImage src={currentOrg.avatar}></AvatarImage>
+            ) : (
+              <AvatarImage src="https://github.com/shadcn.png" />
+            )}
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <p>{currentOrg?.name}</p>

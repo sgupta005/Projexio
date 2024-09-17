@@ -1,5 +1,3 @@
-import { Organisation } from '@/features/organisations/DisplayOrganisation';
-
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getAllOrganisations = async function () {
@@ -11,15 +9,12 @@ export const getAllOrganisations = async function () {
   return organisations;
 };
 
-export const createOrganisation = async function (data: Organisation) {
+export const createOrganisation = async function (data: FormData) {
   console.log(data);
   const response = await fetch(`${API_BASE_URL}/organisation/create`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     credentials: 'include',
-    body: JSON.stringify(data),
+    body: data,
   });
   const responseBody = await response.json();
   if (!responseBody.success) throw new Error(responseBody.message);

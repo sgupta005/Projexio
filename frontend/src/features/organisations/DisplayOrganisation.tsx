@@ -33,7 +33,7 @@ export default function DisplayOrganisation() {
   if (isLoading) return <LoadingSpinner />;
   return (
     <div className="min-h-screen flex flex-col ">
-      <div className="bg-primary/15 h-1/5 xl:h-1/4 absolute w-full" />
+      <div className="bg-primary/15 h-[150px] xl:h-[190px] absolute w-full" />
       <div className="container mx-auto p-4 relative z-10 flex-grow flex flex-col">
         <h1 className="text-3xl font-bold mb-6 ml-4 xl:ml-[21%] xl:mt-10 xl:mb-8">
           Your Organizations
