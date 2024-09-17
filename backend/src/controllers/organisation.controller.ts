@@ -4,6 +4,7 @@ import OrganisationModel from '../models/organisation.model';
 import ApiResponse from '../utils/ApiResponse';
 import UserModel from '../models/user.model';
 import CustomError from '../utils/CustomError';
+import uploadOnCloudinary from '../utils/cloudinary';
 
 export const createOrganisation = asyncHandler(async function (
   req: Request,
@@ -12,8 +13,12 @@ export const createOrganisation = asyncHandler(async function (
 ) {
   const { name } = req.body;
 
+  const localeFilePath = req?.file?.path;
+  const avatar = localeFilePath ? await uploadOnCloudinary(localeFilePath) : '';
+
   const org = await OrganisationModel.create({
     name,
+    avatar,
     admin: req.userId,
   });
 
@@ -25,7 +30,7 @@ export const createOrganisation = asyncHandler(async function (
 
   return res
     .status(201)
-    .json(new ApiResponse(201, { name, admin: req.userId }));
+    .json(new ApiResponse(201, { name, avatar, admin: req.userId }));
 });
 
 export const getOrganisations = asyncHandler(async function (
