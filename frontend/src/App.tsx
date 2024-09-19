@@ -6,6 +6,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './features/auth/ProtectedRoute';
+import DisplayOrganisation from './features/organisations/DisplayOrganisation';
+import CreateOrganisation from './features/organisations/CreateOrganisation';
 
 function App() {
   return (
@@ -25,7 +27,10 @@ function App() {
               <Organisations />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<DisplayOrganisation />} />
+          <Route path="create" element={<CreateOrganisation />} />
+        </Route>
         <Route
           element={
             <ProtectedRoute>

@@ -1,7 +1,7 @@
-import DisplayOrganisation from '@/features/organisations/DisplayOrganisation';
+import { Outlet } from 'react-router-dom';
 
 function Organisations() {
-  return <DisplayOrganisation />;
+  return <Outlet />;
 }
 
 export default Organisations;

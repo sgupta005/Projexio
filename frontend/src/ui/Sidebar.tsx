@@ -1,14 +1,12 @@
 import { CalendarCheck, Settings, Users } from 'lucide-react';
 import SidebarLink from './SidebarLink';
 import { Card } from './shadcn/ui/card';
-import { userOrganisationStore } from '@/features/organisations/store';
+import { useOrganisationStore } from '@/features/organisations/store';
 import { Avatar, AvatarFallback, AvatarImage } from './shadcn/ui/avatar';
 import { useNavigate } from 'react-router-dom';
 
 export default function Sidebar() {
-  const currentOrg = userOrganisationStore(
-    (state) => state.currentOrganisation
-  );
+  const currentOrg = useOrganisationStore((state) => state.currentOrganisation);
   const navigate = useNavigate();
   return (
     <div className="w-0 border-r [grid-column:1/2] [grid-row:1/3] md:w-[300px]">

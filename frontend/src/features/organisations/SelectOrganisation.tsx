@@ -3,7 +3,7 @@ import { Card } from '@/ui/shadcn/ui/card';
 import { formatDistanceToNow } from 'date-fns';
 import { Organisation } from '@/types/definitions';
 import { useNavigate } from 'react-router-dom';
-import { userOrganisationStore } from './store';
+import { useOrganisationStore } from './store';
 
 function SelectOrganisation({
   organisations,
@@ -11,7 +11,7 @@ function SelectOrganisation({
   organisations: [Organisation];
 }) {
   const navigate = useNavigate();
-  const setCurrentOrganisation = userOrganisationStore(
+  const setCurrentOrganisation = useOrganisationStore(
     (state) => state.setCurrentOrganisation
   );
   function handleSelectOrganisation(organisation: Organisation) {

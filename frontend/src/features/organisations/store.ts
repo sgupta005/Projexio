@@ -6,7 +6,7 @@ type OrganisationState = {
   setCurrentOrganisation: (organisation: Organisation) => void;
 };
 
-export const userOrganisationStore = create<OrganisationState>((set) => ({
+export const useOrganisationStore = create<OrganisationState>((set) => ({
   currentOrganisation: null,
   setCurrentOrganisation: (organisation: Organisation) =>
     set({ currentOrganisation: organisation }),

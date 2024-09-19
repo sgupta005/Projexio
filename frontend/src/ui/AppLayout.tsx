@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import { userOrganisationStore } from '@/features/organisations/store';
+import { useOrganisationStore } from '@/features/organisations/store';
 
 function AppLayout() {
-  const currentOrganisation = userOrganisationStore(
+  const currentOrganisation = useOrganisationStore(
     (state) => state.currentOrganisation
   );
   if (!currentOrganisation) return <Navigate to={'/organisations'} replace />;

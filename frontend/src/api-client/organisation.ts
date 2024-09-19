@@ -10,7 +10,6 @@ export const getAllOrganisations = async function () {
 };
 
 export const createOrganisation = async function (data: FormData) {
-  console.log(data);
   const response = await fetch(`${API_BASE_URL}/organisation/create`, {
     method: 'POST',
     credentials: 'include',
@@ -18,4 +17,5 @@ export const createOrganisation = async function (data: FormData) {
   });
   const responseBody = await response.json();
   if (!responseBody.success) throw new Error(responseBody.message);
+  return responseBody.data;
 };

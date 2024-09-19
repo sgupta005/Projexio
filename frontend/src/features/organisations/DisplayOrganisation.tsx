@@ -17,19 +17,17 @@ import { useState } from 'react';
 
 import { LoadingSpinner } from '@/ui/Spinner';
 import useGetAllOrganisations from './useGetAllOrganisations';
-import useCurrentUser from '../auth/useCurrentUser';
 import SelectOrganisation from './SelectOrganisation';
-import CreateOrganisation from './CreateOrganisation';
-import { UserPlus } from 'lucide-react';
+import { PlusCircle, UserPlus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function DisplayOrganisation() {
-  const { user, isGettingUser } = useCurrentUser();
   const { organisations, isGettingOrganisations } = useGetAllOrganisations();
-
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
 
-  const isLoading = isGettingOrganisations || isGettingUser;
+  const navigate = useNavigate();
+
+  const isLoading = isGettingOrganisations;
   if (isLoading) return <LoadingSpinner />;
   return (
     <div className="min-h-screen flex flex-col ">
@@ -39,11 +37,18 @@ export default function DisplayOrganisation() {
           Your Organizations
         </h1>
         <div className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-custom-xl gap-4  mb-8 justify-center ">
-          <CreateOrganisation
-            isCreateModalOpen={isCreateModalOpen}
-            setIsCreateModalOpen={setIsCreateModalOpen}
-            userId={user._id}
-          />
+          <Card
+            className="flex flex-col items-center justify-center cursor-pointer hover:bg-accent h-40 xl:w-96 xl:h-32"
+            onClick={() => navigate('create')}
+          >
+            <CardContent className="flex flex-col items-center p-4">
+              <PlusCircle className="h-8 w-8 mb-2 text-muted-foreground" />
+              <CardTitle className="text-sm mb-1">Create</CardTitle>
+              <CardDescription className="text-xs text-center">
+                New organization
+              </CardDescription>
+            </CardContent>
+          </Card>
           <Dialog open={isJoinModalOpen} onOpenChange={setIsJoinModalOpen}>
             <DialogTrigger asChild>
               <Card className="flex flex-col items-center justify-center cursor-pointer hover:bg-accent h-40 xl:w-96 xl:h-32">
