@@ -19,6 +19,7 @@ import { LoadingSpinner } from '@/ui/Spinner';
 import { useOrganisationStore } from './store';
 import ImageCropper from '@/ui/ImageCropper';
 import { useState } from 'react';
+import MotionDiv from '@/ui/MotionDiv';
 
 function CreateOrganisation() {
   const { createOrganisation, isCreatingOrganisation } =
@@ -57,47 +58,49 @@ function CreateOrganisation() {
   if (isGettingUser) return <LoadingSpinner />;
   return (
     <div className="flex h-screen justify-center items-center">
-      <Card className="xl:w-1/3 ">
-        <CardHeader>
-          <CardTitle>Create a New Organization</CardTitle>
-          <CardDescription>
-            Select a name and Avatar Image for your organisation.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onCreateFormSubmit)}>
-            <Label className="text-md">Name</Label>
-            <Input
-              className="mt-2 mb-4"
-              type="text"
-              {...register('name', {
-                required: 'Name is required',
-              })}
-            />
-            <Label className="text-md">Avatar</Label>
-            <ImageCropper setCroppedImageUrl={setCroppedImageUrl} />
-            {errors.name && (
-              <div className="text-red-400 text-sm mt-1 ml-1">
-                {errors.name.message}
+      <MotionDiv>
+        <Card>
+          <CardHeader>
+            <CardTitle>Create a New Organization</CardTitle>
+            <CardDescription>
+              Select a name and Avatar Image for your organisation.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit(onCreateFormSubmit)}>
+              <Label className="text-md">Name</Label>
+              <Input
+                className="mt-2 mb-4"
+                type="text"
+                {...register('name', {
+                  required: 'Name is required',
+                })}
+              />
+              <Label className="text-md">Avatar</Label>
+              <ImageCropper setCroppedImageUrl={setCroppedImageUrl} />
+              {errors.name && (
+                <div className="text-red-400 text-sm mt-1 ml-1">
+                  {errors.name.message}
+                </div>
+              )}
+              <div className="mt-8 space-x-2 flex items-center">
+                <Button type="submit">
+                  {isCreatingOrganisation ? <SpinnerMini /> : 'Create'}
+                </Button>
+                <Button
+                  className="w-max"
+                  variant={'secondary'}
+                  type="reset"
+                  onClick={() => navigate('/organisations')}
+                >
+                  <ArrowLeft className="size-4 mr-2" />
+                  Back
+                </Button>
               </div>
-            )}
-            <div className="mt-8 space-x-2 flex items-center">
-              <Button type="submit">
-                {isCreatingOrganisation ? <SpinnerMini /> : 'Create'}
-              </Button>
-              <Button
-                className="w-max"
-                variant={'secondary'}
-                type="reset"
-                onClick={() => navigate('/organisations')}
-              >
-                <ArrowLeft className="size-4 mr-2" />
-                Back
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            </form>
+          </CardContent>
+        </Card>
+      </MotionDiv>
     </div>
   );
 }
