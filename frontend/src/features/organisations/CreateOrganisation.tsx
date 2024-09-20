@@ -17,6 +17,8 @@ import { useNavigate } from 'react-router-dom';
 import useCurrentUser from '../auth/useCurrentUser';
 import { LoadingSpinner } from '@/ui/Spinner';
 import { useOrganisationStore } from './store';
+import ImageCropper from '@/ui/ImageCropper';
+import { useState } from 'react';
 
 function CreateOrganisation() {
   const { createOrganisation, isCreatingOrganisation } =
@@ -24,24 +26,26 @@ function CreateOrganisation() {
   const { user, isGettingUser } = useCurrentUser();
 
   const { setCurrentOrganisation } = useOrganisationStore();
+
   const navigate = useNavigate();
+
+  const [croppedImageUrl, setCroppedImageUrl] = useState<Blob | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Organisation>();
-  function onCreateFormSubmit({
-    name,
-    avatar,
-  }: {
-    name: string;
-    avatar: string;
-  }) {
+
+  function onCreateFormSubmit({ name }: { name: string }) {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('admin', user.id);
-    formData.append('avatar', avatar[0]);
+    if (croppedImageUrl) {
+      formData.append('avatar', croppedImageUrl);
+    } else {
+      formData.append('avatar', '');
+    }
     createOrganisation(formData, {
       onSuccess: (organisation) => {
         setCurrentOrganisation(organisation);
@@ -49,6 +53,7 @@ function CreateOrganisation() {
       },
     });
   }
+
   if (isGettingUser) return <LoadingSpinner />;
   return (
     <div className="flex h-screen justify-center items-center">
@@ -70,11 +75,7 @@ function CreateOrganisation() {
               })}
             />
             <Label className="text-md">Avatar</Label>
-            <Input
-              className="mt-2 file:text-primary text-muted-foreground"
-              type="file"
-              {...register('avatar')}
-            />
+            <ImageCropper setCroppedImageUrl={setCroppedImageUrl} />
             {errors.name && (
               <div className="text-red-400 text-sm mt-1 ml-1">
                 {errors.name.message}

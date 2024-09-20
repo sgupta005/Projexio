@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './features/auth/ProtectedRoute';
 import DisplayOrganisation from './features/organisations/DisplayOrganisation';
 import CreateOrganisation from './features/organisations/CreateOrganisation';
+import 'react-image-crop/dist/ReactCrop.css';
 
 function App() {
   return (
