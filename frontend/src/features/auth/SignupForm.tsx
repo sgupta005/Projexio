@@ -63,6 +63,10 @@ export function SignupForm() {
                       placeholder="Max"
                       {...register('firstName', {
                         required: 'First Name is required',
+                        maxLength: {
+                          value: 16,
+                          message: 'Name cannot be longer than 16 characters',
+                        },
                       })}
                     />
                   </div>
@@ -73,6 +77,10 @@ export function SignupForm() {
                       placeholder="Robinson"
                       {...register('lastName', {
                         required: 'Last Name is required',
+                        maxLength: {
+                          value: 16,
+                          message: 'Name cannot be longer than 16 characters',
+                        },
                       })}
                     />
                   </div>

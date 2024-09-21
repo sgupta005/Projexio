@@ -70,19 +70,23 @@ function CreateOrganisation() {
             <form onSubmit={handleSubmit(onCreateFormSubmit)}>
               <Label className="text-md">Name</Label>
               <Input
-                className="mt-2 mb-4"
+                className="mt-2"
                 type="text"
                 {...register('name', {
                   required: 'Name is required',
+                  maxLength: {
+                    value: 16,
+                    message: 'Name cannot be longer than 16 characters',
+                  },
                 })}
               />
-              <Label className="text-md">Avatar</Label>
-              <ImageCropper setCroppedImageUrl={setCroppedImageUrl} />
               {errors.name && (
                 <div className="text-red-400 text-sm mt-1 ml-1">
                   {errors.name.message}
                 </div>
               )}
+              <p className="text-md mt-4 font-semibold">Avatar</p>
+              <ImageCropper setCroppedImageUrl={setCroppedImageUrl} />
               <div className="mt-8 space-x-2 flex items-center">
                 <Button type="submit">
                   {isCreatingOrganisation ? <SpinnerMini /> : 'Create'}
