@@ -5,11 +5,14 @@ import { useOrganisationStore } from '@/features/organisations/store';
 import { Avatar, AvatarFallback, AvatarImage } from './shadcn/ui/avatar';
 import { useNavigate } from 'react-router-dom';
 
-export default function Sidebar() {
+export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
   const currentOrg = useOrganisationStore((state) => state.currentOrganisation);
   const navigate = useNavigate();
+  const className = isSidebarOpen
+    ? `border-r [grid-column:1/2] [grid-row:1/3] w-[300px] bg-background`
+    : 'hidden';
   return (
-    <div className="w-0 border-r [grid-column:1/2] [grid-row:1/3] md:w-[300px]">
+    <div className={className}>
       <div className="flex flex-col gap-2">
         <Card
           onClick={() => navigate('/organisations')}

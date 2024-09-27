@@ -49,7 +49,7 @@ export function LoginForm() {
         <GradientShadow>
           <Card className="mx-auto border-none">
             <CardHeader>
-              <CardTitle className="text-2xl">Login</CardTitle>
+              <CardTitle className="text-2xl">Welcome Back</CardTitle>
               <CardDescription>
                 Enter your email below to login to your account
               </CardDescription>

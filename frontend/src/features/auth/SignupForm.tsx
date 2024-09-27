@@ -48,7 +48,7 @@ export function SignupForm() {
         <GradientShadow>
           <Card className="mx-auto border-none">
             <CardHeader>
-              <CardTitle className="text-xl">Sign Up</CardTitle>
+              <CardTitle className="text-2xl">Welcome to Projexio</CardTitle>
               <CardDescription>
                 Enter your information to create an account
               </CardDescription>
