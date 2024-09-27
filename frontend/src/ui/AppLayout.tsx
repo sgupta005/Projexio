@@ -12,7 +12,7 @@ function AppLayout() {
   );
   const className = isSidebarOpen
     ? 'grid h-screen [grid-template-rows:75px_1fr] [grid-template-columns:auto_1fr]'
-    : 'grid h-screen [grid-template-rows:75px_1fr] [grid-template-columns:1fr]';
+    : 'flex flex-col h-screen';
   if (!currentOrganisation) return <Navigate to={'/organisations'} replace />;
   return (
     <div className={className}>
