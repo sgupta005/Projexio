@@ -3,27 +3,25 @@ import Header from './Header';
 import { useOrganisationStore } from '@/features/organisations/store';
 import { useState } from 'react';
 import Sidebar from './Sidebar';
-import MainLayout from './MainLayout';
 
 function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const currentOrganisation = useOrganisationStore(
     (state) => state.currentOrganisation
   );
-  const className = isSidebarOpen
-    ? 'grid h-screen [grid-template-rows:75px_1fr] [grid-template-columns:auto_1fr]'
-    : 'flex flex-col h-screen';
   if (!currentOrganisation) return <Navigate to={'/organisations'} replace />;
   return (
-    <div className={className}>
+    <div className="flex h-screen w-screen">
       <Sidebar isSidebarOpen={isSidebarOpen} />
-      <Header
-        setIsSidebarOpen={setIsSidebarOpen}
-        isSidebarOpen={isSidebarOpen}
-      />
-      <MainLayout>
-        <Outlet />
-      </MainLayout>
+      <main className="flex flex-col h-screen flex-1">
+        <Header
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+        <div className="absolute -z-10 top-[75px] left-0 md:relative md:top-0 md:left-0">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 }
