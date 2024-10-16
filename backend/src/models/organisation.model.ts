@@ -1,11 +1,9 @@
-import mongoose, { model, Schema } from 'mongoose';
-import { User } from './user.model';
+import { model, Schema } from 'mongoose';
 
 export interface Organisation {
   _id: string;
   name: string;
   avatar: string;
-  admin: User['_id'];
 }
 
 export const OrganisationSchema = new Schema(
@@ -16,10 +14,6 @@ export const OrganisationSchema = new Schema(
     },
     avatar: {
       type: String,
-    },
-    admin: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
     },
   },
   { timestamps: true }

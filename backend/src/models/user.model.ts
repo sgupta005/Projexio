@@ -34,12 +34,6 @@ const UserSchema = new Schema(
     googleId: {
       type: String,
     },
-    organisations: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Organisation',
-      },
-    ],
   },
   { timestamps: true }
 );

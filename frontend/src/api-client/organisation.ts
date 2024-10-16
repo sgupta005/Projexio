@@ -17,5 +17,5 @@ export const createOrganisation = async function (data: FormData) {
   });
   const responseBody = await response.json();
   if (!responseBody.success) throw new Error(responseBody.message);
-  return responseBody.data;
+  return responseBody.data.organisation;
 };
