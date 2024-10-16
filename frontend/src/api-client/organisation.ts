@@ -19,3 +19,17 @@ export const createOrganisation = async function (data: FormData) {
   if (!responseBody.success) throw new Error(responseBody.message);
   return responseBody.data.organisation;
 };
+
+export const joinOrganisation = async function (inviteCode: string) {
+  const response = await fetch(`${API_BASE_URL}/organisation/join`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({ inviteCode }),
+  });
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+  return responseBody.data.organisation;
+};

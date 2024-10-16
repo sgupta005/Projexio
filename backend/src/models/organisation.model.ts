@@ -4,6 +4,7 @@ export interface Organisation {
   _id: string;
   name: string;
   avatar: string;
+  inviteCode: string;
 }
 
 export const OrganisationSchema = new Schema(
@@ -13,6 +14,9 @@ export const OrganisationSchema = new Schema(
       required: true,
     },
     avatar: {
+      type: String,
+    },
+    inviteCode: {
       type: String,
     },
   },

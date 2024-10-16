@@ -73,7 +73,7 @@ export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
 
   return (
     <motion.div
-      initial={{ width: '0px', opacity: 0 }}
+      initial={{ width: '0px', opacity: 1 }}
       animate={{
         width: isSidebarOpen ? '300px' : '0px',
         opacity: 1,
