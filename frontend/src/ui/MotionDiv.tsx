@@ -7,10 +7,16 @@ const popInVariants = {
   exit: { scale: 0.8, opacity: 0, transition: { duration: 0.3 } },
 };
 
-function MotionDiv({ children }: { children: ReactNode }) {
+function MotionDiv({
+  className,
+  children,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <motion.div
-      className="w-full max-w-sm"
+      className={`w-full max-w-sm ${className}`}
       initial="hidden"
       animate="visible"
       exit="exit"

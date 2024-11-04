@@ -9,6 +9,7 @@ import ProtectedRoute from './features/auth/ProtectedRoute';
 import DisplayOrganisation from './features/organisations/DisplayOrganisation';
 import CreateOrganisation from './features/organisations/CreateOrganisation';
 import 'react-image-crop/dist/ReactCrop.css';
+import Team from './pages/Team';
 
 function App() {
   return (
@@ -41,6 +42,18 @@ function App() {
         >
           <Route index element={<Navigate to="/tasks" replace={true} />} />
           <Route path="/tasks" element={<Tasks />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route
+            path="/team"
+            element={
+              <Team
+                heading={{
+                  title: 'Members',
+                  subTitle: 'View and manage memebers of your team',
+                }}
+              />
+            }
+          />
         </Route>
       </Routes>
     </>

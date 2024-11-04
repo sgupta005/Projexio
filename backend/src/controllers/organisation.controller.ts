@@ -3,9 +3,10 @@ import asyncHandler from '../utils/asyncHandler';
 import OrganisationModel from '../models/organisation.model';
 import ApiResponse from '../utils/ApiResponse';
 import uploadOnCloudinary from '../utils/cloudinary';
-import MembershipModel from '../models/membership.model';
+import MembershipModel, { Membership } from '../models/membership.model';
 import { generateInviteCode } from '../utils/helper';
 import CustomError from '../utils/CustomError';
+import UserModel from '../models/user.model';
 
 declare global {
   namespace Express {
@@ -100,6 +101,104 @@ export const joinOrganisation = asyncHandler(async function (
         200,
         { organisation: org, membership },
         'Joined Successfully.'
+      )
+    );
+});
+
+export const getMembers = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  //get org id
+  const organisationId = req.params.id;
+  if (!organisationId)
+    throw new CustomError('No organisation id provided.', 400);
+  //find all memberships with that orgId
+  const memberships = await MembershipModel.find({ organisationId });
+  if (!memberships) throw new CustomError('Invalid organisationId.', 400);
+  //get all users from the userIds of those memberships
+  const members = await Promise.all(
+    memberships.map(async (mem) => {
+      const user = await UserModel.findById(mem.userId).select(
+        '-googleId -password'
+      );
+      if (user) {
+        return {
+          ...user.toObject(), // Spread the user object
+          role: mem.role, // Add the role from the membership
+        };
+      }
+      return null; // Handle cases where the user might not exist
+    })
+  );
+  if (!members) throw new CustomError('No members found', 400);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, members, 'Members fetched successfully.'));
+});
+
+export const removeMember = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  //verify logged in user is admin
+  const membership = await MembershipModel.findOne({ userId: req.userId });
+  if (!membership)
+    throw new CustomError('You must be a member of this organistion', 400);
+  if (membership.role !== 'admin')
+    throw new CustomError('you must be admin to remove a member', 401);
+  //get org id, memeber id
+  const { orgId, memId } = req.params;
+  //delete membership
+  const result = await MembershipModel.deleteOne({
+    userId: memId,
+    organisationId: orgId,
+  });
+  if (result.deletedCount === 0) {
+    throw new CustomError('Membership not found', 404);
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, 'Member removed successfully'));
+});
+
+export const makeAdmin = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  //verify logged in user is admin
+  const memToVerify = await MembershipModel.findOne({ userId: req.userId });
+  if (!memToVerify)
+    throw new CustomError('You must be a member of this organistion', 400);
+  if (memToVerify.role !== 'admin')
+    throw new CustomError('you must be admin to make a member admin', 401);
+  //get org id, memeber id
+  const { orgId, memId } = req.params;
+  //find membership and set role to 'admin'
+  const result = await MembershipModel.updateOne(
+    { userId: memId, organisationId: orgId },
+    { $set: { role: 'admin' } }
+  );
+
+  if (result.matchedCount === 0) {
+    throw new CustomError('Membership not found', 404);
+  }
+  const membership = await MembershipModel.findOne({
+    userId: memId,
+    organisationId: orgId,
+  });
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { membership },
+        'Member promoted to admin successfully'
       )
     );
 });

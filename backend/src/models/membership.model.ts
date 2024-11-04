@@ -5,7 +5,7 @@ import { Organisation } from './organisation.model';
 export interface Membership {
   userId: User['_id'];
   organisationId: Organisation['_id'];
-  role: 'Admin' | 'Member';
+  role: 'admin' | 'member';
 }
 
 export const MembershipSchema = new Schema(

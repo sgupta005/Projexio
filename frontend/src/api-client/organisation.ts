@@ -33,3 +33,44 @@ export const joinOrganisation = async function (inviteCode: string) {
   if (!responseBody.success) throw new Error(responseBody.message);
   return responseBody.data.organisation;
 };
+
+export const getMembers = async function (organisationId: string) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${organisationId}/members`,
+    {
+      credentials: 'include',
+    }
+  );
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+  return responseBody.data;
+};
+
+export const removeMember = async function (
+  organisationId: string,
+  memberId: string
+) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${organisationId}/members/${memberId}/remove`,
+    {
+      credentials: 'include',
+    }
+  );
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+};
+
+export const makeAdmin = async function (
+  organisationId: string,
+  memberId: string
+) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${organisationId}/members/${memberId}/makeAdmin`,
+    {
+      credentials: 'include',
+    }
+  );
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+  return responseBody.data;
+};

@@ -20,6 +20,7 @@ import { useOrganisationStore } from './store';
 import ImageCropper from '@/ui/ImageCropper';
 import { useState } from 'react';
 import MotionDiv from '@/ui/MotionDiv';
+import Logo from '@/ui/Logo';
 
 function CreateOrganisation() {
   const { createOrganisation, isCreatingOrganisation } =
@@ -57,8 +58,8 @@ function CreateOrganisation() {
 
   if (isGettingUser) return <LoadingSpinner />;
   return (
-    <div className="flex h-screen justify-center items-center">
-      <MotionDiv>
+    <div className="h-screen w-screen flex flex-col">
+      <MotionDiv className="mx-auto my-auto">
         <Card>
           <CardHeader>
             <CardTitle>Create a New Organization</CardTitle>
