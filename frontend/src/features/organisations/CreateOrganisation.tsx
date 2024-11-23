@@ -19,16 +19,12 @@ import { LoadingSpinner } from '@/ui/Spinner';
 import { useState } from 'react';
 import MotionDiv from '@/ui/MotionDiv';
 import ImageUpload from '@/ui/ImageUpload';
-import { useDispatch } from 'react-redux';
-import { setCurrentOrganisation } from './organisationSlice';
 
 function CreateOrganisation() {
   const { createOrganisation, isCreatingOrganisation } =
     useCreateOrganisation();
 
   const { user, isGettingUser } = useCurrentUser();
-
-  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -39,7 +35,6 @@ function CreateOrganisation() {
     handleSubmit,
     formState: { errors },
   } = useForm<Organisation>();
-
   function onCreateFormSubmit({ name }: { name: string }) {
     const formData = new FormData();
     formData.append('name', name);
@@ -51,8 +46,7 @@ function CreateOrganisation() {
     }
     createOrganisation(formData, {
       onSuccess: (organisation) => {
-        dispatch(setCurrentOrganisation(organisation));
-        navigate('/tasks');
+        navigate(`/organisations/${organisation._id}`);
       },
     });
   }

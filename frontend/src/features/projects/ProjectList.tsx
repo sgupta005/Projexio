@@ -1,16 +1,22 @@
-import { RootState } from '@/store';
 import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import TruncatedText from '@/ui/TruncatedText';
-import { useSelector } from 'react-redux';
 import useGetAllProjects from './useGetAllProjects';
 import { Project } from './types';
 import Tooltip from '@/ui/Tooltip';
+import { Organisation } from '../organisations/types';
+import { LoadingSpinner } from '@/ui/Spinner';
 
-function ProjectList({ isSidebarOpen }: { isSidebarOpen: boolean }) {
-  const currentOrg = useSelector(
-    (state: RootState) => state.organisation.currentOrganisation
+function ProjectList({
+  isSidebarOpen,
+  currentOrg,
+}: {
+  isSidebarOpen: boolean;
+  currentOrg: Organisation;
+}) {
+  const { projects, isGettingProjects } = useGetAllProjects(
+    currentOrg?._id as string
   );
-  const { projects } = useGetAllProjects(currentOrg?._id as string);
+  if (isGettingProjects) return <LoadingSpinner />;
   return (
     <div
       className={`overflow-scroll no-scrollbar mb-4 mt-2 space-y-2 tran ${

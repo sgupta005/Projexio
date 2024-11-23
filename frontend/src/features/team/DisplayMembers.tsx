@@ -6,8 +6,7 @@ import { AvatarFallback } from '@/ui/Avatar';
 import { LoadingSpinner } from '@/ui/Spinner';
 import useRemoveMember from './useRemoveMember';
 import useMakeAdmin from './useMakeAdmin';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import useCurrentOrganisation from '../organisations/useCurrentOrganisaiton';
 
 type Member = {
   _id: string;
@@ -19,9 +18,8 @@ type Member = {
 };
 
 export default function OrganizationMembersTable() {
-  const currentOrganisation = useSelector(
-    (state: RootState) => state.organisation.currentOrganisation
-  );
+  const { currentOrg: currentOrganisation, isGettingCurrentOrg } =
+    useCurrentOrganisation();
   const { members, isGettingMembers } = useGetMembers(
     currentOrganisation?._id || ''
   );
@@ -29,7 +27,7 @@ export default function OrganizationMembersTable() {
   const isAdmin =
     members?.find((m: Member) => m.email === user.email).role === 'admin';
 
-  if (isGettingMembers) return <LoadingSpinner />;
+  if (isGettingMembers || isGettingCurrentOrg) return <LoadingSpinner />;
   return (
     <div className="pb-4 px-6">
       {/* Desktop view */}

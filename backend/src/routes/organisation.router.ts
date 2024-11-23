@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   createOrganisation,
   getMembers,
+  getOrganisationDetails,
   getOrganisations,
   joinOrganisation,
   makeAdmin,
@@ -10,6 +11,7 @@ import {
 import { verifyToken } from '../middlewares/verifyToken';
 import { verifyAdmin } from '../middlewares/verifyAdmin';
 import { upload } from '../middlewares/multer';
+import { verifyMember } from '../middlewares/verifyMember';
 const router = Router();
 
 router.post(
@@ -20,6 +22,7 @@ router.post(
 );
 router.get('/all', verifyToken, getOrganisations);
 router.post('/join', verifyToken, joinOrganisation);
+router.get('/:orgId', verifyToken, verifyMember, getOrganisationDetails);
 
 //members
 router.get('/:id/members', verifyToken, getMembers);

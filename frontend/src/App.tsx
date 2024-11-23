@@ -32,28 +32,31 @@ function App() {
         >
           <Route index element={<DisplayOrganisation />} />
           <Route path="create" element={<CreateOrganisation />} />
-        </Route>
-        <Route
-          element={
-            <ProtectedRoute>
-              <AppLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Navigate to="/tasks" replace={true} />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/tasks" element={<Tasks />} />
           <Route
-            path="/team"
+            path=":orgId"
             element={
-              <Team
-                heading={{
-                  title: 'Members',
-                  subTitle: 'View and manage memebers of your team',
-                }}
-              />
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<Navigate to="tasks" replace={true} />} />
+            <Route path="tasks" element={<Tasks />} />
+            <Route path="tasks" element={<Tasks />} />
+            <Route
+              path="team"
+              element={
+                <Team
+                  heading={{
+                    title: 'Members',
+                    subTitle: 'View and manage memebers of your team',
+                  }}
+                />
+              }
+            />
+            <Route path="reports" element={<h1>Reports</h1>} />
+            <Route path="settings" element={<h1>settings</h1>} />
+          </Route>
         </Route>
       </Routes>
     </>

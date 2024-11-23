@@ -5,6 +5,7 @@ export default function useGetAllProjects(orgId: string) {
   const { data: projects, isLoading: isGettingProjects } = useQuery({
     queryKey: ['allProjects', orgId],
     queryFn: () => getAllProjects(orgId),
+    enabled: !!orgId,
     retry: false,
   });
   return { projects, isGettingProjects };

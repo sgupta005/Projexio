@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Organisation } from '@/types/definitions';
+import { Organisation } from './types';
 
 type OrganisationState = {
   currentOrganisation: Organisation | null;

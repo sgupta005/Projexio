@@ -20,6 +20,15 @@ export const createOrganisation = async function (data: FormData) {
   return responseBody.data.organisation;
 };
 
+export const getCurrentOrganisation = async function (orgId: string) {
+  const response = await fetch(`${API_BASE_URL}/organisation/${orgId}`, {
+    credentials: 'include',
+  });
+  if (!response.ok) throw new Error('Organisation not found.');
+  const responseBody = await response.json();
+  return responseBody.data;
+};
+
 export const joinOrganisation = async function (inviteCode: string) {
   const response = await fetch(`${API_BASE_URL}/organisation/join`, {
     method: 'POST',

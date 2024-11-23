@@ -1,25 +1,16 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import useResize from '@/hooks/useResize';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
-
 function AppLayout() {
   const [heading, setHeading] = useState({ title: '', subTitle: '' });
-
   const { isTablet } = useResize();
   const [isSidebarOpen, setIsSidebarOpen] = useState(isTablet ? false : true);
-
-  const currentOrganisation = useSelector(
-    (state: RootState) => state.organisation.currentOrganisation
-  );
 
   useEffect(() => {
     setIsSidebarOpen(isTablet ? false : true);
   }, [isTablet]);
-  if (!currentOrganisation) return <Navigate to={'/organisations'} replace />;
   return (
     <div className="h-screen bg-muted overflow-hidden">
       <Sidebar

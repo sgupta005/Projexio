@@ -66,6 +66,17 @@ export const getOrganisations = asyncHandler(async function (
   return res.status(200).json(new ApiResponse(200, { organisations }));
 });
 
+export const getOrganisationDetails = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { orgId } = req.params;
+  const org = await OrganisationModel.findById(orgId);
+  if (!org) throw new CustomError('Organisation not found', 404);
+  return res.status(200).json(new ApiResponse(200, org));
+});
+
 export const joinOrganisation = asyncHandler(async function (
   req: Request,
   res: Response,

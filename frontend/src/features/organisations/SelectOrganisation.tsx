@@ -1,10 +1,8 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/ui/shadcn/ui/avatar';
 import { Card } from '@/ui/shadcn/ui/card';
 import { formatDistanceToNow } from 'date-fns';
-import { Organisation } from '@/types/definitions';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setCurrentOrganisation } from './organisationSlice';
+import { Organisation } from './types';
+import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
 
 function SelectOrganisation({
   organisations,
@@ -12,27 +10,21 @@ function SelectOrganisation({
   organisations: [Organisation];
 }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  function handleSelectOrganisation(organisation: Organisation) {
-    dispatch(setCurrentOrganisation(organisation));
-    navigate('/');
-  }
   return (
     <>
       {organisations?.map((org: Organisation) => (
         <Card
-          onClick={() => handleSelectOrganisation(org)}
+          onClick={() => navigate(`${org._id}`)}
           key={org.name}
           className="flex flex-col xl:flex-row text-lg cursor-pointer gap-4 justify-center items-center h-40 xl:w-96 xl:h-32 hover:bg-accent"
         >
-          <Avatar className="size-12">
-            {org.avatar ? (
-              <AvatarImage src={org.avatar} />
-            ) : (
-              <AvatarImage src="https://github.com/shadcn.png" />
-            )}
-            <AvatarFallback>OG</AvatarFallback>
-          </Avatar>
+          {org.avatar ? (
+            <AvatarImage src={org.avatar} className="size-12 rounded-full" />
+          ) : (
+            <AvatarFallback className="size-12 rounded-full">
+              {org.name.charAt(0)}
+            </AvatarFallback>
+          )}
 
           <div>
             <p>{org.name}</p>

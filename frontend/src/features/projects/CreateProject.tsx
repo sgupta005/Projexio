@@ -1,18 +1,15 @@
 import Button from '@/ui/Button';
 import ImageUpload from '@/ui/ImageUpload';
 import useCreateProject from './useCreateProject';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
 import { useState } from 'react';
 import SpinnerMini from '@/ui/SpinnerMini';
 import { Project } from './types';
 import { useForm } from 'react-hook-form';
+import useCurrentOrganisation from '../organisations/useCurrentOrganisaiton';
 
 function CreateProject({ onClose }: { onClose?: () => void }) {
   const { createProject, isCreatingProject } = useCreateProject();
-  const currentOrg = useSelector(
-    (state: RootState) => state.organisation.currentOrganisation
-  );
+  const { currentOrg } = useCurrentOrganisation();
   const [image, setImage] = useState<File | null>(null);
 
   const {
