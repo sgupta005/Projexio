@@ -30,9 +30,8 @@ function CreateProject({ onClose }: { onClose?: () => void }) {
   }
 
   return (
-    <div className="md:min-w-[400px]">
+    <div className="md:min-w-[400px] mb-10 mx-2">
       <h1 className="font-bold text-xl mb-6">Create a new project</h1>
-      {/* <DashedLine className="my-8" /> */}
       <p className="text-muted-foreground font-semibold">Project Name</p>
       <form onSubmit={handleSubmit(submit)}>
         {errors.name && (

@@ -1,8 +1,10 @@
+// store/store.ts
 import { configureStore } from '@reduxjs/toolkit';
-import organisationReducer from './features/organisations/organisationSlice';
+import headerReducer from './slices/headerSlice';
+
 const store = configureStore({
   reducer: {
-    organisation: organisationReducer,
+    header: headerReducer,
   },
 });
 

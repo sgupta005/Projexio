@@ -35,18 +35,22 @@ function ImageUpload({
         </p>
         <div className="flex flex-row items-center">
           <input
-            type="file"
+            type={selectedImage ? '' : 'file'}
             id="custom-input"
             hidden
+            onClick={() => selectedImage && setSelectedImage('')}
             onChange={handleFileChange}
           />
           <label
             htmlFor="custom-input"
-            className="block py-2 px-4
-            rounded-md text-sm font-medium bg-muted
-            text-primary hover:opacity-90 cursor-pointer"
+            className={`block py-2 px-4
+            rounded-md text-sm font-medium ${
+              selectedImage
+                ? 'bg-orange-600/80 text-yellow-50'
+                : 'bg-muted text-primary'
+            } hover:opacity-90 cursor-pointer`}
           >
-            Upload Image
+            {selectedImage ? 'Remove Image' : 'Upload Image'}
           </label>
         </div>
       </div>

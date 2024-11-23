@@ -1,8 +1,20 @@
 import DisplayMembers from '@/features/team/DisplayMembers';
-import useTitle from '@/hooks/useTitle';
+import { setHeading } from '@/store/slices/headerSlice';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-function Team({ heading }: { heading: { title: string; subTitle: string } }) {
-  useTitle(heading);
+function Team() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      setHeading({
+        title: 'Team',
+        subTitle: 'View and manage team members',
+      })
+    );
+  }, [dispatch]);
+
   return <DisplayMembers />;
 }
 

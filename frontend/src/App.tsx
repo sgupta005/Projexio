@@ -10,6 +10,8 @@ import DisplayOrganisation from './features/organisations/DisplayOrganisation';
 import CreateOrganisation from './features/organisations/CreateOrganisation';
 import 'react-image-crop/dist/ReactCrop.css';
 import Team from './pages/Team';
+import ProjectSettings from './features/projects/ProjectSettings';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -42,20 +44,10 @@ function App() {
           >
             <Route index element={<Navigate to="tasks" replace={true} />} />
             <Route path="tasks" element={<Tasks />} />
-            <Route path="tasks" element={<Tasks />} />
-            <Route
-              path="team"
-              element={
-                <Team
-                  heading={{
-                    title: 'Members',
-                    subTitle: 'View and manage memebers of your team',
-                  }}
-                />
-              }
-            />
+            <Route path="team" element={<Team />} />
             <Route path="reports" element={<h1>Reports</h1>} />
-            <Route path="settings" element={<h1>settings</h1>} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="projects/:projectId" element={<ProjectSettings />} />
           </Route>
         </Route>
       </Routes>

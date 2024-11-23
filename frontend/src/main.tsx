@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Provider } from 'react-redux';
-import store from './store.ts';
+import store from './store/store.ts';
 
 const queryClient = new QueryClient();
 
