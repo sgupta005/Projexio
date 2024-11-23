@@ -1,4 +1,5 @@
-import { ReactNode, useContext, useEffect, useRef, useState } from 'react';
+import { useOutsideClick } from '@/hooks/useOutsideClick';
+import { ReactNode, useContext, useState } from 'react';
 import { createContext } from 'react';
 
 interface DropdownContextType {
@@ -15,19 +16,8 @@ function Dropdown({ children }: { children: ReactNode }) {
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const handleClickOutside = (event: Event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const dropdownRef = useOutsideClick(() => setIsOpen(false));
+
   return (
     <DropdownContext.Provider value={{ isOpen, toggleDropdown }}>
       <div className="relative" ref={dropdownRef}>
@@ -37,7 +27,7 @@ function Dropdown({ children }: { children: ReactNode }) {
   );
 }
 
-export function DropdownTrigger({ children }: { children: ReactNode }) {
+function Trigger({ children }: { children: ReactNode }) {
   const context = useContext(DropdownContext);
 
   if (!context) {
@@ -53,7 +43,7 @@ export function DropdownTrigger({ children }: { children: ReactNode }) {
   );
 }
 
-export function DropdownMenu({
+function Menu({
   children,
   className,
 }: {
@@ -78,7 +68,7 @@ export function DropdownMenu({
     );
 }
 
-export function DropdownTitle({
+function Title({
   children,
   className,
 }: {
@@ -98,11 +88,7 @@ interface DropdownItemProps {
   className?: string;
 }
 
-export function DropdownItem({
-  children,
-  onClick,
-  className,
-}: DropdownItemProps) {
+function Item({ children, onClick, className }: DropdownItemProps) {
   return (
     <div
       className={`flex items-center gap-2 px-2 py-1 w-full text-left hover:bg-muted ${className}`}
@@ -112,5 +98,10 @@ export function DropdownItem({
     </div>
   );
 }
+
+Dropdown.Trigger = Trigger;
+Dropdown.Menu = Menu;
+Dropdown.Title = Title;
+Dropdown.Item = Item;
 
 export default Dropdown;

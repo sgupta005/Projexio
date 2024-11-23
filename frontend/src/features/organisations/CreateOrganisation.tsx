@@ -11,27 +11,28 @@ import { Label } from '@/ui/shadcn/ui/label';
 import { ArrowLeft } from 'lucide-react';
 import useCreateOrganisation from './useCreateOrganisation';
 import { useForm } from 'react-hook-form';
-import { Organisation } from '@/types/definitions';
+import { Organisation } from './types';
 import SpinnerMini from '@/ui/SpinnerMini';
 import { useNavigate } from 'react-router-dom';
 import useCurrentUser from '../auth/useCurrentUser';
 import { LoadingSpinner } from '@/ui/Spinner';
-import { useOrganisationStore } from './store';
-import ImageCropper from '@/ui/ImageCropper';
 import { useState } from 'react';
 import MotionDiv from '@/ui/MotionDiv';
-import Logo from '@/ui/Logo';
+import ImageUpload from '@/ui/ImageUpload';
+import { useDispatch } from 'react-redux';
+import { setCurrentOrganisation } from './organisationSlice';
 
 function CreateOrganisation() {
   const { createOrganisation, isCreatingOrganisation } =
     useCreateOrganisation();
+
   const { user, isGettingUser } = useCurrentUser();
 
-  const { setCurrentOrganisation } = useOrganisationStore();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  const [croppedImageUrl, setCroppedImageUrl] = useState<Blob | null>(null);
+  const [image, setImage] = useState<File | null>(null);
 
   const {
     register,
@@ -43,14 +44,14 @@ function CreateOrganisation() {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('admin', user.id);
-    if (croppedImageUrl) {
-      formData.append('avatar', croppedImageUrl);
+    if (image) {
+      formData.append('avatar', image);
     } else {
       formData.append('avatar', '');
     }
     createOrganisation(formData, {
       onSuccess: (organisation) => {
-        setCurrentOrganisation(organisation);
+        dispatch(setCurrentOrganisation(organisation));
         navigate('/tasks');
       },
     });
@@ -71,7 +72,7 @@ function CreateOrganisation() {
             <form onSubmit={handleSubmit(onCreateFormSubmit)}>
               <Label className="text-md">Name</Label>
               <Input
-                className="mt-2"
+                className="mt-2 mb-4"
                 type="text"
                 {...register('name', {
                   required: 'Name is required',
@@ -86,15 +87,14 @@ function CreateOrganisation() {
                   {errors.name.message}
                 </div>
               )}
-              <p className="text-md mt-4 font-semibold">Avatar</p>
-              <ImageCropper setCroppedImageUrl={setCroppedImageUrl} />
+              <ImageUpload title="Organisation Icon" setImage={setImage} />
               <div className="mt-8 space-x-2 flex items-center">
                 <Button type="submit">
                   {isCreatingOrganisation ? <SpinnerMini /> : 'Create'}
                 </Button>
                 <Button
                   className="w-max"
-                  variant={'secondary'}
+                  variant={'outline'}
                   type="reset"
                   onClick={() => navigate('/organisations')}
                 >

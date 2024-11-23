@@ -15,7 +15,7 @@ export default function Sidebar({
   if (isMobile)
     return (
       <div
-        className={`relative z-20 h-screen bg-muted-foreground/90 ${
+        className={`relative z-20 h-screen bg-primary/60 ${
           isSidebarOpen ? 'w-screen' : 'w-0'
         }`}
         onClick={() => setIsSidebarOpen(false)}

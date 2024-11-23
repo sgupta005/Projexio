@@ -144,12 +144,6 @@ export const removeMember = asyncHandler(async function (
   res: Response,
   next: NextFunction
 ) {
-  //verify logged in user is admin
-  const membership = await MembershipModel.findOne({ userId: req.userId });
-  if (!membership)
-    throw new CustomError('You must be a member of this organistion', 400);
-  if (membership.role !== 'admin')
-    throw new CustomError('you must be admin to remove a member', 401);
   //get org id, memeber id
   const { orgId, memId } = req.params;
   //delete membership
@@ -170,12 +164,6 @@ export const makeAdmin = asyncHandler(async function (
   res: Response,
   next: NextFunction
 ) {
-  //verify logged in user is admin
-  const memToVerify = await MembershipModel.findOne({ userId: req.userId });
-  if (!memToVerify)
-    throw new CustomError('You must be a member of this organistion', 400);
-  if (memToVerify.role !== 'admin')
-    throw new CustomError('you must be admin to make a member admin', 401);
   //get org id, memeber id
   const { orgId, memId } = req.params;
   //find membership and set role to 'admin'

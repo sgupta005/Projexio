@@ -3,7 +3,8 @@ import { Card } from '@/ui/shadcn/ui/card';
 import { formatDistanceToNow } from 'date-fns';
 import { Organisation } from '@/types/definitions';
 import { useNavigate } from 'react-router-dom';
-import { useOrganisationStore } from './store';
+import { useDispatch } from 'react-redux';
+import { setCurrentOrganisation } from './organisationSlice';
 
 function SelectOrganisation({
   organisations,
@@ -11,11 +12,9 @@ function SelectOrganisation({
   organisations: [Organisation];
 }) {
   const navigate = useNavigate();
-  const setCurrentOrganisation = useOrganisationStore(
-    (state) => state.setCurrentOrganisation
-  );
+  const dispatch = useDispatch();
   function handleSelectOrganisation(organisation: Organisation) {
-    setCurrentOrganisation(organisation);
+    dispatch(setCurrentOrganisation(organisation));
     navigate('/');
   }
   return (

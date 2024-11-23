@@ -28,7 +28,9 @@ export function AvatarFallback({
   className?: string;
 }) {
   return (
-    <div className={`bg-muted py-2 px-4 rounded-full ${className}`}>
+    <div
+      className={`inline-flex items-center justify-center bg-muted py-2 px-4 rounded-full ${className}`}
+    >
       {children}
     </div>
   );

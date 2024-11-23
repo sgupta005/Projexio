@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import Header from './Header';
-import { useOrganisationStore } from '@/features/organisations/store';
 import { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import useResize from '@/hooks/useResize';
-import { PanelLeftOpen } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 function AppLayout() {
   const [heading, setHeading] = useState({ title: '', subTitle: '' });
@@ -12,8 +12,8 @@ function AppLayout() {
   const { isTablet } = useResize();
   const [isSidebarOpen, setIsSidebarOpen] = useState(isTablet ? false : true);
 
-  const currentOrganisation = useOrganisationStore(
-    (state) => state.currentOrganisation
+  const currentOrganisation = useSelector(
+    (state: RootState) => state.organisation.currentOrganisation
   );
 
   useEffect(() => {

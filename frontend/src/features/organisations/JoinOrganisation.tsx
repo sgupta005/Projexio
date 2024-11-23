@@ -16,13 +16,14 @@ import {
 import { UserPlus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import useJoinOrganisation from './useJoinOrganisation';
-import { useOrganisationStore } from './store';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCurrentOrganisation } from './organisationSlice';
 
 function JoinOrganisation() {
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [inviteCode, setInviteCode] = useState('');
-  const { setCurrentOrganisation } = useOrganisationStore();
+  const dispatch = useDispatch();
   const { joinOrganisation, isJoiningOrganisation } = useJoinOrganisation();
 
   const navigate = useNavigate();
@@ -32,12 +33,12 @@ function JoinOrganisation() {
       if (inviteCode)
         joinOrganisation(inviteCode, {
           onSuccess: (organisation) => {
-            setCurrentOrganisation(organisation);
+            dispatch(setCurrentOrganisation(organisation));
             navigate('/tasks');
           },
         });
     },
-    [inviteCode, joinOrganisation, navigate, setCurrentOrganisation]
+    [inviteCode, joinOrganisation, navigate, dispatch]
   );
 
   return (

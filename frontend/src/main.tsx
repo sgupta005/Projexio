@@ -7,6 +7,8 @@ import { ThemeProvider } from './features/theme/ThemeProvider.tsx';
 import { BrowserRouter } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { Provider } from 'react-redux';
+import store from './store.ts';
 
 const queryClient = new QueryClient();
 
@@ -14,14 +16,16 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-        <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
-          <GoogleOAuthProvider
-            clientId={import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID}
-          >
-            <App />
-          </GoogleOAuthProvider>
-        </QueryClientProvider>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <GoogleOAuthProvider
+              clientId={import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID}
+            >
+              <App />
+            </GoogleOAuthProvider>
+          </QueryClientProvider>
+        </Provider>
       </ThemeProvider>
     </BrowserRouter>
   </StrictMode>

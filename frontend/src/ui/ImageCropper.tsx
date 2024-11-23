@@ -5,6 +5,7 @@ import ReactCrop, { centerCrop, Crop, makeAspectCrop } from 'react-image-crop';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { Button } from './shadcn/ui/button';
 import { dataUrlToBlob } from '@/utils/helper';
+import Modal from './Modal';
 
 const ASPECT_RATIO = 1;
 const MIN_DIMENSION = 150;
@@ -93,7 +94,30 @@ export default function ImageCropper({ setCroppedImageUrl }: PropTypes) {
         className="mt-2 file:text-primary text-muted-foreground"
         type="file"
       />
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Modal>
+        <Modal.Window name="imageCropper">
+          <div>
+            <ReactCrop
+              onChange={(percentCrop) => setCrop(percentCrop)}
+              crop={crop}
+              circularCrop
+              keepSelection
+              aspect={ASPECT_RATIO}
+              minWidth={MIN_DIMENSION}
+            >
+              <img
+                ref={imgRef}
+                src={imgSrc}
+                alt="crop image"
+                className="max-h-[70vh]"
+                onLoad={onImageLoad}
+              />
+            </ReactCrop>
+            <Button onClick={onCrop}>Crop Image</Button>
+          </div>
+        </Modal.Window>
+      </Modal>
+      {/* <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTitle hidden={true}>Crop Image</DialogTitle>
         <DialogContent className="pt-12">
           {imgSrc && (
@@ -116,7 +140,7 @@ export default function ImageCropper({ setCroppedImageUrl }: PropTypes) {
           )}
           <Button onClick={onCrop}>Crop Image</Button>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 }

@@ -1,5 +1,4 @@
 import useCurrentUser from '@/features/auth/useCurrentUser';
-import { useOrganisationStore } from '@/features/organisations/store';
 import { useNavigate } from 'react-router-dom';
 import SidebarLink from './SidebarLink';
 import {
@@ -16,6 +15,12 @@ import DashedLine from './DashedLine';
 import Logo from './Logo';
 import TruncatedText from './TruncatedText';
 import { AvatarImage } from './Avatar';
+import Modal from './Modal';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import CreateProject from '@/features/projects/CreateProject';
+import ProjectList from '@/features/projects/ProjectList';
 
 const routes = [
   { path: '/tasks', name: 'My Work', icon: <Folder /> },
@@ -30,9 +35,10 @@ interface PropTypes {
 }
 
 export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
-  const currentOrg = useOrganisationStore((state) => state.currentOrganisation);
+  const currentOrg = useSelector(
+    (state: RootState) => state.organisation.currentOrganisation
+  );
   const navigate = useNavigate();
-  const { user } = useCurrentUser();
 
   return (
     <div
@@ -81,11 +87,7 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
       </div>
 
       <DashedLine />
-      <div
-        className={`overflow-scroll no-scrollbar space-y-2 tran ${
-          isSidebarOpen && 'mx-2'
-        }`}
-      >
+      <div className={`space-y-2 tran h-max ${isSidebarOpen && 'mx-2'}`}>
         {routes.map((route) => (
           <SidebarLink to={route.path} key={route.name}>
             <span>{route.icon}</span>
@@ -109,28 +111,22 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
         >
           Projects
         </p>
-        <CirclePlus
-          className={`md:absolute size-4 mr-0 ml-auto ${
-            isSidebarOpen ? 'right-0' : 'right-[calc((100%-16px)/2)]'
-          }`}
-        />
+        <Modal>
+          <Modal.Open opens="createProject">
+            <button
+              className={`md:absolute size-4 mr-0 ml-auto ${
+                isSidebarOpen ? 'right-0' : 'right-[calc((100%-16px)/2)]'
+              }`}
+            >
+              <CirclePlus className="size-4" />
+            </button>
+          </Modal.Open>
+          <Modal.Window name="createProject">
+            <CreateProject />
+          </Modal.Window>
+        </Modal>
       </div>
-      <div
-        className={`overflow-scroll no-scrollbar mb-4 mt-2 space-y-2 tran ${
-          isSidebarOpen ? 'px-4' : 'px-2'
-        } `}
-      >
-        <div className="flex items-center gap-4 ">
-          <AvatarImage className="size-6" />
-          <TruncatedText
-            className={`text-muted-foreground font-semibold tran w-full ${
-              isSidebarOpen ? 'opacity-1' : 'opacity-0'
-            }`}
-          >
-            Project Name
-          </TruncatedText>
-        </div>
-      </div>
+      <ProjectList isSidebarOpen={isSidebarOpen} />
     </div>
   );
 }

@@ -1,17 +1,13 @@
 import { Ellipsis, EllipsisVertical, ShieldCheck, Trash2 } from 'lucide-react';
 import useGetMembers from './useGetMembers';
-import { useOrganisationStore } from '../organisations/store';
-import Dropdown, {
-  DropdownItem,
-  DropdownMenu,
-  DropdownTitle,
-  DropdownTrigger,
-} from '@/ui/Dropdown';
+import Dropdown from '@/ui/Dropdown';
 import useCurrentUser from '../auth/useCurrentUser';
 import { AvatarFallback } from '@/ui/Avatar';
 import { LoadingSpinner } from '@/ui/Spinner';
 import useRemoveMember from './useRemoveMember';
 import useMakeAdmin from './useMakeAdmin';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 type Member = {
   _id: string;
@@ -23,8 +19,8 @@ type Member = {
 };
 
 export default function OrganizationMembersTable() {
-  const currentOrganisation = useOrganisationStore(
-    (state) => state.currentOrganisation
+  const currentOrganisation = useSelector(
+    (state: RootState) => state.organisation.currentOrganisation
   );
   const { members, isGettingMembers } = useGetMembers(
     currentOrganisation?._id || ''
@@ -90,12 +86,7 @@ export default function OrganizationMembersTable() {
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
-                {/* <Avatar
-                  fallbackText={member.firstName
-                    .split(' ')
-                    .map((n) => n[0])
-                    .join('')}
-                /> */}
+                <AvatarFallback>{member.firstName[0]}</AvatarFallback>
                 <div>
                   <h3 className="font-medium">{`${member.firstName} ${member.lastName}`}</h3>
                   <p className="text-sm text-muted-foreground">
@@ -129,13 +120,13 @@ function MemberActions({ member, orgId }: { member: Member; orgId: string }) {
   const { makeAdmin } = useMakeAdmin();
   return (
     <Dropdown>
-      <DropdownTrigger>
+      <Dropdown.Trigger>
         <Ellipsis className="size-6 md:hidden" />
         <EllipsisVertical className="size-4 hidden md:block" />
-      </DropdownTrigger>
-      <DropdownMenu className="top-6 -left-28 md:-left-[50%]">
-        <DropdownTitle>Actions</DropdownTitle>
-        <DropdownItem
+      </Dropdown.Trigger>
+      <Dropdown.Menu className="top-6 -left-28 md:-left-[50%]">
+        <Dropdown.Title>Actions</Dropdown.Title>
+        <Dropdown.Item
           onClick={() => {
             removeMember({ organisationId: orgId, memberId: member._id });
           }}
@@ -145,9 +136,9 @@ function MemberActions({ member, orgId }: { member: Member; orgId: string }) {
             <Trash2 className="size-4" />
           </span>
           <span>Remove Member</span>
-        </DropdownItem>
+        </Dropdown.Item>
         {member.role !== 'admin' && (
-          <DropdownItem
+          <Dropdown.Item
             onClick={() => {
               makeAdmin({ organisationId: orgId, memberId: member._id });
             }}
@@ -157,9 +148,9 @@ function MemberActions({ member, orgId }: { member: Member; orgId: string }) {
               <ShieldCheck className="size-4" />
             </span>
             <span>Make admin</span>
-          </DropdownItem>
+          </Dropdown.Item>
         )}
-      </DropdownMenu>
+      </Dropdown.Menu>
     </Dropdown>
   );
 }
