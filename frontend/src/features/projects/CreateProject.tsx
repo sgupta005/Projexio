@@ -45,10 +45,6 @@ function CreateProject({ onClose }: { onClose?: () => void }) {
           className="border w-full rounded px-2 py-1 mt-2 mb-6"
           {...register('name', {
             required: 'Name is required',
-            maxLength: {
-              value: 16,
-              message: 'Name cannot be longer than 16 characters',
-            },
           })}
         />
 

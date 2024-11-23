@@ -1,4 +1,3 @@
-import useCurrentUser from '@/features/auth/useCurrentUser';
 import { useNavigate } from 'react-router-dom';
 import SidebarLink from './SidebarLink';
 import {
@@ -16,11 +15,11 @@ import Logo from './Logo';
 import TruncatedText from './TruncatedText';
 import { AvatarImage } from './Avatar';
 import Modal from './Modal';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import CreateProject from '@/features/projects/CreateProject';
 import ProjectList from '@/features/projects/ProjectList';
+import Tooltip from './Tooltip';
 
 const routes = [
   { path: '/tasks', name: 'My Work', icon: <Folder /> },
@@ -39,7 +38,6 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
     (state: RootState) => state.organisation.currentOrganisation
   );
   const navigate = useNavigate();
-
   return (
     <div
       className={`tran bg-muted md:fixed h-screen flex flex-col gap-2 p-4 md:pt-6 ${
@@ -71,8 +69,10 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
       <DashedLine />
       <div
         onClick={() => navigate('/organisations')}
-        className={`flex items-center gap-4 py-2 rounded-md tran cursor-pointer hover:bg-muted-foreground/25 ${
-          isSidebarOpen ? 'bg-muted-foreground/15 mx-2 px-2' : ''
+        className={`flex items-center gap-4 py-2 rounded-md tran cursor-pointer  ${
+          isSidebarOpen
+            ? 'bg-muted-foreground/15 mx-2 px-2 hover:bg-muted-foreground/25'
+            : ''
         }`}
       >
         <AvatarImage src={currentOrg?.avatar} className={`rounded size-10`} />
@@ -90,7 +90,14 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
       <div className={`space-y-2 tran h-max ${isSidebarOpen && 'mx-2'}`}>
         {routes.map((route) => (
           <SidebarLink to={route.path} key={route.name}>
-            <span>{route.icon}</span>
+            {!isSidebarOpen ? (
+              <Tooltip content={route.name}>
+                <span>{route.icon}</span>
+              </Tooltip>
+            ) : (
+              <span>{route.icon}</span>
+            )}
+
             <TruncatedText
               className={` tran w-full ${
                 isSidebarOpen ? 'opacity-1' : 'opacity-0'
