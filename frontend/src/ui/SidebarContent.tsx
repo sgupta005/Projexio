@@ -72,7 +72,7 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
 
           <DashedLine />
           <div
-            onClick={() => navigate('/organisations')}
+            onClick={() => navigate('/organisation')}
             className={`flex items-center gap-4 py-2 rounded-md tran cursor-pointer  ${
               isSidebarOpen
                 ? 'bg-muted-foreground/15 mx-2 px-2 hover:bg-muted-foreground/25'

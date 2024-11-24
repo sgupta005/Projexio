@@ -1,20 +1,32 @@
 import Button from '@/ui/Button';
 import ImageUpload from '@/ui/ImageUpload';
 import { ArrowLeft } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function ProjectSettings() {
-  const { projectId } = useParams();
+  const navigate = useNavigate();
   return (
-    <div className="mx-6 flex flex-col gap-4">
-      <div className="bg-muted py-4 px-6 rounded-md">
-        <h1 className="font-bold text-xl ">Project Settings</h1>
-        <p className="text-muted-foreground font-semibold text-sm mb-6">
-          View and change name and icon of your project
+    <div className="mx-6 flex flex-col gap-4 mb-4">
+      <Button
+        variant="outline"
+        className="w-max flex gap-1"
+        onClick={() => navigate(-1)}
+      >
+        <ArrowLeft className="size-4" /> Back
+      </Button>
+      <div className=" py-4 px-6 border rounded-md">
+        <h1 className="font-semibold text-xl ">Project Settings</h1>
+        <p className="text-primary/60  text-sm mb-4">
+          Change name or icon of your Project
         </p>
-        {/* <DashedLine className="my-8" /> */}
         <form>
-          <input className="border w-full rounded px-2 py-1 mt-2 mb-6" />
+          <label htmlFor="name" className="font-semibold">
+            Project Name
+          </label>
+          <input
+            className="border w-full rounded px-2 py-1 mt-2 mb-4"
+            id="name"
+          />
 
           <ImageUpload title="Project Icon" setImage={() => null} />
           <div className="flex gap-4 mt-6 mb-2">
@@ -24,14 +36,16 @@ function ProjectSettings() {
           </div>
         </form>
       </div>
-      <div className="py-4 px-6 bg-muted rounded-md ">
-        <h1 className="font-bold text-xl ">Danger Zone</h1>
-        <p className="text-muted-foreground font-semibold text-sm">
-          Deleting a project is irreversible and will remove all data associated
+      <div className="py-4 px-6 border rounded-md ">
+        <h1 className="font-semibold text-xl ">Danger Zone</h1>
+        <p className="text-primary/60 text-sm">
+          Deleting a Project is irreversible and will remove all data associated
           with it.
         </p>
         <div className="flex">
-          <Button className="mt-6 mr-0 ml-auto">Delete Project</Button>
+          <Button className="mt-6 mr-0 ml-auto " variant="danger">
+            Delete Project
+          </Button>
         </div>
       </div>
     </div>

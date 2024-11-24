@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import useResize from '@/hooks/useResize';
 function AppLayout() {
-  const [heading, setHeading] = useState({ title: '', subTitle: '' });
   const { isTablet } = useResize();
   const [isSidebarOpen, setIsSidebarOpen] = useState(isTablet ? false : true);
 
@@ -25,13 +24,11 @@ function AppLayout() {
         }`}
       >
         <Header
-          title={heading?.title}
-          subTitle={heading?.subTitle}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
 
-        <Outlet context={{ heading, setHeading }} />
+        <Outlet />
       </main>
     </div>
   );

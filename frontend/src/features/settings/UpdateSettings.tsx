@@ -43,7 +43,7 @@ function UpdateSettings() {
           <CopyButton textToCopy={currentOrg?.inviteCode} />
         </div>
         <div className="flex">
-          <Button className="mt-6 mr-0 ml-auto bg-orange-600/90 text-yellow-50">
+          <Button className="mt-6 mr-0 ml-auto " variant="danger">
             Reset Invite Code
           </Button>
         </div>
@@ -55,7 +55,7 @@ function UpdateSettings() {
           associated with it.
         </p>
         <div className="flex">
-          <Button className="mt-6 mr-0 ml-auto bg-orange-600/90 text-yellow-50">
+          <Button className="mt-6 mr-0 ml-auto " variant="danger">
             Delete Organisation
           </Button>
         </div>

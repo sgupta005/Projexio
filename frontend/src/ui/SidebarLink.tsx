@@ -13,7 +13,7 @@ function SidebarLink({ children, to }: PropTypes) {
       to={to}
       className={({ isActive }) =>
         isActive
-          ? `${className} border text-primary shadow  shadow-muted-foreground/10 rounded bg-background`
+          ? `${className} shadow-sm text-primary border border-muted rounded-md bg-background`
           : `${className} border border-muted text-muted-foreground`
       }
     >

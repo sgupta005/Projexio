@@ -25,3 +25,18 @@ export const createProject = async function (data: FormData, orgId: string) {
   if (!responseBody.success) throw new Error(responseBody.message);
   return responseBody.data;
 };
+
+export const getCurrentProject = async function (
+  orgId: string,
+  projectId: string
+) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${orgId}/project/${projectId}`,
+    {
+      credentials: 'include',
+    }
+  );
+  if (!response.ok) throw new Error('Organisation not found.');
+  const responseBody = await response.json();
+  return responseBody.data;
+};

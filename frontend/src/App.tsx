@@ -10,8 +10,9 @@ import DisplayOrganisation from './features/organisations/DisplayOrganisation';
 import CreateOrganisation from './features/organisations/CreateOrganisation';
 import 'react-image-crop/dist/ReactCrop.css';
 import Team from './pages/Team';
-import ProjectSettings from './features/projects/ProjectSettings';
 import Settings from './pages/Settings';
+import Project from './pages/Project';
+import ProjectSettings from './features/projects/ProjectSettings';
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route
-          path="/organisations"
+          path="/organisation"
           element={
             <ProtectedRoute>
               <Organisations />
@@ -47,7 +48,11 @@ function App() {
             <Route path="team" element={<Team />} />
             <Route path="reports" element={<h1>Reports</h1>} />
             <Route path="settings" element={<Settings />} />
-            <Route path="projects/:projectId" element={<ProjectSettings />} />
+            <Route path="project/:projectId" element={<Project />} />
+            <Route
+              path="project/:projectId/settings"
+              element={<ProjectSettings />}
+            />
           </Route>
         </Route>
       </Routes>

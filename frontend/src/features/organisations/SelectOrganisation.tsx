@@ -21,7 +21,7 @@ function SelectOrganisation({
           {org.avatar ? (
             <AvatarImage src={org.avatar} className="size-12 rounded-full" />
           ) : (
-            <AvatarFallback className="size-12 rounded-full ">
+            <AvatarFallback className="size-12 rounded-full bg-muted-foreground/10">
               {org.name.charAt(0)}
             </AvatarFallback>
           )}

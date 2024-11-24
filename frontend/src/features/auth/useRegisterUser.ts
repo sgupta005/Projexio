@@ -11,7 +11,7 @@ export function useRegisterUsers() {
       toast.error(err.message);
     },
     onSuccess: () => {
-      navigate('/organisations');
+      navigate('/organisation');
     },
   });
   return { registerUser, isRegistering };

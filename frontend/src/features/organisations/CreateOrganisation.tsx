@@ -90,7 +90,7 @@ function CreateOrganisation() {
                   className="w-max"
                   variant={'outline'}
                   type="reset"
-                  onClick={() => navigate('/organisations')}
+                  onClick={() => navigate('/organisation')}
                 >
                   <ArrowLeft className="size-4 mr-2" />
                   Back

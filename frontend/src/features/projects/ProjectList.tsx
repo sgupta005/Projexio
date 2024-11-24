@@ -5,6 +5,7 @@ import { Project } from './types';
 import Tooltip from '@/ui/Tooltip';
 import { Organisation } from '../organisations/types';
 import { LoadingSpinner } from '@/ui/Spinner';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function ProjectList({
   isSidebarOpen,
@@ -16,6 +17,8 @@ function ProjectList({
   const { projects, isGettingProjects } = useGetAllProjects(
     currentOrg?._id as string
   );
+  const { projectId } = useParams();
+  const navigate = useNavigate();
   if (isGettingProjects) return <LoadingSpinner />;
   return (
     <div
@@ -24,7 +27,15 @@ function ProjectList({
       }  `}
     >
       {projects?.map((project: Project) => (
-        <div className="flex items-center gap-4 cursor-pointer ">
+        <div
+          className={`flex items-center gap-4 cursor-pointer border border-muted p-1 ${
+            projectId === project._id && 'bg-background shadow-sm rounded-md'
+          }`}
+          onClick={() => {
+            navigate(`project/${project._id}`);
+          }}
+          key={project._id}
+        >
           {!isSidebarOpen ? (
             <Tooltip content={project.name}>
               {project.avatar ? (

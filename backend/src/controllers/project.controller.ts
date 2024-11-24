@@ -37,3 +37,14 @@ export const getProjects = asyncHandler(async function (
   const projects = await ProjectModel.find({ organisationId: orgId });
   return res.status(200).json(new ApiResponse(200, projects));
 });
+
+export const getProjectDetails = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { projectId } = req.params;
+  const project = await ProjectModel.findById(projectId);
+  if (!project) throw new CustomError('Project not found', 404);
+  return res.status(200).json(new ApiResponse(200, project));
+});

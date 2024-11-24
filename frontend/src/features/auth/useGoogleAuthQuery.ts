@@ -11,7 +11,7 @@ export function useGoogleAuthQuery() {
       toast.error(err.message);
     },
     onSuccess: () => {
-      navigate('/organisations');
+      navigate('/organisation');
     },
   });
   return { googleLogin, isLoggingGoogle };
