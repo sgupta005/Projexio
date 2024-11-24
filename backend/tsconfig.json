@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "noImplicitAny": false,
+    "types": ["node"],
     "target": "es6",
     "module": "commonjs",
     "outDir": "./dist",
