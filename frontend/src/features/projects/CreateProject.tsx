@@ -30,7 +30,7 @@ function CreateProject({ onClose }: { onClose?: () => void }) {
   }
 
   return (
-    <div className="md:min-w-[400px] mb-10 mx-2">
+    <div className="md:min-w-[400px]  mx-2">
       <h1 className="font-bold text-xl mb-6">Create a new project</h1>
       <p className="text-muted-foreground font-semibold">Project Name</p>
       <form onSubmit={handleSubmit(submit)}>
@@ -38,6 +38,7 @@ function CreateProject({ onClose }: { onClose?: () => void }) {
           <div className="text-red-500 text-sm mt-1">{errors.name.message}</div>
         )}
         <input
+          type="text"
           className="border w-full rounded px-2 py-1 mt-2 mb-6"
           {...register('name', {
             required: 'Name is required',
@@ -49,7 +50,7 @@ function CreateProject({ onClose }: { onClose?: () => void }) {
           <Button type="submit">
             {isCreatingProject ? <SpinnerMini /> : 'Create Project'}
           </Button>
-          <Button variant="secondary" type="button" onClick={onClose}>
+          <Button variant="outline" type="reset" onClick={onClose}>
             Cancel
           </Button>
         </div>

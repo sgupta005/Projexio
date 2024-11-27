@@ -4,15 +4,18 @@ function Button({
   onClick,
   type,
   className,
+  disabled,
 }: {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'outline' | 'danger';
   onClick?: () => void;
   type?: 'submit' | 'reset' | 'button';
   className?: string;
+  disabled?: boolean;
 }) {
   return (
     <button
+      disabled={disabled}
       type={type}
       onClick={onClick}
       className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 hover:opacity-90 ${

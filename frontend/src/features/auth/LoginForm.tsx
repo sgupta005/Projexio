@@ -1,13 +1,3 @@
-import { Button } from '@/ui/shadcn/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/ui/shadcn/ui/card';
-import { Input } from '@/ui/shadcn/ui/input';
-import { Label } from '@/ui/shadcn/ui/label';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useLoginUser } from './useLoginUser';
@@ -18,6 +8,8 @@ import { useGoogleAuthQuery } from './useGoogleAuthQuery';
 import { useGoogleAuth } from './useGoogleAuth';
 import MotionDiv from '@/ui/MotionDiv';
 import GradientShadow from '@/ui/GradientShadow';
+import Input from '@/ui/Input';
+import Button from '@/ui/Button';
 
 export type LoginFormFields = {
   email: string;
@@ -44,85 +36,91 @@ export function LoginForm() {
 
   if (isLoggingGoogle) return <LoadingSpinner />;
   return (
-    <div className="flex h-screen justify-center items-center">
+    <div className="flex h-screen justify-center items-center overflow-x-hidden">
       <MotionDiv>
         <GradientShadow>
-          <Card className="mx-auto border-none">
-            <CardHeader>
-              <CardTitle className="text-2xl">Welcome Back</CardTitle>
-              <CardDescription>
-                Enter your email below to login to your account
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="grid gap-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="m@example.com"
-                      {...register('email', {
-                        required: 'Email is required',
-                        pattern: {
-                          value:
-                            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                          message: 'Invalid email address',
-                        },
-                      })}
-                    />
-                    {errors.email && (
-                      <div className={errorClassName}>
-                        {errors.email.message}
-                      </div>
-                    )}
-                  </div>
-                  <div className="grid gap-2 mt-2">
-                    <div className="flex items-center">
-                      <Label htmlFor="password">Password</Label>
+          <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6 space-y-6">
+              <div className=" space-y-2">
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  Welcome Back
+                </h2>
+                <p className="text-sm text-gray-500">
+                  Enter your email and password to login to your account
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                  <div className="grid mb-4">
+                    <div className="grid gap-2">
+                      <Input
+                        label="Email"
+                        id="email"
+                        type="email"
+                        placeholder="m@example.com"
+                        {...register('email', {
+                          required: 'Email is required',
+                          pattern: {
+                            value:
+                              /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                            message: 'Invalid email address',
+                          },
+                        })}
+                      />
+                      {errors.email && (
+                        <div className={errorClassName}>
+                          {errors.email.message}
+                        </div>
+                      )}
                     </div>
-                    <Input
-                      id="password"
-                      type="password"
-                      {...register('password', {
-                        required: 'Password is required',
-                        minLength: {
-                          value: 8,
-                          message: 'Password must be at least 8 characters.',
-                        },
-                      })}
-                    />
-                    {errors.password && (
-                      <div className={errorClassName}>
-                        {errors.password.message}
-                      </div>
-                    )}
+                    <div className="grid gap-2 mt-2">
+                      <div className="flex items-center"></div>
+                      <Input
+                        label="Password"
+                        id="password"
+                        type="password"
+                        {...register('password', {
+                          required: 'Password is required',
+                          minLength: {
+                            value: 8,
+                            message: 'Password must be at least 8 characters.',
+                          },
+                        })}
+                      />
+                      {errors.password && (
+                        <div className={errorClassName}>
+                          {errors.password.message}
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <Button type="submit" className="w-full">
                     {islogging ? <SpinnerMini /> : 'Login'}
                   </Button>
-                </div>
-              </form>
-              <Button
-                variant="outline"
-                className="w-full mt-4"
-                onClick={handleLoginWithGoogle}
-              >
-                <GoogleLogo />
-                Login with Google
-              </Button>
-              <div className="mt-4 text-center text-sm">
-                Don&apos;t have an account?{' '}
-                <span
-                  className="underline hover:cursor-pointer"
-                  onClick={() => navigate('/signup')}
+                </form>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleLoginWithGoogle}
                 >
-                  Sign up
-                </span>
+                  <GoogleLogo />
+                  Login with Google
+                </Button>
+
+                <div className="text-center text-sm text-gray-500">
+                  Don&apos;t have an account?{' '}
+                  <span
+                    className="text-primary hover:underline cursor-pointer"
+                    onClick={() => navigate('/signup')}
+                  >
+                    Sign up
+                  </span>
+                </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </GradientShadow>
       </MotionDiv>
     </div>

@@ -1,25 +1,19 @@
 import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import TruncatedText from '@/ui/TruncatedText';
-import useGetAllProjects from './useGetAllProjects';
 import { Project } from './types';
 import Tooltip from '@/ui/Tooltip';
-import { Organisation } from '../organisations/types';
-import { LoadingSpinner } from '@/ui/Spinner';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function ProjectList({
   isSidebarOpen,
-  currentOrg,
+  projects,
 }: {
   isSidebarOpen: boolean;
-  currentOrg: Organisation;
+  projects: [Project];
 }) {
-  const { projects, isGettingProjects } = useGetAllProjects(
-    currentOrg?._id as string
-  );
   const { projectId } = useParams();
   const navigate = useNavigate();
-  if (isGettingProjects) return <LoadingSpinner />;
+
   return (
     <div
       className={`overflow-scroll no-scrollbar mb-4 mt-2 space-y-2 tran ${

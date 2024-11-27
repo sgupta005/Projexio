@@ -44,7 +44,7 @@ export default function OrganizationMembersTable() {
           {members?.map((member: Member) => (
             <tr
               key={member._id}
-              className="hover:bg-muted-foreground/5 border-b  border-muted "
+              className="hover:bg-gray-50 border-b  border-muted "
             >
               <td className="flex items-center gap-2 p-4 ">
                 <AvatarFallback>{member.firstName[0]}</AvatarFallback>

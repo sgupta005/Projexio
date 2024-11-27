@@ -28,7 +28,7 @@ export default function DisplayOrganisation() {
         </h1>
         <div className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-custom-xl gap-4  mb-8 justify-center ">
           <Card
-            className="flex flex-col items-center justify-center cursor-pointer hover:bg-accent h-40 xl:w-96 xl:h-32"
+            className="flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 h-40 xl:w-96 xl:h-32"
             onClick={() => navigate('create')}
           >
             <CardContent className="flex flex-col items-center p-4">

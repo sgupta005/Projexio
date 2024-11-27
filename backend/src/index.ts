@@ -6,6 +6,7 @@ import logger from './middlewares/logger';
 import authRouter from './routes/auth.route';
 import organisationRouter from './routes/organisation.router';
 import projectRouter from './routes/project.router';
+import taskRouter from './routes/task.router';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 dotenv.config();
@@ -27,6 +28,7 @@ app.use(logger);
 app.use('/api/auth', authRouter);
 app.use('/api/organisation', organisationRouter);
 app.use('/api/organisation/:orgId/project', projectRouter);
+app.use('/api/organisation/:orgId/project/:projectId/task/', taskRouter);
 
 app.use(globalErrorHandler);
 

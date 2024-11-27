@@ -4,6 +4,7 @@ import { LoadingSpinner } from '@/ui/Spinner';
 import Button from '@/ui/Button';
 import { Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import TaskTabs from '../tasks/TaskTabs';
 
 function ProjectDetails() {
   const { currentProject, isGettingCurrentProject } = useCurrentProject();
@@ -11,7 +12,7 @@ function ProjectDetails() {
 
   if (isGettingCurrentProject) return <LoadingSpinner />;
   return (
-    <div className="px-6 my-4">
+    <div className="px-6 my-1">
       <div className="flex items-center gap-2">
         {currentProject?.avatar ? (
           <AvatarImage src={currentProject?.avatar} className="size-10" />
@@ -30,6 +31,7 @@ function ProjectDetails() {
           Edit Project
         </Button>
       </div>
+      <TaskTabs />
     </div>
   );
 }

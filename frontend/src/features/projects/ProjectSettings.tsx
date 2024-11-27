@@ -9,7 +9,7 @@ function ProjectSettings() {
     <div className="mx-6 flex flex-col gap-4 mb-4">
       <Button
         variant="outline"
-        className="w-max flex gap-1"
+        className="w-max flex gap-1 "
         onClick={() => navigate(-1)}
       >
         <ArrowLeft className="size-4" /> Back

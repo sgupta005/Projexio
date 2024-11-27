@@ -40,7 +40,7 @@ function JoinOrganisation() {
   return (
     <Dialog open={isJoinModalOpen} onOpenChange={setIsJoinModalOpen}>
       <DialogTrigger asChild>
-        <Card className="flex flex-col items-center justify-center cursor-pointer hover:bg-accent h-40 xl:w-96 xl:h-32">
+        <Card className="flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 h-40 xl:w-96 xl:h-32">
           <CardContent className="flex flex-col items-center p-4">
             <UserPlus className="h-8 w-8 mb-2 text-muted-foreground" />
             <CardTitle className="text-sm mb-1">Join</CardTitle>

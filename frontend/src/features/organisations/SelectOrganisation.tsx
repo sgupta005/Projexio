@@ -16,7 +16,7 @@ function SelectOrganisation({
         <Card
           onClick={() => navigate(`${org._id}`)}
           key={org.name}
-          className="flex flex-col xl:flex-row text-lg cursor-pointer gap-4 justify-center items-center h-40 xl:w-96 xl:h-32 hover:bg-accent"
+          className="flex flex-col xl:flex-row text-lg cursor-pointer gap-4 justify-center items-center h-40 xl:w-96 xl:h-32 hover:bg-gray-50"
         >
           {org.avatar ? (
             <AvatarImage src={org.avatar} className="size-12 rounded-full" />
