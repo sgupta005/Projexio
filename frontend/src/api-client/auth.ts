@@ -31,6 +31,7 @@ export const loginUser = async function (userData: LoginFormFields) {
 
 export const getCurrentUser = async function () {
   const response = await fetch(`${API_BASE_URL}/auth/user`, {
+    method: 'GET',
     credentials: 'include',
   });
   if (!response.ok) throw new Error('Unauthorized');
