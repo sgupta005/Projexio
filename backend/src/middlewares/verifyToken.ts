@@ -18,9 +18,11 @@ export const verifyToken = asyncHandler(async function (
   next: NextFunction
 ) {
   const token = req.cookies['auth_token'];
+  console.log(token);
   if (!token) throw new CustomError('Unauthorized', 401);
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string);
   const user = await UserModel.findById((decoded as JwtPayload).userId);
+  console.log(user);
   if (!user) throw new CustomError('Unauthorized', 401);
   req.userId = user!.id;
   return next();

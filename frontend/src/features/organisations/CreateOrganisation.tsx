@@ -46,7 +46,7 @@ function CreateOrganisation() {
     }
     createOrganisation(formData, {
       onSuccess: (organisation) => {
-        navigate(`/organisations/${organisation._id}`);
+        navigate(`/organisation/${organisation._id}`);
       },
     });
   }
