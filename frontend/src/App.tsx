@@ -26,7 +26,7 @@ function App() {
         <Route
           path="/"
           element={
-            <div className="bg-red-300 h-screen w-screen flex justify-center items-center">
+            <div className="overflow-y-hidden bg-red-300 h-screen w-screen flex justify-center items-center">
               <div className="bg-black size-96"></div>
             </div>
           }
