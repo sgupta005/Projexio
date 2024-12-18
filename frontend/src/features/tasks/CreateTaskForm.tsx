@@ -2,7 +2,7 @@ import Button from '@/ui/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { useCreateTask } from './useCreateTask';
-import { CreateTaskFormFields } from './types';
+import { CreateTaskFormFields, Member } from './types';
 import { useParams } from 'react-router-dom';
 import useGetMembers from '../team/useGetMembers';
 
@@ -89,8 +89,8 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
           className={inputClassName}
           {...register('assigneeId', { required: 'Assignee is required' })}
         >
-          {members?.map((member) => (
-            <option key={member.id} value={member._id}>
+          {members?.map((member: Member) => (
+            <option key={member._id} value={member._id}>
               {member.firstName} {member.lastName}
             </option>
           ))}

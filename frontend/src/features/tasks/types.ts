@@ -8,3 +8,9 @@ export interface CreateTaskFormFields {
   status: 'BACKLOG' | 'TODO' | 'IN_REVIEW' | 'IN_PROGRESS' | 'DONE';
   position: number;
 }
+
+export interface Member {
+  _id: string;
+  firstName: string;
+  lastName: string;
+}

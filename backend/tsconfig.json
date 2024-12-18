@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "noUnusedLocals": false, // Prevents unused variable errors
+    "noUnusedParameters": false,
     "noImplicitAny": false,
     "types": ["node"],
     "target": "es6",
