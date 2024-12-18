@@ -23,7 +23,14 @@ function App() {
         }}
       />
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route
+          path="/"
+          element={
+            <div className="bg-red-300 h-screen w-screen flex justify-center items-center">
+              <div className="bg-black size-96"></div>
+            </div>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route
