@@ -165,8 +165,8 @@ const SidebarContentSkeleton = () => {
 
       {/* Routes */}
       <div className="h-max space-y-4 px-6 my-2">
-        {[1, 2, 3, 4].map(() => (
-          <div className="bg-gray-200 h-8 rounded" />
+        {[1, 2, 3, 4].map((i) => (
+          <div className="bg-gray-200 h-8 rounded" key={i} />
         ))}
       </div>
 

@@ -17,6 +17,7 @@ export const verifyToken = asyncHandler(async function (
   res: Response,
   next: NextFunction
 ) {
+  console.log(req.cookies);
   const token = req.cookies['auth_token'];
   console.log(token);
   if (!token) throw new CustomError('Unauthorized', 401);
