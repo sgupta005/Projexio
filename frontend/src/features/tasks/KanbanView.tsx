@@ -2,9 +2,9 @@ import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { format } from 'date-fns';
 import { Task } from './TaskTabs';
 
-export default function KanbanView({ tasks }: { tasks: Task[] }) {}
+export default function KanbanView() {}
 
-function TaskCard({ task }: { task: Task }) {
+export function TaskCard({ task }: { task: Task }) {
   return (
     <div className="bg-white p-3 rounded-lg shadow-sm mb-2">
       <div className="font-medium mb-2">{task.name}</div>

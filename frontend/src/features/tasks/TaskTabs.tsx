@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import TableView from './TableView';
-import KanbanView from './KanbanView';
 import CreateTask from './CreateTask';
 import useGetAllTasks from './useGetAllTasks';
 import { useParams } from 'react-router-dom';
@@ -32,10 +31,7 @@ export default function TaskTabs() {
     'table'
   );
   const { orgId, projectId } = useParams();
-  const { tasks, isGettingTasks } = useGetAllTasks(
-    orgId as string,
-    projectId as string
-  );
+  const { tasks } = useGetAllTasks(orgId as string, projectId as string);
 
   return (
     <div className="mt-6">

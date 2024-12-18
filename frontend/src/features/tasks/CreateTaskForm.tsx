@@ -13,7 +13,7 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
     formState: { errors },
   } = useForm<CreateTaskFormFields>();
 
-  const { createTask, isCreatingTask } = useCreateTask();
+  const { createTask } = useCreateTask();
   const { orgId, projectId } = useParams();
 
   const onSubmit: SubmitHandler<CreateTaskFormFields> = (data) => {
@@ -25,7 +25,7 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
     onClose?.();
   };
 
-  const { members, isGettingMembers } = useGetMembers(orgId!);
+  const { members } = useGetMembers(orgId!);
 
   const inputClassName =
     'w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary';
