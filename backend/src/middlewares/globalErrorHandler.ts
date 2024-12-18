@@ -12,6 +12,6 @@ export default function globalErrorHandler(
   return res.status(statusCode).json({
     success: false,
     message: err.message,
-    stack: process.env.NODE_ENV == 'development' ? err.stack : '',
+    stack: process.env.NODE_ENV === 'development' ? err.stack : '',
   });
 }
