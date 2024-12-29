@@ -32,7 +32,7 @@ export function SignupForm() {
   };
 
   return (
-    <div className="flex h-screen justify-center items-center overflow-x-hidden p-6">
+    <div className="flex min-h-svh justify-center items-center overflow-x-hidden p-6">
       <MotionDiv>
         <GradientShadow>
           <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
