@@ -32,12 +32,12 @@ export function SignupForm() {
   };
 
   return (
-    <div className="flex h-screen justify-center items-center overflow-x-hidden">
+    <div className="flex h-screen justify-center items-center overflow-x-hidden p-6">
       <MotionDiv>
         <GradientShadow>
-          <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="p-6 space-y-6">
-              <div className="space-y-2">
+          <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="p-6 space-y-4">
+              <div className="space-y-1">
                 <h2 className="text-2xl font-semibold tracking-tight">
                   Create an account
                 </h2>
@@ -48,7 +48,7 @@ export function SignupForm() {
 
               <div className="space-y-4">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                  <div className="grid gap-4">
+                  <div className="grid gap-2">
                     <div className="grid grid-cols-2 gap-4">
                       <Input
                         type="text"
@@ -101,7 +101,6 @@ export function SignupForm() {
                       })}
                     />
                   </div>
-
                   <Button type="submit" variant="primary" className="w-full">
                     {isRegistering ? <SpinnerMini /> : 'Sign up'}
                   </Button>

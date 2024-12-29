@@ -36,12 +36,12 @@ export function LoginForm() {
 
   if (isLoggingGoogle) return <LoadingSpinner />;
   return (
-    <div className="flex h-screen justify-center items-center overflow-x-hidden">
+    <div className="flex h-screen justify-center items-center overflow-x-hidden p-6">
       <MotionDiv>
         <GradientShadow>
-          <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="p-6 space-y-6">
-              <div className=" space-y-2">
+          <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="p-6 space-y-4">
+              <div className=" space-y-1">
                 <h2 className="text-2xl font-semibold tracking-tight">
                   Welcome Back
                 </h2>
@@ -51,7 +51,7 @@ export function LoginForm() {
               </div>
 
               <div className="space-y-4">
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="grid mb-4">
                     <div className="grid gap-2">
                       <Input
@@ -75,7 +75,6 @@ export function LoginForm() {
                       )}
                     </div>
                     <div className="grid gap-2 mt-2">
-                      <div className="flex items-center"></div>
                       <Input
                         label="Password"
                         id="password"
