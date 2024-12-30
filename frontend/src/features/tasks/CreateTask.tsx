@@ -12,7 +12,7 @@ function CreateTask() {
           Create Task
         </Button>
       </Modal.Open>
-      <Modal.Window name="task-form">
+      <Modal.Window name="task-form" heading="Create Task">
         <CreateTaskForm />
       </Modal.Window>
     </Modal>

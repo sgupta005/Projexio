@@ -11,7 +11,7 @@ function AppLayout() {
     setIsSidebarOpen(isTablet ? false : true);
   }, [isTablet]);
   return (
-    <div className="h-screen bg-muted overflow-hidden">
+    <div className="h-svh bg-muted overflow-hidden">
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
