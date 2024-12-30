@@ -1,3 +1,4 @@
+import { cn } from '@/utils/helper';
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 
@@ -16,7 +17,7 @@ function MotionDiv({
 }) {
   return (
     <motion.div
-      className={`w-full max-w-sm ${className}`}
+      className={cn('w-full max-w-sm', className)}
       initial="hidden"
       animate="visible"
       exit="exit"

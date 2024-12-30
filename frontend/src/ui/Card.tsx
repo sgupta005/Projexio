@@ -1,3 +1,4 @@
+import { cn } from '@/utils/helper';
 import { ReactNode } from 'react';
 
 function Card({
@@ -11,7 +12,10 @@ function Card({
 }) {
   return (
     <div
-      className={`gap-2 flex-col shadow-sm bg-background rounded-lg border w-full flex justify-center items-center cursor-pointer hover:bg-gray-50 h-40 xl:w-96 xl:h-32 ${className}`}
+      className={cn(
+        'gap-2 flex-col shadow-sm bg-background rounded-lg border w-full flex justify-center items-center cursor-pointer hover:bg-gray-50 h-40 xl:w-96 xl:h-32 ',
+        className
+      )}
       onClick={onClick}
     >
       {children}

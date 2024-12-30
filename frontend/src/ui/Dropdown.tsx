@@ -1,4 +1,5 @@
 import { useOutsideClick } from '@/hooks/useOutsideClick';
+import { cn } from '@/utils/helper';
 import { ReactNode, useContext, useState } from 'react';
 import { createContext } from 'react';
 
@@ -61,7 +62,10 @@ function Menu({
   if (isOpen)
     return (
       <div
-        className={`bg-background border cursor-pointer rounded-md shadow-lg absolute z-20 w-max ${className}`}
+        className={cn(
+          'bg-background border cursor-pointer rounded-md shadow-lg absolute z-20 w-max ',
+          className
+        )}
       >
         {children}
       </div>
@@ -76,7 +80,7 @@ function Title({
   className?: string;
 }) {
   return (
-    <p className={`font-semibold px-2 py-1 border-b ${className}`}>
+    <p className={cn('font-semibold px-2 py-1 border-b', className)}>
       {children}
     </p>
   );
@@ -91,7 +95,10 @@ interface DropdownItemProps {
 function Item({ children, onClick, className }: DropdownItemProps) {
   return (
     <div
-      className={`flex items-center gap-2 px-2 py-1 w-full text-left hover:bg-muted ${className}`}
+      className={cn(
+        'flex items-center gap-2 px-2 py-1 w-full text-left hover:bg-muted',
+        className
+      )}
       onClick={onClick}
     >
       {children}

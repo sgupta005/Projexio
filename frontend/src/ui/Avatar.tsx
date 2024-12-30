@@ -1,3 +1,4 @@
+import { cn } from '@/utils/helper';
 import { ReactNode } from 'react';
 
 export function AvatarImage({
@@ -13,7 +14,7 @@ export function AvatarImage({
 }) {
   return (
     <img
-      className={`rounded ${className ? className : 'size-6'}`}
+      className={cn('size-6 rounded', className)}
       src={src || fallbackSrc}
       alt={altText}
     />

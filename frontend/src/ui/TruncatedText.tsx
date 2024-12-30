@@ -1,3 +1,5 @@
+import { cn } from '@/utils/helper';
+
 function TruncatedText({
   className,
   children,
@@ -7,7 +9,10 @@ function TruncatedText({
 }) {
   return (
     <span
-      className={`overflow-hidden text-ellipsis whitespace-nowrap ${className}`}
+      className={cn(
+        'overflow-hidden text-ellipsis whitespace-nowrap',
+        className
+      )}
     >
       {children}
     </span>
