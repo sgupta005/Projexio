@@ -145,7 +145,11 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
                 <CirclePlus className="size-4" />
               </button>
             </Modal.Open>
-            <Modal.Window name="createProject" heading="Create a new project">
+            <Modal.Window
+              name="createProject"
+              heading="Create a new project"
+              subheading="Select a name and avatar for your project."
+            >
               <CreateProject />
             </Modal.Window>
           </Modal>
