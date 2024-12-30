@@ -17,7 +17,7 @@ function AppLayout() {
         setIsSidebarOpen={setIsSidebarOpen}
       />
       <main
-        className={`tran absolute border md:top-4 top-0 md:shadow-md md:b-4 md:right-4 md:h-[calc(100vh-32px)] h-screen md:rounded-xl bg-background overflow-y-scroll no-scrollbar ${
+        className={`tran absolute border md:top-4 top-0 md:shadow-md md:b-4 md:right-4 md:h-[calc(100vh-32px)] h-svh md:rounded-xl bg-background overflow-y-scroll no-scrollbar ${
           isSidebarOpen
             ? 'md:w-[calc(100%-316px)] md:left-[300px] w-screen'
             : 'md:w-[calc(100%-91px)] md:left-[75px] w-screen'
