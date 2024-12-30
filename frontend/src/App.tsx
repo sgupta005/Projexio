@@ -22,7 +22,10 @@ function App() {
         }}
       />
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace={true} />} />
+        <Route
+          path="/"
+          element={<Navigate to="/organisation" replace={true} />}
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route
