@@ -1,7 +1,8 @@
 import React, { useState, useRef, KeyboardEvent, ChangeEvent } from 'react';
-import { Button } from './shadcn/ui/button';
-import { Input } from './shadcn/ui/input';
+
 import SpinnerMini from './SpinnerMini';
+import Input from './Input';
+import Button from './Button';
 
 export default function InviteCodeInput({
   setInviteCode,
@@ -48,6 +49,7 @@ export default function InviteCodeInput({
       <div className="flex space-x-2">
         {code.map((digit, index) => (
           <Input
+            id={`digit-${index}`}
             key={index}
             type="text"
             inputMode="numeric"

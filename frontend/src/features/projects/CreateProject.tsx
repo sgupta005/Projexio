@@ -6,6 +6,7 @@ import SpinnerMini from '@/ui/SpinnerMini';
 import { Project } from './types';
 import { useForm } from 'react-hook-form';
 import useCurrentOrganisation from '../organisations/useCurrentOrganisaiton';
+import Input from '@/ui/Input';
 
 function CreateProject({ onClose }: { onClose?: () => void }) {
   const { createProject, isCreatingProject } = useCreateProject();
@@ -30,32 +31,31 @@ function CreateProject({ onClose }: { onClose?: () => void }) {
   }
 
   return (
-    <div className="md:min-w-[400px]  mx-2">
-      <h1 className="font-bold text-xl mb-6">Create a new project</h1>
-      <p className="text-muted-foreground font-semibold">Project Name</p>
-      <form onSubmit={handleSubmit(submit)}>
-        {errors.name && (
-          <div className="text-red-500 text-sm mt-1">{errors.name.message}</div>
-        )}
-        <input
-          type="text"
-          className="border w-full rounded px-2 py-1 mt-2 mb-6"
-          {...register('name', {
-            required: 'Name is required',
-          })}
-        />
-
-        <ImageUpload title="Project Icon" setImage={setImage} />
-        <div className="flex gap-4 mt-6 mb-2">
-          <Button type="submit">
-            {isCreatingProject ? <SpinnerMini /> : 'Create Project'}
-          </Button>
-          <Button variant="outline" type="reset" onClick={onClose}>
-            Cancel
-          </Button>
-        </div>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-6 ">
+      <Input
+        id="name"
+        label="Name"
+        type="text"
+        error={errors.name?.message}
+        {...register('name', {
+          required: 'Name is required',
+        })}
+      />
+      <ImageUpload title="Project Icon" setImage={setImage} />
+      <div className=" space-x-2 flex items-center ml-auto mr-0 ">
+        <Button
+          className="w-max"
+          variant={'outline'}
+          type="reset"
+          onClick={onClose}
+        >
+          Cancel
+        </Button>
+        <Button type="submit">
+          {isCreatingProject ? <SpinnerMini /> : 'Create Project'}
+        </Button>
+      </div>
+    </form>
   );
 }
 

@@ -13,7 +13,7 @@ import {
 import DashedLine from './DashedLine';
 import Logo from './Logo';
 import TruncatedText from './TruncatedText';
-import { AvatarImage } from './Avatar';
+import { AvatarFallback, AvatarImage } from './Avatar';
 import Modal from './Modal';
 import CreateProject from '@/features/projects/CreateProject';
 import ProjectList from '@/features/projects/ProjectList';
@@ -83,7 +83,16 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
               : ''
           }`}
         >
-          <AvatarImage src={currentOrg?.avatar} className={`rounded size-10`} />
+          {currentOrg?.avatar ? (
+            <AvatarImage
+              src={currentOrg.avatar}
+              className={`rounded size-10`}
+            />
+          ) : (
+            <AvatarFallback className="rounded-sm  size-10">
+              {currentOrg?.name.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          )}
           <TruncatedText
             className={`w-[65%] font-semibold text-md tran ${
               isSidebarOpen ? 'opacity-1' : 'opacity-0'
@@ -136,7 +145,7 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
                 <CirclePlus className="size-4" />
               </button>
             </Modal.Open>
-            <Modal.Window name="createProject">
+            <Modal.Window name="createProject" heading="Create a new project">
               <CreateProject />
             </Modal.Window>
           </Modal>

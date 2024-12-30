@@ -1,21 +1,14 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from '@/ui/shadcn/ui/card';
-
 import { LoadingSpinner } from '@/ui/Spinner';
 import useGetAllOrganisations from './useGetAllOrganisations';
 import SelectOrganisation from './SelectOrganisation';
-import { PlusCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import JoinOrganisation from './JoinOrganisation';
+import CreateOrganisation from './CreateOrganisation';
+import Modal from '@/ui/Modal';
+import { PlusCircle } from 'lucide-react';
+import Card from '@/ui/Card';
 
 export default function DisplayOrganisation() {
   const { organisations, isGettingOrganisations } = useGetAllOrganisations();
-
-  const navigate = useNavigate();
 
   const isLoading = isGettingOrganisations;
   if (isLoading) return <LoadingSpinner />;
@@ -26,19 +19,29 @@ export default function DisplayOrganisation() {
         <h1 className="text-3xl text-primary font-semibold mb-6 ml-4 xl:ml-[21%] xl:mt-10 xl:mb-8">
           Your Organizations
         </h1>
-        <div className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-custom-xl gap-4  mb-8 justify-center ">
-          <Card
-            className="flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 h-40 xl:w-96 xl:h-32"
-            onClick={() => navigate('create')}
-          >
-            <CardContent className="flex flex-col items-center p-4">
-              <PlusCircle className="h-8 w-8 mb-2 text-muted-foreground" />
-              <CardTitle className="text-sm mb-1">Create</CardTitle>
-              <CardDescription className="text-xs text-center">
-                New organization
-              </CardDescription>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-custom-xl gap-4 mb-8 justify-center ">
+          <Modal>
+            <Modal.Open opens="createOrganisation">
+              <Card>
+                <>
+                  <PlusCircle className="size-8 text-muted-foreground" />
+                  <div className="flex flex-col items-center">
+                    <p className="font-semibold text-sm">Create</p>
+                    <p className="text-xs text-muted-foreground">
+                      New Organisation
+                    </p>
+                  </div>
+                </>
+              </Card>
+            </Modal.Open>
+            <Modal.Window
+              name="createOrganisation"
+              heading="Create a new Organisation"
+              subheading="Select a name and avatar for your organisation."
+            >
+              <CreateOrganisation />
+            </Modal.Window>
+          </Modal>
           <JoinOrganisation />
           <SelectOrganisation organisations={organisations} />
         </div>

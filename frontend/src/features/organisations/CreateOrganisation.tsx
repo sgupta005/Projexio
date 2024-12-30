@@ -1,14 +1,3 @@
-import { Button } from '@/ui/shadcn/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/ui/shadcn/ui/card';
-import { Input } from '@/ui/shadcn/ui/input';
-import { Label } from '@/ui/shadcn/ui/label';
-import { ArrowLeft } from 'lucide-react';
 import useCreateOrganisation from './useCreateOrganisation';
 import { useForm } from 'react-hook-form';
 import { Organisation } from './types';
@@ -17,10 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import useCurrentUser from '../auth/useCurrentUser';
 import { LoadingSpinner } from '@/ui/Spinner';
 import { useState } from 'react';
-import MotionDiv from '@/ui/MotionDiv';
 import ImageUpload from '@/ui/ImageUpload';
+import Input from '@/ui/Input';
+import Button from '@/ui/Button';
 
-function CreateOrganisation() {
+function CreateOrganisation({ onClose }: { onClose?: () => void }) {
   const { createOrganisation, isCreatingOrganisation } =
     useCreateOrganisation();
 
@@ -53,54 +43,39 @@ function CreateOrganisation() {
 
   if (isGettingUser) return <LoadingSpinner />;
   return (
-    <div className="h-screen w-screen flex flex-col">
-      <MotionDiv className="mx-auto my-auto">
-        <Card>
-          <CardHeader>
-            <CardTitle>Create a New Organization</CardTitle>
-            <CardDescription>
-              Select a name and Avatar Image for your organisation.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onCreateFormSubmit)}>
-              <Label className="text-md">Name</Label>
-              <Input
-                className="mt-2 mb-4"
-                type="text"
-                {...register('name', {
-                  required: 'Name is required',
-                  maxLength: {
-                    value: 16,
-                    message: 'Name cannot be longer than 16 characters',
-                  },
-                })}
-              />
-              {errors.name && (
-                <div className="text-red-400 text-sm mt-1 ml-1">
-                  {errors.name.message}
-                </div>
-              )}
-              <ImageUpload title="Organisation Icon" setImage={setImage} />
-              <div className="mt-8 space-x-2 flex items-center">
-                <Button type="submit">
-                  {isCreatingOrganisation ? <SpinnerMini /> : 'Create'}
-                </Button>
-                <Button
-                  className="w-max"
-                  variant={'outline'}
-                  type="reset"
-                  onClick={() => navigate('/organisation')}
-                >
-                  <ArrowLeft className="size-4 mr-2" />
-                  Back
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      </MotionDiv>
-    </div>
+    <form
+      onSubmit={handleSubmit(onCreateFormSubmit)}
+      className="flex flex-col gap-6 "
+    >
+      <Input
+        id="name"
+        label="Name"
+        type="text"
+        error={errors.name?.message}
+        {...register('name', {
+          required: 'Name is required',
+          maxLength: {
+            value: 16,
+            message: 'Name cannot be longer than 16 characters',
+          },
+        })}
+      />
+
+      <ImageUpload title="Organisation Icon" setImage={setImage} />
+      <div className=" space-x-2 flex items-center ml-auto mr-0 ">
+        <Button
+          className="w-max"
+          variant={'outline'}
+          type="reset"
+          onClick={onClose}
+        >
+          Cancel
+        </Button>
+        <Button type="submit">
+          {isCreatingOrganisation ? <SpinnerMini /> : 'Create Organisation'}
+        </Button>
+      </div>
+    </form>
   );
 }
 

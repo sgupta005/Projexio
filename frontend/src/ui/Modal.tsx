@@ -6,6 +6,7 @@ import React, {
   ReactElement,
   ReactNode,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 
@@ -41,7 +42,13 @@ function Open({ children, opens }: { children: ReactElement; opens: string }) {
   return cloneElement(children, { onClick: () => open(opens) });
 }
 
-function Window({ children, name }: { children: ReactElement; name: string }) {
+interface WindowPropTypes {
+  children: ReactElement;
+  name: string;
+  heading?: string;
+  subheading?: string;
+}
+function Window({ children, name, heading, subheading }: WindowPropTypes) {
   const context = useContext(ModalContext);
 
   if (!context) {
@@ -50,28 +57,46 @@ function Window({ children, name }: { children: ReactElement; name: string }) {
   const { close, openName } = context;
   const ref = useOutsideClick(close);
 
-  if (name !== openName) return null;
+  const isOpen = openName === name;
+
+  useEffect(() => {
+    if (isOpen) {
+      //disable scrolling
+      document.body.style.overflow = 'hidden';
+      //focus on first input
+      const firstInput = ref.current?.querySelector('input');
+      if (firstInput) {
+        firstInput.focus();
+      }
+    } else {
+      //enable scrolling
+      document.body.style.overflow = '';
+    }
+    //cleanup
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, ref]);
+
+  if (!isOpen) return null;
 
   return createPortal(
-    <div className="absolute left-0 top-0 z-50 flex h-screen w-screen items-center justify-center bg-primary/60">
+    <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/80">
       <div
         ref={ref}
-        className="fixed bottom-0 left-0 right-0 w-full rounded-t-lg bg-background p-4 shadow-lg
-                     md:relative md:bottom-auto md:left-auto md:right-auto md:w-auto md:min-w-[300px]
-                     md:rounded-md md:p-4 md:border"
+        className="bg-background relative py-6 px-8 sm:rounded-lg w-full sm:w-max md:min-w-[500px]"
       >
-        {/* Close Button */}
-        <div className="md:flex hidden">
-          <button className="ml-auto" onClick={close}>
-            <X className="size-4 text-muted-foreground" />
-          </button>
+        <div>
+          {heading && <h1 className="text-xl font-bold">{heading}</h1>}
+          {subheading && (
+            <p className="text-sm text-muted-foreground ">{subheading}</p>
+          )}
         </div>
+        <button className="absolute right-4 top-4" onClick={close}>
+          <X className="size-4 text-muted-foreground" />
+        </button>
 
-        {/* Drawer/Modal Content */}
-        <div className="mt-4">
-          {/* {children} */}
-          {cloneElement(children, { onClose: close })}
-        </div>
+        <div className="mt-4">{cloneElement(children, { onClose: close })}</div>
       </div>
     </div>,
     document.body

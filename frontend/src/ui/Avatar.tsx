@@ -14,7 +14,7 @@ export function AvatarImage({
   return (
     <img
       className={`rounded ${className ? className : 'size-6'}`}
-      src={src || fallbackSrc || 'https://github.com/shadcn.png'}
+      src={src || fallbackSrc}
       alt={altText}
     />
   );
