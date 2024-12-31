@@ -64,10 +64,10 @@ function Window({ children, name, heading, subheading }: WindowPropTypes) {
       //disable scrolling
       document.body.style.overflow = 'hidden';
       //focus on first input
-      const firstInput = ref.current?.querySelector('input');
-      if (firstInput) {
-        firstInput.focus();
-      }
+      // const firstInput = ref.current?.querySelector('input');
+      // if (firstInput) {
+      //   firstInput.focus();
+      // }
     } else {
       //enable scrolling
       document.body.style.overflow = '';
@@ -84,7 +84,7 @@ function Window({ children, name, heading, subheading }: WindowPropTypes) {
     <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/80">
       <div
         ref={ref}
-        className="bg-background relative py-6 px-8 sm:rounded-lg w-full sm:w-max md:min-w-[500px]"
+        className="bg-background relative py-6 px-8 rounded-lg w-[90%] sm:w-max sm:min-w-[500px] max-h-[90%] overflow-auto no-scrollbar"
       >
         <div>
           {heading && <h1 className="text-xl font-bold">{heading}</h1>}
