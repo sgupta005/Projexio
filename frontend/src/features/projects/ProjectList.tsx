@@ -22,7 +22,7 @@ function ProjectList({
     >
       {projects?.map((project: Project) => (
         <div
-          className={`flex items-center gap-4 cursor-pointer border border-muted p-1 ${
+          className={`flex items-center gap-4 cursor-pointer border border-muted p-1 hover:bg-background hover:shadow-sm hover:rounded-md ${
             projectId === project._id && 'bg-background shadow-sm rounded-md'
           }`}
           onClick={() => {
