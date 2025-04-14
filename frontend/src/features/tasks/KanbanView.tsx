@@ -15,7 +15,7 @@ import {
   arrayMove,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Status, statuses, Task } from './types';
 import { StatusBadge } from './StatusBadge';
 import { useParams } from 'react-router-dom';
@@ -32,6 +32,10 @@ export default function KanbanView({ tasks }: { tasks: Task[] }) {
   }>();
   const { saveTaskPosition, isUpdating, updatingTaskId } =
     useSaveTaskPosition();
+
+  useEffect(() => {
+    setItems(tasks);
+  }, [tasks]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
