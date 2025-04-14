@@ -94,3 +94,27 @@ export const getTasks = asyncHandler(async function (
 
   return res.status(200).json(new ApiResponse(200, formattedTasks));
 });
+
+export const updateTaskStatus = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { taskId, status, position } = req.body;
+
+  if (!taskId || !status || position === undefined) {
+    throw new CustomError('Task ID, status, and position are required', 400);
+  }
+
+  const updatedTask = await TaskModel.findByIdAndUpdate(
+    taskId,
+    { status, position },
+    { new: true }
+  );
+
+  if (!updatedTask) {
+    throw new CustomError('Task not found', 404);
+  }
+
+  return res.status(200).json(new ApiResponse(200, updatedTask));
+});

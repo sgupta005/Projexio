@@ -35,3 +35,30 @@ export async function getAllTasks(projectId: string, orgId: string) {
   const resBody = await response.json();
   return resBody.data;
 }
+
+export async function updateTaskStatus(
+  orgId: string,
+  projectId: string,
+  taskId: string,
+  status: string,
+  position: number
+) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${orgId}/project/${projectId}/task/update-status`,
+    {
+      credentials: 'include',
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ taskId, status, position }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to update task status');
+  }
+
+  const resBody = await response.json();
+  return resBody.data;
+}

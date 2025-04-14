@@ -15,16 +15,23 @@ import {
   arrayMove,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
-import { format } from 'date-fns';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Status, statuses, Task } from './types';
 import { StatusBadge } from './StatusBadge';
+import { useParams } from 'react-router-dom';
+import { TaskCard } from './TaskCard';
+import useSaveTaskPosition from './useSaveTaskPosition';
 const columns = statuses;
 
 export default function KanbanView({ tasks }: { tasks: Task[] }) {
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [items, setItems] = useState(tasks);
+  const { projectId, orgId } = useParams<{
+    projectId: string;
+    orgId: string;
+  }>();
+  const { saveTaskPosition, isUpdating, updatingTaskId } =
+    useSaveTaskPosition();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -35,12 +42,16 @@ export default function KanbanView({ tasks }: { tasks: Task[] }) {
   );
 
   const handleDragStart = (event: DragStartEvent) => {
+    if (isUpdating) return;
+
     const { active } = event;
     const task = items.find((t) => t._id === active.id);
     if (task) setActiveTask(task);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
+    if (isUpdating) return;
+
     const { active, over } = event;
     if (!over) return;
 
@@ -52,43 +63,70 @@ export default function KanbanView({ tasks }: { tasks: Task[] }) {
     const activeIndex = items.indexOf(activeTask);
     const overIndex = items.indexOf(overTask);
 
-    let newItems = arrayMove(items, activeIndex, overIndex);
+    let newItems;
+    let statusChanged = false;
+    let newStatus = overTask.status;
 
     // Update status if dropped in different column
     if (activeTask.status !== overTask.status) {
-      newItems = newItems.map((item) =>
+      statusChanged = true;
+      newItems = arrayMove(items, activeIndex, overIndex).map((item) =>
         item._id === activeTask._id
           ? { ...item, status: overTask.status as Status }
           : item
       );
+    } else {
+      newItems = arrayMove(items, activeIndex, overIndex);
     }
+
+    // Calculate new position
+    const tasksInSameColumn = newItems.filter((t) => t.status === newStatus);
+    const newPosition = tasksInSameColumn.findIndex(
+      (t) => t._id === activeTask._id
+    );
 
     setItems(newItems);
     setActiveTask(null);
+
+    // Save the changes to the backend using the hook
+    if (orgId && projectId) {
+      saveTaskPosition({
+        orgId,
+        projectId,
+        taskId: activeTask._id,
+        status: newStatus,
+        position: newPosition,
+      });
+    }
   };
 
   function handleDragOver(event: DragOverEvent) {
+    if (isUpdating) return;
+
     const { active, over } = event;
 
+    if (!over) return;
+
     const activeTask = items.find((t) => t._id === active.id);
-    const overTask = items.find((t) => t._id === over?.id);
-
-    if (!activeTask || !overTask) return;
-
-    const activeIndex = items.indexOf(activeTask);
-    const overIndex = items.indexOf(overTask);
+    if (!activeTask) return;
 
     const isOverColumn = over?.data?.current?.type === 'Column';
-    const isOverTask = over?.data?.current?.type === 'Task';
-    const isActiveTask = active.id === activeTask?._id;
 
-    // task is moved over another column(empty)
-    if (isOverColumn && isActiveTask) {
-      setItems((items) => {
-        const activeIndex = items.findIndex((t) => t._id === active.id);
-        items[activeIndex].status = over?.data?.current?.status;
-        return arrayMove(items, activeIndex, activeIndex);
-      });
+    // Task is moved over a column (empty space)
+    if (isOverColumn && over.data?.current?.status) {
+      const overStatus = over.data.current.status as Status;
+
+      if (activeTask.status !== overStatus) {
+        setItems((items) => {
+          const activeIndex = items.findIndex((t) => t._id === active.id);
+          const newItems = [...items];
+          newItems[activeIndex] = {
+            ...newItems[activeIndex],
+            status: overStatus,
+          };
+          return newItems;
+        });
+      }
     }
   }
 
@@ -100,13 +138,17 @@ export default function KanbanView({ tasks }: { tasks: Task[] }) {
         onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
       >
-        <div className="m-auto flex w-full overflow-x-auto overflow-y-hidden gap-4 no-scrollbar">
+        <div
+          className={`m-auto flex w-full overflow-x-auto overflow-y-hidden gap-4 no-scrollbar ${
+            isUpdating ? 'pointer-events-none opacity-70' : ''
+          }`}
+        >
           {columns.map((status: Status) => (
-            <SortableContext items={columns}>
+            <SortableContext items={columns} key={status}>
               <Column
-                key={status}
                 status={status}
                 tasks={items.filter((t) => t.status === status)}
+                updatingTaskId={updatingTaskId}
               />
             </SortableContext>
           ))}
@@ -119,7 +161,15 @@ export default function KanbanView({ tasks }: { tasks: Task[] }) {
     );
 }
 
-function Column({ status, tasks }: { status: Status; tasks: Task[] }) {
+function Column({
+  status,
+  tasks,
+  updatingTaskId,
+}: {
+  status: Status;
+  tasks: Task[];
+  updatingTaskId: string | null;
+}) {
   const taskIds = tasks.map((task) => task._id);
   const { setNodeRef } = useSortable({
     id: status,
@@ -143,7 +193,11 @@ function Column({ status, tasks }: { status: Status; tasks: Task[] }) {
       <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
         <div className="flex-1 overflow-y-auto space-y-2 no-scrollbar">
           {tasks.map((task) => (
-            <SortableTask key={task._id} task={task} />
+            <SortableTask
+              key={task._id}
+              task={task}
+              isUpdating={updatingTaskId === task._id}
+            />
           ))}
         </div>
       </SortableContext>
@@ -151,7 +205,13 @@ function Column({ status, tasks }: { status: Status; tasks: Task[] }) {
   );
 }
 
-function SortableTask({ task }: { task: Task }) {
+function SortableTask({
+  task,
+  isUpdating,
+}: {
+  task: Task;
+  isUpdating?: boolean;
+}) {
   const {
     attributes,
     listeners,
@@ -165,6 +225,7 @@ function SortableTask({ task }: { task: Task }) {
       type: 'Task',
       task,
     },
+    disabled: isUpdating,
   });
 
   const style = {
@@ -175,50 +236,22 @@ function SortableTask({ task }: { task: Task }) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      className={isUpdating ? 'relative' : ''}
+    >
+      {isUpdating && (
+        <div className="absolute inset-0 bg-blue-100 bg-opacity-30 flex items-center justify-center z-10 rounded-lg">
+          <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
       <TaskCard
         task={task}
         isDragging={isDragging}
-        dragHandleProps={listeners}
+        dragHandleProps={isUpdating ? undefined : listeners}
       />
-    </div>
-  );
-}
-
-export function TaskCard({
-  task,
-  isDragging,
-  dragHandleProps,
-}: {
-  task: Task;
-  isDragging?: boolean;
-  dragHandleProps?: any;
-}) {
-  return (
-    <div
-      className={`bg-white p-3 rounded-lg shadow-sm ${
-        isDragging && 'border-2 border-blue-500'
-      }`}
-    >
-      <div {...dragHandleProps} className="cursor-grab active:cursor-grabbing">
-        <div className="font-medium mb-2">{task.name}</div>
-        <div className="text-sm text-gray-500 mb-2">{task.projectName}</div>
-      </div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          {task.assignee.avatar ? (
-            <AvatarImage src={task.assignee.avatar} className="size-6" />
-          ) : (
-            <AvatarFallback className="size-6">
-              {task.assignee.name.charAt(0)}
-            </AvatarFallback>
-          )}
-          <span className="ml-2 text-sm">{task.assignee.name}</span>
-        </div>
-        <div className="text-sm text-gray-500">
-          {format(task.dueDate, 'MMM dd')}
-        </div>
-      </div>
     </div>
   );
 }
