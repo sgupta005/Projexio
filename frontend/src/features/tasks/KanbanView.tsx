@@ -182,7 +182,7 @@ function Column({
   return (
     <div
       ref={setNodeRef}
-      className="flex flex-col p-4 bg-muted rounded-lg h-[445px] min-w-[300px] "
+      className="flex flex-col p-4 bg-muted rounded-lg h-[650px] min-w-[300px] "
     >
       <div className="flex h-[40px] gap-2">
         <StatusBadge status={status} className="text-base font-semibold" />

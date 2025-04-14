@@ -8,8 +8,10 @@ export function useCreateTask() {
 
   const { mutate: createTask, isPending: isCreatingTask } = useMutation({
     mutationFn: (data: CreateTaskFormFields) => createTaskApi(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['allTasks'] });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['allTasks', variables.projectId],
+      });
       toast.success('Task created successfully');
     },
     onError: (err) => {

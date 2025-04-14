@@ -30,8 +30,6 @@ export default function TaskFilters({
     assignee: null,
   });
 
-  // Extract unique projects and assignees from tasks
-  const projects = [...new Set(tasks.map((task) => task.projectName))];
   const assignees = [...new Set(tasks.map((task) => task.assignee.name))];
 
   const handleFilterChange = (field: keyof FilterState, value: any) => {

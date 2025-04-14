@@ -4,9 +4,11 @@ import { StatusBadge } from './StatusBadge';
 import { Task } from './types';
 import TaskFilters from './TaskFilters';
 import useTaskFilters from './useTaskFilters';
+import { ArrowDownIcon } from 'lucide-react';
+import { ArrowUpIcon } from 'lucide-react';
 
 export default function TableView({ tasks }: { tasks: Task[] }) {
-  const { filters, setFilters, filteredTasks, sortByDate, setSortByDate } =
+  const { setFilters, filteredTasks, sortByDate, setSortByDate } =
     useTaskFilters(tasks || []);
 
   if (!tasks || tasks.length === 0) return null;
@@ -23,19 +25,6 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
       <div className="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden">
         {filteredTasks.length === 0 ? (
           <div className="py-16 text-center">
-            <svg
-              className="mx-auto h-12 w-12 text-gray-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
             <h3 className="mt-4 text-lg font-medium text-gray-700">
               No tasks found
             </h3>
@@ -44,8 +33,8 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-hidden md:overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+          <div className="overflow-x-hidden md:overflow-x-auto max-h-[520px] overflow-y-auto">
+            <table className="min-w-full divide-y divide-gray-200 ">
               <thead>
                 <tr className="bg-gray-50">
                   <th
@@ -81,33 +70,9 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                       {sortByDate !== 'none' && (
                         <span className="ml-2">
                           {sortByDate === 'asc' ? (
-                            <svg
-                              className="w-4 h-4 text-blue-500"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M5 15l7-7 7 7"
-                              />
-                            </svg>
+                            <ArrowUpIcon className="w-4 h-4 text-blue-500" />
                           ) : (
-                            <svg
-                              className="w-4 h-4 text-blue-500"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 9l-7 7-7-7"
-                              />
-                            </svg>
+                            <ArrowDownIcon className="w-4 h-4 text-blue-500" />
                           )}
                         </span>
                       )}
@@ -115,7 +80,7 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200 ">
                 {filteredTasks.map((task: Task, index) => (
                   <tr
                     key={task._id}
