@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export default function useGetAllTasks(orgId: string, projectId: string) {
   const { data: tasks, isLoading: isGettingTasks } = useQuery({
-    queryKey: ['allTasks', orgId],
+    queryKey: ['allTasks', projectId],
     queryFn: () => getAllTasks(projectId, orgId),
     enabled: !!orgId && !!projectId,
     retry: false,

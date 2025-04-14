@@ -1,6 +1,7 @@
 import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
-import { Task } from './TaskTabs';
 import { format } from 'date-fns';
+import { StatusBadge } from './StatusBadge';
+import { Task } from './types';
 
 export default function TableView({ tasks }: { tasks: Task[] }) {
   if (!tasks || tasks?.length === 0) return;
@@ -77,21 +78,3 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
     </div>
   );
 }
-
-export const StatusBadge = ({ status }: { status: Task['status'] }) => {
-  const colors = {
-    BACKLOG: 'bg-orange-400/80 text-yellow-900',
-    TODO: 'bg-blue-100 text-blue-800',
-    IN_PROGRESS: 'bg-yellow-100 text-yellow-800',
-    IN_REVIEW: 'bg-purple-100 text-purple-800',
-    DONE: 'bg-green-100 text-green-800',
-  };
-
-  return (
-    <span
-      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${colors[status]}`}
-    >
-      {status.replace('_', ' ')}
-    </span>
-  );
-};

@@ -3,19 +3,7 @@ import TableView from './TableView';
 import CreateTask from './CreateTask';
 import useGetAllTasks from './useGetAllTasks';
 import { useParams } from 'react-router-dom';
-
-export type Task = {
-  _id: string;
-  name: string;
-  projectName: string;
-  status: 'BACKLOG' | 'TODO' | 'IN_PROGRESS' | 'IN_REVIEW' | 'DONE';
-  assignee: {
-    _id: string;
-    name: string;
-    avatar?: string;
-  };
-  dueDate: Date;
-};
+import KanbanView from './KanbanView';
 
 const EmptyState = () => (
   <div className="flex flex-col items-center justify-center py-12">
@@ -60,7 +48,7 @@ export default function TaskTabs() {
       <div className="mt-4">
         {(!tasks || tasks?.length === 0) && <EmptyState />}
         {activeTab === 'table' && <TableView tasks={tasks} />}
-        {/* {activeTab === 'kanban' && <KanbanView tasks={tasks} />} */}
+        {activeTab === 'kanban' && <KanbanView tasks={tasks} />}
         {/* {activeTab === 'calendar' && <CalendarView />} */}
       </div>
     </div>

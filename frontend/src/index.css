@@ -83,3 +83,24 @@
     transition: all 0.3s ease;
   }
 }
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-blue-400 rounded-xl;
+}
+
+body {
+  --cursor: grab;
+}
+
+body:active {
+  --cursor: grabbing;
+}
+
+.drag-handle {
+  cursor: var(--cursor);
+}

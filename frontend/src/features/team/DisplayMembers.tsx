@@ -7,15 +7,7 @@ import { LoadingSpinner } from '@/ui/Spinner';
 import useRemoveMember from './useRemoveMember';
 import useMakeAdmin from './useMakeAdmin';
 import useCurrentOrganisation from '../organisations/useCurrentOrganisaiton';
-
-type Member = {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  // avatar: string;
-  role: 'member' | 'admin';
-};
+import { Member } from './types';
 
 export default function OrganizationMembersTable() {
   const { currentOrg: currentOrganisation, isGettingCurrentOrg } =
