@@ -4,7 +4,6 @@ import {
   ChevronsUpDown,
   CirclePlus,
   Folder,
-  NotebookPen,
   PanelLeftClose,
   PanelLeftOpen,
   Settings,
