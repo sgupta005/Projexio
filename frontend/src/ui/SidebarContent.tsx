@@ -22,7 +22,7 @@ import useCurrentOrganisaiton from '@/features/organisations/useCurrentOrganisai
 import useGetAllProjects from '@/features/projects/useGetAllProjects';
 
 const routes = [
-  { path: 'tasks', name: 'My Work', icon: <Folder /> },
+  { path: 'dashboard', name: 'My Work', icon: <Folder /> },
   { path: 'team', name: 'Team', icon: <Users /> },
   // { path: 'reports', name: 'Reports', icon: <NotebookPen /> },
   { path: 'settings', name: 'Settings', icon: <Settings /> },

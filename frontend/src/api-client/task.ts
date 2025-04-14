@@ -62,3 +62,20 @@ export async function updateTaskStatus(
   const resBody = await response.json();
   return resBody.data;
 }
+
+export async function getUserTasksByOrganisation(
+  orgId: string,
+  userId: string
+) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${orgId}/task/user/${userId}`,
+    { credentials: 'include' }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch user tasks');
+  }
+
+  const resBody = await response.json();
+  return resBody.data;
+}

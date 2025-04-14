@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from './ui/AppLayout';
-import Tasks from './pages/Tasks';
+import Dashboard from './pages/Dashboard';
 import Organisations from './pages/Organisations';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -45,8 +45,8 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate to="tasks" replace={true} />} />
-            <Route path="tasks" element={<Tasks />} />
+            <Route index element={<Navigate to="dashboard" replace={true} />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="team" element={<Team />} />
             <Route path="reports" element={<h1>Reports</h1>} />
             <Route path="settings" element={<Settings />} />

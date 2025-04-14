@@ -28,6 +28,7 @@ app.use(logger);
 app.use('/api/auth', authRouter);
 app.use('/api/organisation', organisationRouter);
 app.use('/api/organisation/:orgId/project', projectRouter);
+app.use('/api/organisation/:orgId/task/', taskRouter);
 app.use('/api/organisation/:orgId/project/:projectId/task/', taskRouter);
 
 app.use(globalErrorHandler);

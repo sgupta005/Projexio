@@ -118,3 +118,53 @@ export const updateTaskStatus = asyncHandler(async function (
 
   return res.status(200).json(new ApiResponse(200, updatedTask));
 });
+
+export const getUserTasksByOrganisation = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { orgId, userId } = req.params;
+
+  if (!orgId || !userId) {
+    throw new CustomError('Organization ID and User ID are required', 400);
+  }
+
+  const tasks = await TaskModel.find({
+    organisationId: orgId,
+    assigneeId: userId,
+  })
+    .populate([
+      {
+        path: 'assigneeId',
+        model: UserModel,
+        select: 'firstName lastName avatar',
+      },
+      {
+        path: 'projectId',
+        model: ProjectModel,
+        select: 'name',
+      },
+    ])
+    .sort({ dueDate: 1 });
+
+  const formattedTasks = tasks.map((task) => ({
+    _id: task._id,
+    name: task.name,
+    projectName: (task.projectId as any).name,
+    projectId: task.projectId,
+    status: task.status,
+    assignee: {
+      _id: (task.assigneeId as any)._id,
+      name: `${(task.assigneeId as any).firstName} ${
+        (task.assigneeId as any).lastName
+      }`,
+      avatar: (task.assigneeId as any).avatar,
+    },
+    dueDate: task.dueDate,
+    description: task.description,
+    position: task.position,
+  }));
+
+  return res.status(200).json(new ApiResponse(200, formattedTasks));
+});
