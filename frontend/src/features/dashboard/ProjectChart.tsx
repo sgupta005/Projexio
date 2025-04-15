@@ -95,7 +95,7 @@ export default function ProjectChart({ tasks }: ProjectChartProps) {
               ))}
             </Pie>
             <Tooltip
-              formatter={(value, name, props) => [
+              formatter={(value, _name, props) => [
                 `${value} tasks`,
                 props.payload.name,
               ]}
