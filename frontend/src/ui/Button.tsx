@@ -25,7 +25,7 @@ function Button({
         {
           'text-primary bg-muted': variant === 'secondary',
           'text-background bg-primary ': variant === 'primary',
-          'bg-background text-primary border hover:bg-muted':
+          'bg-background text-primary border shadow-sm hover:bg-muted':
             variant === 'outline',
           'bg-orange-600/90 text-yellow-50': variant === 'danger',
         },
