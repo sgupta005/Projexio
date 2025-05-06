@@ -1,22 +1,12 @@
 import { useState } from 'react';
-import { Status, statuses, Task } from './types';
-import { SortDirection } from './useTaskFilters';
+import {
+  FilterState,
+  SortDirection,
+  statuses,
+  TaskFiltersProps,
+} from './types';
 import { ChevronDownIcon, RefreshCcwIcon, SearchIcon } from 'lucide-react';
 import Button from '@/ui/Button';
-
-export type FilterState = {
-  search: string;
-  status: Status | 'ALL';
-  project: string | null;
-  assignee: string | null;
-};
-
-type TaskFiltersProps = {
-  tasks: Task[];
-  onFilterChange: (filters: FilterState) => void;
-  sortByDate: SortDirection;
-  onSortChange: (direction: SortDirection) => void;
-};
 
 export default function TaskFilters({
   tasks,

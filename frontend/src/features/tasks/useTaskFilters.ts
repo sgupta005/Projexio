@@ -1,8 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Task } from './types';
-import { FilterState } from './TaskFilters';
-
-export type SortDirection = 'asc' | 'desc' | 'none';
+import { SortDirection, Task, FilterState } from './types';
 
 export default function useTaskFilters(tasks: Task[]) {
   const [filters, setFilters] = useState<FilterState>({

@@ -31,3 +31,19 @@ export interface Member {
   firstName: string;
   lastName: string;
 }
+
+export type SortDirection = 'asc' | 'desc' | 'none';
+
+export type FilterState = {
+  search: string;
+  status: Status | 'ALL';
+  project: string | null;
+  assignee: string | null;
+};
+
+export type TaskFiltersProps = {
+  tasks: Task[];
+  onFilterChange: (filters: FilterState) => void;
+  sortByDate: SortDirection;
+  onSortChange: (direction: SortDirection) => void;
+};

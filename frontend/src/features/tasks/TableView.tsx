@@ -33,7 +33,7 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-hidden md:overflow-x-auto max-h-[520px] overflow-y-auto">
+          <div className="overflow-x-hidden md:overflow-x-auto max-h-[calc(100vh-300px)] overflow-y-auto">
             <table className="min-w-full divide-y divide-gray-200 ">
               <thead>
                 <tr className="bg-gray-50">
