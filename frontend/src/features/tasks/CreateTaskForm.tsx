@@ -6,6 +6,7 @@ import { CreateTaskFormFields, Member } from './types';
 import { useParams } from 'react-router-dom';
 import useGetMembers from '../team/useGetMembers';
 import Input from '@/ui/Input';
+import { ChevronDown } from 'lucide-react';
 
 export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
   const {
@@ -29,7 +30,7 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
   const { members } = useGetMembers(orgId!);
 
   const inputClassName =
-    'w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary';
+    'w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary appearance-none pr-8';
   const labelClassName = 'text-muted-foreground font-semibold';
   const errorClassName = 'text-red-400 text-sm mt-1';
 
@@ -56,17 +57,20 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
         <label htmlFor="status" className={labelClassName}>
           Status
         </label>
-        <select
-          id="status"
-          className={inputClassName}
-          {...register('status', { required: 'Status is required' })}
-        >
-          <option value="BACKLOG">Backlog</option>
-          <option value="TODO">To Do</option>
-          <option value="IN_PROGRESS">In Progress</option>
-          <option value="IN_REVIEW">In Review</option>
-          <option value="DONE">Done</option>
-        </select>
+        <div className="relative">
+          <select
+            id="status"
+            className={inputClassName}
+            {...register('status', { required: 'Status is required' })}
+          >
+            <option value="BACKLOG">Backlog</option>
+            <option value="TODO">To Do</option>
+            <option value="IN_PROGRESS">In Progress</option>
+            <option value="IN_REVIEW">In Review</option>
+            <option value="DONE">Done</option>
+          </select>
+          <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+        </div>
         {errors.status && (
           <div className={errorClassName}>{errors.status.message}</div>
         )}
@@ -76,17 +80,20 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
         <label htmlFor="assigneeId" className={labelClassName}>
           Assignee
         </label>
-        <select
-          id="assigneeId"
-          className={inputClassName}
-          {...register('assigneeId', { required: 'Assignee is required' })}
-        >
-          {members?.map((member: Member) => (
-            <option key={member._id} value={member._id}>
-              {member.firstName} {member.lastName}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            id="assigneeId"
+            className={inputClassName}
+            {...register('assigneeId', { required: 'Assignee is required' })}
+          >
+            {members?.map((member: Member) => (
+              <option key={member._id} value={member._id}>
+                {member.firstName} {member.lastName}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+        </div>
         {errors.assigneeId && (
           <div className={errorClassName}>{errors.assigneeId.message}</div>
         )}
