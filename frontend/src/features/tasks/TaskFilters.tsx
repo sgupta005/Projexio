@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Status, statuses, Task } from './types';
 import { SortDirection } from './useTaskFilters';
 import { ChevronDownIcon, RefreshCcwIcon, SearchIcon } from 'lucide-react';
+import Button from '@/ui/Button';
 
 export type FilterState = {
   search: string;
@@ -52,22 +53,13 @@ export default function TaskFilters({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-end ">
-        <button
-          onClick={handleReset}
-          className="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 border border-gray-300 transition-colors flex items-center"
-        >
-          <RefreshCcwIcon className="w-4 h-4 mr-2" />
-          Reset Filters
-        </button>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
         {/* Status filter */}
         <div>
           <div className="relative">
             <select
               id="status"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-md appearance-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-colors"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-md appearance-none "
               value={filters.status}
               onChange={(e) => handleFilterChange('status', e.target.value)}
             >
@@ -89,7 +81,7 @@ export default function TaskFilters({
           <div className="relative">
             <select
               id="assignee"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-md appearance-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-colors"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-md appearance-none "
               value={filters.assignee || ''}
               onChange={(e) =>
                 handleFilterChange('assignee', e.target.value || null)
@@ -117,7 +109,7 @@ export default function TaskFilters({
               type="text"
               id="search"
               placeholder="Search tasks..."
-              className="w-full pl-10 px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-colors"
+              className="w-full pl-10 px-4 py-2.5 border border-gray-300 rounded-md "
               value={filters.search}
               onChange={(e) => handleFilterChange('search', e.target.value)}
             />
@@ -129,7 +121,7 @@ export default function TaskFilters({
           <div className="relative">
             <select
               id="sortByDate"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-md appearance-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-colors"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-md appearance-none "
               value={sortByDate}
               onChange={(e) => onSortChange(e.target.value as SortDirection)}
             >
@@ -142,6 +134,11 @@ export default function TaskFilters({
             </div>
           </div>
         </div>
+        {/* Reset Button */}
+        <Button variant="outline" onClick={handleReset} className=" h-full">
+          <RefreshCcwIcon className="w-4 h-4 mr-2" />
+          Reset Filters
+        </Button>
       </div>
     </div>
   );
