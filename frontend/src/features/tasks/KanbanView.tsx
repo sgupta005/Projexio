@@ -20,7 +20,7 @@ import { Status, statuses, Task } from './types';
 import { StatusBadge } from './StatusBadge';
 import { useParams } from 'react-router-dom';
 import { TaskCard } from './TaskCard';
-import useSaveTaskPosition from './useSaveTaskPosition';
+import useSaveTaskPosition from './useSaveTaskPosition.ts';
 const columns = statuses;
 
 export default function KanbanView({ tasks }: { tasks: Task[] }) {

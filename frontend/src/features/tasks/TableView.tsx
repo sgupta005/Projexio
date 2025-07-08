@@ -5,10 +5,12 @@ import { Task } from './types';
 import TaskFilters from './TaskFilters';
 import useTaskFilters from './useTaskFilters';
 import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function TableView({ tasks }: { tasks: Task[] }) {
   const { setFilters, filteredTasks, sortByDate, setSortByDate } =
     useTaskFilters(tasks || []);
+  const navigate = useNavigate();
 
   const handleSortClick = () => {
     setSortByDate((current) => (current === 'asc' ? 'desc' : 'asc'));
@@ -86,9 +88,10 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                 {filteredTasks.map((task: Task, index) => (
                   <tr
                     key={task._id}
-                    className={`hover:bg-gray-50 transition-colors ${
+                    className={`hover:bg-gray-50 transition-colors cursor-pointer ${
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'
                     }`}
+                    onClick={() => navigate(`task/${task._id}`)}
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">

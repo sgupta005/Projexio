@@ -12,6 +12,7 @@ import Team from './pages/Team';
 import Settings from './pages/Settings';
 import Project from './pages/Project';
 import ProjectSettings from './features/projects/ProjectSettings';
+import Task from './pages/Task';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
             <Route path="reports" element={<h1>Reports</h1>} />
             <Route path="settings" element={<Settings />} />
             <Route path="project/:projectId" element={<Project />} />
+            <Route path="project/:projectId/task/:taskId" element={<Task />} />
             <Route
               path="project/:projectId/settings"
               element={<ProjectSettings />}

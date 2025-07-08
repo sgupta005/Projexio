@@ -11,3 +11,5 @@
 [ x ] Add a filter for selecting due date
 [ x ] instead of filter for toggling due date there should be arrows next to due date in the table header for doing this.
 [ ] Ability to delete tasks, project and workspaces.
+[ ] Increase size of auth pages
+[ ] create Profile page

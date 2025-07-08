@@ -1,6 +1,7 @@
 import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { format } from 'date-fns';
 import { Task } from './types';
+import { useNavigate } from 'react-router-dom';
 
 export function TaskCard({
   task,
@@ -11,11 +12,21 @@ export function TaskCard({
   isDragging?: boolean;
   dragHandleProps?: any;
 }) {
+  const navigate = useNavigate();
+
+  function handleClick(e: React.MouseEvent) {
+    // If we're dragging or if the click is on the drag handle area, don't navigate
+    if (isDragging || (dragHandleProps && e.target === e.currentTarget)) return;
+
+    navigate(`task/${task._id}`);
+  }
+
   return (
     <div
-      className={`bg-white p-3 rounded-lg shadow-sm ${
+      className={`bg-white p-3 rounded-lg shadow-sm cursor-pointer ${
         isDragging && 'border-2 border-blue-500'
       }`}
+      onClick={handleClick}
     >
       <div {...dragHandleProps} className="cursor-grab active:cursor-grabbing">
         <div className="font-medium mb-2">{task.name}</div>
@@ -33,7 +44,7 @@ export function TaskCard({
           <span className="ml-2 text-sm">{task.assignee.name}</span>
         </div>
         <div className="text-sm text-gray-500">
-          {format(task.dueDate, 'MMM dd')}
+          {format(new Date(task.dueDate), 'MMM dd')}
         </div>
       </div>
     </div>

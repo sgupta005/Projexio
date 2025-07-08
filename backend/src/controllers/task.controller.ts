@@ -168,3 +168,52 @@ export const getUserTasksByOrganisation = asyncHandler(async function (
 
   return res.status(200).json(new ApiResponse(200, formattedTasks));
 });
+
+export const getTaskById = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { taskId } = req.params;
+
+  if (!taskId) {
+    throw new CustomError('Task ID is required', 400);
+  }
+
+  const task = await TaskModel.findById(taskId).populate([
+    {
+      path: 'assigneeId',
+      model: UserModel,
+      select: 'firstName lastName avatar',
+    },
+    {
+      path: 'projectId',
+      model: ProjectModel,
+      select: 'name',
+    },
+  ]);
+
+  if (!task) {
+    throw new CustomError('Task not found', 404);
+  }
+
+  const formattedTask = {
+    _id: task._id,
+    name: task.name,
+    projectName: (task.projectId as any).name,
+    projectId: task.projectId,
+    status: task.status,
+    assignee: {
+      _id: (task.assigneeId as any)._id,
+      name: `${(task.assigneeId as any).firstName} ${
+        (task.assigneeId as any).lastName
+      }`,
+      avatar: (task.assigneeId as any).avatar,
+    },
+    dueDate: task.dueDate,
+    description: task.description,
+    position: task.position,
+  };
+
+  return res.status(200).json(new ApiResponse(200, formattedTask));
+});

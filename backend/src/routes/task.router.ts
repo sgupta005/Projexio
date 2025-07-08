@@ -4,6 +4,7 @@ import {
   getTasks,
   updateTaskStatus,
   getUserTasksByOrganisation,
+  getTaskById,
 } from '../controllers/task.controller';
 import { verifyToken } from '../middlewares/verifyToken';
 import { verifyMember } from '../middlewares/verifyMember';
@@ -18,5 +19,6 @@ router.get(
   verifyMember,
   getUserTasksByOrganisation
 );
+router.get('/:taskId', verifyToken, verifyMember, getTaskById);
 
 export default router;

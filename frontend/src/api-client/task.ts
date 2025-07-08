@@ -79,3 +79,21 @@ export async function getUserTasksByOrganisation(
   const resBody = await response.json();
   return resBody.data;
 }
+
+export async function getTaskById(
+  orgId: string,
+  projectId: string,
+  taskId: string
+) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${orgId}/project/${projectId}/task/${taskId}`,
+    { credentials: 'include' }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch task');
+  }
+
+  const resBody = await response.json();
+  return resBody.data;
+}
