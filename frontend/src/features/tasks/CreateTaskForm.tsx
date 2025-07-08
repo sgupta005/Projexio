@@ -1,17 +1,19 @@
 import Button from '@/ui/Button';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { format } from 'date-fns';
 import { useCreateTask } from './useCreateTask';
-import { CreateTaskFormFields, Member } from './types';
+import { CreateTaskFormFields, Member, statuses } from './types';
 import { useParams } from 'react-router-dom';
 import useGetMembers from '../team/useGetMembers';
 import Input from '@/ui/Input';
-import { ChevronDown } from 'lucide-react';
+
+import Select from 'react-select';
 
 export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<CreateTaskFormFields>();
 
@@ -57,20 +59,36 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
         <label htmlFor="status" className={labelClassName}>
           Status
         </label>
-        <div className="relative">
-          <select
-            id="status"
-            className={inputClassName}
-            {...register('status', { required: 'Status is required' })}
-          >
-            <option value="BACKLOG">Backlog</option>
-            <option value="TODO">To Do</option>
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="IN_REVIEW">In Review</option>
-            <option value="DONE">Done</option>
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-        </div>
+        <Controller
+          name="status"
+          control={control}
+          rules={{ required: 'Status is required' }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              options={statuses.map((status) => ({
+                value: status,
+                label: status.replace('_', ' '),
+              }))}
+              value={
+                statuses
+                  .map((status) => ({
+                    value: status,
+                    label: status.replace('_', ' '),
+                  }))
+                  .find(
+                    (option: { value: string; label: string }) =>
+                      option.value === field.value
+                  ) || null
+              }
+              onChange={(selectedOption) =>
+                field.onChange(selectedOption?.value)
+              }
+              placeholder="Select Status"
+              isClearable={false}
+            />
+          )}
+        />
         {errors.status && (
           <div className={errorClassName}>{errors.status.message}</div>
         )}
@@ -80,20 +98,38 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
         <label htmlFor="assigneeId" className={labelClassName}>
           Assignee
         </label>
-        <div className="relative">
-          <select
-            id="assigneeId"
-            className={inputClassName}
-            {...register('assigneeId', { required: 'Assignee is required' })}
-          >
-            {members?.map((member: Member) => (
-              <option key={member._id} value={member._id}>
-                {member.firstName} {member.lastName}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-        </div>
+        <Controller
+          name="assigneeId"
+          control={control}
+          rules={{ required: 'Assignee is required' }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              options={
+                members?.map((member: Member) => ({
+                  value: member._id,
+                  label: `${member.firstName} ${member.lastName}`,
+                })) || []
+              }
+              value={
+                members
+                  ?.map((member: Member) => ({
+                    value: member._id,
+                    label: `${member.firstName} ${member.lastName}`,
+                  }))
+                  .find(
+                    (option: { value: string; label: string }) =>
+                      option.value === field.value
+                  ) || null
+              }
+              onChange={(selectedOption) =>
+                field.onChange(selectedOption?.value)
+              }
+              placeholder="Select Assignee"
+              isClearable={false}
+            />
+          )}
+        />
         {errors.assigneeId && (
           <div className={errorClassName}>{errors.assigneeId.message}</div>
         )}

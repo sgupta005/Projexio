@@ -36,7 +36,7 @@ export type SortDirection = 'asc' | 'desc' | 'none';
 
 export type FilterState = {
   search: string;
-  status: Status | 'ALL';
+  status: Status | '';
   project: string | null;
   assignee: string | null;
 };
