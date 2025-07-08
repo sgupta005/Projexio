@@ -39,6 +39,7 @@ export type FilterState = {
   status: Status | '';
   project: string | null;
   assignee: string | null;
+  dueDate: string | null;
 };
 
 export type TaskFiltersProps = {

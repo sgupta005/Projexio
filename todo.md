@@ -5,6 +5,7 @@
 [ ] Redeploy backend to some faster provider
 [ ] Calendar View
 [ ] Make settings page work
+[ ] Make edit project page work
 [ ] Work on dashboard page
 [ ] Add pagination instead of scrolling to tables
 [ ] Add a filter for selecting due date

@@ -1,15 +1,15 @@
 import { useState, useMemo } from 'react';
-import { SortDirection, Task, FilterState } from './types';
+import { Task, FilterState } from './types';
+import { format } from 'date-fns';
 
 export default function useTaskFilters(tasks: Task[]) {
   const [filters, setFilters] = useState<FilterState>({
     search: '',
-    status: 'ALL',
+    status: '',
     project: null,
     assignee: null,
+    dueDate: null,
   });
-
-  const [sortByDate, setSortByDate] = useState<SortDirection>('none');
 
   const filteredTasks = useMemo(() => {
     // First filter the tasks
@@ -23,7 +23,7 @@ export default function useTaskFilters(tasks: Task[]) {
       }
 
       // Status filter
-      if (filters.status !== 'ALL' && task.status !== filters.status) {
+      if (filters.status && task.status !== filters.status) {
         return false;
       }
 
@@ -37,26 +37,23 @@ export default function useTaskFilters(tasks: Task[]) {
         return false;
       }
 
+      // Date filter
+      if (filters.dueDate) {
+        const taskDate = format(new Date(task.dueDate), 'yyyy-MM-dd');
+        if (taskDate !== filters.dueDate) {
+          return false;
+        }
+      }
+
       return true;
     });
 
-    // Then sort the filtered tasks
-    if (sortByDate !== 'none') {
-      return [...filtered].sort((a, b) => {
-        const dateA = new Date(a.dueDate).getTime();
-        const dateB = new Date(b.dueDate).getTime();
-        return sortByDate === 'asc' ? dateA - dateB : dateB - dateA;
-      });
-    }
-
     return filtered;
-  }, [tasks, filters, sortByDate]);
+  }, [tasks, filters]);
 
   return {
     filters,
     setFilters,
     filteredTasks,
-    sortByDate,
-    setSortByDate,
   };
 }

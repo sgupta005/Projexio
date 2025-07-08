@@ -1,25 +1,20 @@
 import { useState } from 'react';
-import {
-  FilterState,
-  SortDirection,
-  statuses,
-  TaskFiltersProps,
-} from './types';
+import { FilterState, statuses, TaskFiltersProps } from './types';
 import { RefreshCcwIcon, SearchIcon } from 'lucide-react';
 import Button from '@/ui/Button';
 import Select from 'react-select';
+import DatePicker from '@/ui/DatePicker';
 
 export default function TaskFilters({
   tasks,
   onFilterChange,
-  sortByDate,
-  onSortChange,
 }: TaskFiltersProps) {
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     status: '',
     project: null,
     assignee: null,
+    dueDate: null,
   });
 
   const assignees = [...new Set(tasks.map((task) => task.assignee.name))];
@@ -33,13 +28,13 @@ export default function TaskFilters({
   const handleReset = () => {
     const resetFilters: FilterState = {
       search: '',
-      status: 'ALL',
+      status: '',
       project: null,
       assignee: null,
+      dueDate: null,
     };
     setFilters(resetFilters);
     onFilterChange(resetFilters);
-    onSortChange('none');
   };
 
   return (
@@ -108,32 +103,21 @@ export default function TaskFilters({
           </div>
         </div>
 
-        {/* Sort by due date */}
+        {/* Date filter */}
         <div>
-          <Select
-            options={[
-              { value: 'none', label: 'Default' },
-              { value: 'asc', label: 'Earliest First' },
-              { value: 'desc', label: 'Latest First' },
-            ]}
-            value={{
-              value: sortByDate,
-              label:
-                sortByDate === 'none'
-                  ? 'Default'
-                  : sortByDate === 'asc'
-                  ? 'Earliest First'
-                  : 'Latest First',
-            }}
-            onChange={(selectedOption) =>
-              onSortChange((selectedOption?.value as SortDirection) || 'none')
-            }
-            placeholder="Sort by Date"
-            isClearable={false}
+          <DatePicker
+            value={filters.dueDate}
+            onChange={(value) => handleFilterChange('dueDate', value)}
+            placeholder="Due Date"
           />
         </div>
+
         {/* Reset Button */}
-        <Button variant="outline" onClick={handleReset} className=" h-full">
+        <Button
+          variant="outline"
+          onClick={handleReset}
+          className="h-full rounded-sm"
+        >
           <RefreshCcwIcon className="w-4 h-4 mr-2" />
           Reset Filters
         </Button>
