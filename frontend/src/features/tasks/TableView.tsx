@@ -4,12 +4,15 @@ import { StatusBadge } from './StatusBadge';
 import { Task } from './types';
 import TaskFilters from './TaskFilters';
 import useTaskFilters from './useTaskFilters';
-import { ArrowDownIcon } from 'lucide-react';
-import { ArrowUpIcon } from 'lucide-react';
+import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react';
 
 export default function TableView({ tasks }: { tasks: Task[] }) {
   const { setFilters, filteredTasks, sortByDate, setSortByDate } =
     useTaskFilters(tasks || []);
+
+  const handleSortClick = () => {
+    setSortByDate((current) => (current === 'asc' ? 'desc' : 'asc'));
+  };
 
   if (!tasks || tasks.length === 0) return null;
 
@@ -63,19 +66,18 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell group"
+                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell cursor-pointer hover:bg-gray-100"
+                    onClick={handleSortClick}
                   >
                     <div className="flex items-center">
                       Due Date
-                      {sortByDate !== 'none' && (
-                        <span className="ml-2">
-                          {sortByDate === 'asc' ? (
-                            <ArrowUpIcon className="w-4 h-4 text-blue-500" />
-                          ) : (
-                            <ArrowDownIcon className="w-4 h-4 text-blue-500" />
-                          )}
-                        </span>
-                      )}
+                      <span className="ml-2">
+                        {sortByDate === 'asc' ? (
+                          <ArrowUpIcon className="w-4 h-4 text-blue-500" />
+                        ) : (
+                          <ArrowDownIcon className="w-4 h-4 text-blue-500" />
+                        )}
+                      </span>
                     </div>
                   </th>
                 </tr>
@@ -126,7 +128,7 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap hidden sm:table-cell">
                       <div className="text-sm text-gray-500">
-                        {format(task.dueDate, 'MMM dd, yyyy')}
+                        {format(new Date(task.dueDate), 'MMM dd, yyyy')}
                       </div>
                     </td>
                   </tr>

@@ -8,5 +8,6 @@
 [ ] Make edit project page work
 [ ] Work on dashboard page
 [ ] Add pagination instead of scrolling to tables
-[ ] Add a filter for selecting due date
-[ ] instead of filter for toggling due date there should be arrows next to due date in the table header for doing this.
+[ x ] Add a filter for selecting due date
+[ x ] instead of filter for toggling due date there should be arrows next to due date in the table header for doing this.
+[ ] Ability to delete tasks, project and workspaces.

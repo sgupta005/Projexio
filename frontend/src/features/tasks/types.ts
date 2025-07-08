@@ -32,7 +32,7 @@ export interface Member {
   lastName: string;
 }
 
-export type SortDirection = 'asc' | 'desc' | 'none';
+export type SortDirection = 'asc' | 'desc';
 
 export type FilterState = {
   search: string;

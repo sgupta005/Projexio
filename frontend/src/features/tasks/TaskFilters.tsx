@@ -8,6 +8,7 @@ import DatePicker from '@/ui/DatePicker';
 export default function TaskFilters({
   tasks,
   onFilterChange,
+  onSortChange,
 }: TaskFiltersProps) {
   const [filters, setFilters] = useState<FilterState>({
     search: '',
@@ -35,6 +36,7 @@ export default function TaskFilters({
     };
     setFilters(resetFilters);
     onFilterChange(resetFilters);
+    onSortChange('desc');
   };
 
   return (

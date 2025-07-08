@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Task, FilterState } from './types';
+import { SortDirection, Task, FilterState } from './types';
 import { format } from 'date-fns';
 
 export default function useTaskFilters(tasks: Task[]) {
@@ -10,6 +10,8 @@ export default function useTaskFilters(tasks: Task[]) {
     assignee: null,
     dueDate: null,
   });
+
+  const [sortByDate, setSortByDate] = useState<SortDirection>('desc');
 
   const filteredTasks = useMemo(() => {
     // First filter the tasks
@@ -48,12 +50,19 @@ export default function useTaskFilters(tasks: Task[]) {
       return true;
     });
 
-    return filtered;
-  }, [tasks, filters]);
+    // Always sort the filtered tasks
+    return [...filtered].sort((a, b) => {
+      const dateA = new Date(a.dueDate).getTime();
+      const dateB = new Date(b.dueDate).getTime();
+      return sortByDate === 'asc' ? dateA - dateB : dateB - dateA;
+    });
+  }, [tasks, filters, sortByDate]);
 
   return {
     filters,
     setFilters,
     filteredTasks,
+    sortByDate,
+    setSortByDate,
   };
 }
