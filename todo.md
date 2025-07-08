@@ -1,5 +1,6 @@
 [ x ] Change Select tag
-[ ] Create task page
+[ x ] Create task page
+[ ] edit task details
 [ ] add dropdown to task table
 [ ] Redesign Home page
 [ ] Redeploy backend to some faster provider

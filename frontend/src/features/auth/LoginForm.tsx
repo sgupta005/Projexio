@@ -39,18 +39,18 @@ export function LoginForm() {
     <div className="flex min-h-svh justify-center items-center overflow-x-hidden p-6">
       <MotionDiv>
         <GradientShadow>
-          <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="p-6 space-y-4">
+          <div className="w-full max-w-md md:max-w-lg mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="p-6 md:p-8 space-y-4 md:space-y-6">
               <div className=" space-y-1">
-                <h2 className="text-2xl font-semibold tracking-tight">
+                <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
                   Welcome Back
                 </h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm md:text-base text-gray-500">
                   Enter your email and password to login to your account
                 </p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 md:space-y-6">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="grid mb-4">
                     <div className="grid gap-2">
