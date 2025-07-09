@@ -7,6 +7,16 @@ import { Calendar, User } from 'lucide-react';
 import Button from '@/ui/Button';
 import { UpcomingTasksProps } from './types';
 import { useNavigate, useParams } from 'react-router-dom';
+import { cn } from '@/utils/helper';
+import { Status } from '@/features/tasks/types';
+
+const borderColors: Record<Status, string> = {
+  BACKLOG: 'border-orange-100 ',
+  TODO: 'border-blue-100 ',
+  IN_PROGRESS: 'border-yellow-100 ',
+  IN_REVIEW: 'border-purple-100 ',
+  DONE: 'border-green-100 ',
+};
 
 export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
   const navigate = useNavigate();
@@ -37,11 +47,12 @@ export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
                 onClick={() => {
                   navigate(`/organisation/${orgId}/task/${task._id}`);
                 }}
-                className={`p-4 rounded-lg border-2 cursor-pointer ${
+                className={cn(
+                  'p-4 rounded-lg border-2 cursor-pointer',
                   isOverdue
                     ? 'border-red-200 bg-red-50'
-                    : 'border-gray-200 bg-gray-50'
-                }`}
+                    : borderColors[task.status]
+                )}
               >
                 <div className="flex items-start justify-between mb-2">
                   <h4 className="font-medium text-gray-900 truncate">

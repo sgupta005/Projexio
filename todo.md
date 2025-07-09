@@ -6,6 +6,7 @@
 - [x] Work on dashboard page
 - [ ] Create my tasks page
 - [ ] Redeploy backend to some faster provider
+- [ ] Create Readme file
 - [ ] Create Profile page
 - [ ] Calendar View
 - [ ] Make settings page work

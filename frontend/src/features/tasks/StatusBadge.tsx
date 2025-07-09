@@ -1,8 +1,8 @@
 import { cn } from '@/utils/helper';
 import { Status } from './types';
 
-const colors: Record<Status, string> = {
-  BACKLOG: 'bg-orange-400/80 text-yellow-900',
+export const colors: Record<Status, string> = {
+  BACKLOG: 'bg-orange-100 text-yellow-900',
   TODO: 'bg-blue-100 text-blue-800',
   IN_PROGRESS: 'bg-yellow-100 text-yellow-800',
   IN_REVIEW: 'bg-purple-100 text-purple-800',
