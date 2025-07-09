@@ -7,6 +7,7 @@ import {
   joinOrganisation,
   makeAdmin,
   removeMember,
+  getOrganisationAnalytics,
 } from '../controllers/organisation.controller';
 import { verifyToken } from '../middlewares/verifyToken';
 import { verifyAdmin } from '../middlewares/verifyAdmin';
@@ -37,6 +38,12 @@ router.get(
   verifyToken,
   verifyAdmin,
   makeAdmin
+);
+router.get(
+  '/:orgId/analytics',
+  verifyToken,
+  verifyMember,
+  getOrganisationAnalytics
 );
 
 export default router;

@@ -26,7 +26,7 @@ function Header({
       </button>
       <div className="md:hidden h-6 mx-4 mt-1 w-[1px] bg-primary/20"></div>
       <div className={`md:px-0 ${!showOnDesktop && 'md:hidden'}`}>
-        {title && <p className="text-2xl md:text-xl font-semibold ">{title}</p>}
+        {title && <p className="text-2xl font-bold ">{title}</p>}
         {subTitle && (
           <p className="text-primary/60 hidden md:block ">{subTitle}</p>
         )}

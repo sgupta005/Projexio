@@ -17,7 +17,7 @@ function MotionDiv({
 }) {
   return (
     <motion.div
-      className={cn('w-full max-w-sm', className)}
+      className={cn('w-full max-w-sm md:max-w-md', className)}
       initial="hidden"
       animate="visible"
       exit="exit"

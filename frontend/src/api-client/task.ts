@@ -80,13 +80,9 @@ export async function getUserTasksByOrganisation(
   return resBody.data;
 }
 
-export async function getTaskById(
-  orgId: string,
-  projectId: string,
-  taskId: string
-) {
+export async function getTaskById(orgId: string, taskId: string) {
   const response = await fetch(
-    `${API_BASE_URL}/organisation/${orgId}/project/${projectId}/task/${taskId}`,
+    `${API_BASE_URL}/organisation/${orgId}/task/${taskId}`,
     { credentials: 'include' }
   );
 

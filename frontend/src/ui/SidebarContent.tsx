@@ -3,7 +3,7 @@ import SidebarLink from './SidebarLink';
 import {
   ChevronsUpDown,
   CirclePlus,
-  Folder,
+  Home,
   PanelLeftClose,
   PanelLeftOpen,
   Settings,
@@ -21,9 +21,8 @@ import useCurrentOrganisaiton from '@/features/organisations/useCurrentOrganisai
 import useGetAllProjects from '@/features/projects/useGetAllProjects';
 
 const routes = [
-  { path: 'dashboard', name: 'My Work', icon: <Folder /> },
+  { path: 'dashboard', name: 'Dashboard', icon: <Home /> },
   { path: 'team', name: 'Team', icon: <Users /> },
-  // { path: 'reports', name: 'Reports', icon: <NotebookPen /> },
   { path: 'settings', name: 'Settings', icon: <Settings /> },
 ];
 

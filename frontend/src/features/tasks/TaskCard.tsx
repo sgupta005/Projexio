@@ -1,7 +1,7 @@
 import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { format } from 'date-fns';
 import { Task } from './types';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export function TaskCard({
   task,
@@ -13,12 +13,13 @@ export function TaskCard({
   dragHandleProps?: any;
 }) {
   const navigate = useNavigate();
+  const { orgId } = useParams<{ orgId: string }>();
 
   function handleClick(e: React.MouseEvent) {
     // If we're dragging or if the click is on the drag handle area, don't navigate
     if (isDragging || (dragHandleProps && e.target === e.currentTarget)) return;
 
-    navigate(`task/${task._id}`);
+    navigate(`/organisation/${orgId}/task/${task._id}`);
   }
 
   return (

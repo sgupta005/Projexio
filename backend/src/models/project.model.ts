@@ -4,6 +4,8 @@ export interface Project {
   organisationId: string;
   name: string;
   avatar: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const ProjectSchema = new Schema(

@@ -11,18 +11,20 @@ function Dashboard() {
   const { user, isGettingUser } = useCurrentUser();
 
   useEffect(() => {
-    dispatch(setHeading({ title: 'Dashboard', showOnDesktop: false }));
+    dispatch(
+      setHeading({
+        title: 'Dashboard',
+        subTitle: 'Monitor all of your project and tasks here',
+        showOnDesktop: true,
+      })
+    );
   }, [dispatch]);
 
   if (isGettingUser) {
     return <LoadingSpinner />;
   }
 
-  return (
-    <div className="container mx-auto px-4 py-6">
-      <DashboardLayout userId={user?._id} />
-    </div>
-  );
+  return <DashboardLayout userId={user?._id} />;
 }
 
 export default Dashboard;

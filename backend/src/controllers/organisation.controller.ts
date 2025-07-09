@@ -7,6 +7,8 @@ import MembershipModel, { Membership } from '../models/membership.model';
 import { generateInviteCode } from '../utils/helper';
 import CustomError from '../utils/CustomError';
 import UserModel from '../models/user.model';
+import TaskModel from '../models/task.model';
+import ProjectModel from '../models/project.model';
 
 declare global {
   namespace Express {
@@ -200,4 +202,93 @@ export const makeAdmin = asyncHandler(async function (
         'Member promoted to admin successfully'
       )
     );
+});
+
+export const getOrganisationAnalytics = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { orgId } = req.params;
+  const { userId } = req;
+
+  if (!orgId || !userId)
+    throw new CustomError('Organisation Id or User Id not provided.', 400);
+
+  // Calculate this week's date range (Monday to Sunday)
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(
+    today.getDate() - (today.getDay() === 0 ? 6 : today.getDay() - 1)
+  );
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+  endOfWeek.setHours(23, 59, 59, 999);
+
+  const totalProjects = await ProjectModel.countDocuments({
+    organisationId: orgId,
+  });
+  const thisWeekProjects = await ProjectModel.countDocuments({
+    organisationId: orgId,
+    createdAt: { $gte: startOfWeek, $lte: endOfWeek },
+  });
+
+  const totalTasks = await TaskModel.countDocuments({
+    organisationId: orgId,
+  });
+  const thisWeekTasks = await TaskModel.countDocuments({
+    organisationId: orgId,
+    createdAt: { $gte: startOfWeek, $lte: endOfWeek },
+  });
+
+  const assignedTasks = await TaskModel.countDocuments({
+    organisationId: orgId,
+    assigneeId: userId,
+  });
+  const thisWeekAssignedTasks = await TaskModel.countDocuments({
+    organisationId: orgId,
+    assigneeId: userId,
+    createdAt: { $gte: startOfWeek, $lte: endOfWeek },
+  });
+
+  const completedTasks = await TaskModel.countDocuments({
+    organisationId: orgId,
+    status: 'DONE',
+  });
+  const thisWeekCompletedTasks = await TaskModel.countDocuments({
+    organisationId: orgId,
+    status: 'DONE',
+    updatedAt: { $gte: startOfWeek, $lte: endOfWeek },
+  });
+
+  const overdueTasks = await TaskModel.countDocuments({
+    organisationId: orgId,
+    dueDate: { $lt: new Date() },
+    status: { $ne: 'DONE' },
+  });
+  const thisWeekOverdueTasks = await TaskModel.countDocuments({
+    organisationId: orgId,
+    dueDate: { $gte: startOfWeek, $lte: endOfWeek, $lt: new Date() },
+    status: { $ne: 'DONE' },
+  });
+
+  res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        totalProjects,
+        thisWeekProjects,
+        totalTasks,
+        thisWeekTasks,
+        assignedTasks,
+        thisWeekAssignedTasks,
+        completedTasks,
+        thisWeekCompletedTasks,
+        thisWeekOverdueTasks,
+        overdueTasks,
+      },
+      'Analytics fetched successfully.'
+    )
+  );
 });

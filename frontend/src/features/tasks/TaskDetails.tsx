@@ -8,18 +8,13 @@ import Button from '@/ui/Button';
 import { ArrowLeft, Calendar, User, FolderOpen, FileText } from 'lucide-react';
 
 function TaskDetails() {
-  const { orgId, projectId, taskId } = useParams<{
+  const { orgId, taskId } = useParams<{
     orgId: string;
-    projectId: string;
     taskId: string;
   }>();
   const navigate = useNavigate();
 
-  const { task, isLoading, error } = useGetTask(
-    orgId || '',
-    projectId || '',
-    taskId || ''
-  );
+  const { task, isLoading, error } = useGetTask(orgId || '', taskId || '');
 
   if (isLoading) {
     return (
@@ -48,10 +43,10 @@ function TaskDetails() {
       <Button
         variant="outline"
         className="ml-8 mt-2 sm:mt-0"
-        onClick={() => navigate(`/organisation/${orgId}/project/${projectId}`)}
+        onClick={() => navigate(-1)}
       >
         <ArrowLeft className="w-4 h-4" />
-        Back to Project
+        Back
       </Button>
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Main Content */}
@@ -118,7 +113,7 @@ function TaskDetails() {
                 {/* Assignee Card */}
                 <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                   <div className="flex items-center mb-4">
-                    <User className="w-5 h-5 text-purple-500 mr-2" />
+                    <User className="w-5 h-5 text-primary/60 mr-2" />
                     <h3 className="text-lg font-semibold text-gray-900">
                       Assignee
                     </h3>

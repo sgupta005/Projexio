@@ -9,6 +9,8 @@ export interface Task {
   description?: string;
   status: 'BACKLOG' | 'TODO' | 'IN_REVIEW' | 'IN_PROGRESS' | 'DONE';
   position: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const TaskSchema = new Schema(

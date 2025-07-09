@@ -52,7 +52,7 @@ function App() {
             <Route path="reports" element={<h1>Reports</h1>} />
             <Route path="settings" element={<Settings />} />
             <Route path="project/:projectId" element={<Project />} />
-            <Route path="project/:projectId/task/:taskId" element={<Task />} />
+            <Route path="task/:taskId" element={<Task />} />
             <Route
               path="project/:projectId/settings"
               element={<ProjectSettings />}
