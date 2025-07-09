@@ -4,8 +4,10 @@ import DashboardCard from './DashboardCard';
 import { Project } from '@/features/projects/types';
 import { LoadingSpinner } from '@/ui/Spinner';
 import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
-import { FolderIcon, ArrowRightIcon } from 'lucide-react';
+import { FolderIcon, ArrowRightIcon, Plus } from 'lucide-react';
 import Button from '@/ui/Button';
+import Modal from '@/ui/Modal';
+import CreateProject from '@/features/projects/CreateProject';
 
 export default function ProjectsList() {
   const { orgId } = useParams<{ orgId: string }>();
@@ -25,7 +27,23 @@ export default function ProjectsList() {
   };
 
   return (
-    <DashboardCard title={`Projects (${projects.length})`}>
+    <DashboardCard title={`Projects (${projects.length})`} className="relative">
+      <Modal>
+        <Modal.Open opens="createProject">
+          <button
+            className={`absolute top-6 right-8 border border-primary/20 rounded-md p-2 hover:bg-muted`}
+          >
+            <Plus className="size-4" />
+          </button>
+        </Modal.Open>
+        <Modal.Window
+          name="createProject"
+          heading="Create a new project"
+          subheading="Select a name and avatar for your project."
+        >
+          <CreateProject />
+        </Modal.Window>
+      </Modal>
       {!projects || projects.length === 0 ? (
         <div className="text-center py-6">
           <FolderIcon className="h-12 w-12 text-gray-400 mx-auto mb-3" />
