@@ -8,8 +8,9 @@ function Project() {
   useEffect(() => {
     dispatch(
       setHeading({
-        title: 'Project',
-        showOnDesktop: false,
+        title: 'Dashboard',
+        subTitle: 'Monitor all of your project and tasks here',
+        showOnDesktop: true,
       })
     );
   }, [dispatch]);

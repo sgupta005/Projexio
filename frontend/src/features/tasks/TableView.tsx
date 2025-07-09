@@ -39,7 +39,7 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-hidden md:overflow-x-auto max-h-[calc(100vh-300px)] overflow-y-auto">
+          <div className="overflow-x-hidden md:overflow-x-auto max-h-[calc(100vh-339px)] overflow-y-auto">
             <table className="min-w-full divide-y divide-gray-200 ">
               <thead>
                 <tr className="bg-gray-50">
@@ -49,12 +49,12 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                   >
                     Task
                   </th>
-                  <th
+                  {/* <th
                     scope="col"
                     className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell"
                   >
                     Project
-                  </th>
+                  </th> */}
                   <th
                     scope="col"
                     className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
@@ -96,20 +96,20 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                       navigate(`/organisation/${orgId}/task/${task._id}`)
                     }
                   >
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-2 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
                         {task.name}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap hidden md:table-cell">
+                    {/* <td className="px-6 py-2 whitespace-nowrap hidden md:table-cell">
                       <div className="text-sm text-gray-500 font-medium">
                         {task.projectName}
                       </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    </td> */}
+                    <td className="px-6 py-2 whitespace-nowrap">
                       <StatusBadge status={task.status} />
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap hidden sm:table-cell">
+                    <td className="px-6 py-2 whitespace-nowrap hidden sm:table-cell">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-8 w-8">
                           {task.assignee.avatar ? (
@@ -132,7 +132,7 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap hidden sm:table-cell">
+                    <td className="px-6 py-2 whitespace-nowrap hidden sm:table-cell">
                       <div className="text-sm text-gray-500">
                         {format(new Date(task.dueDate), 'MMM dd, yyyy')}
                       </div>

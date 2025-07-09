@@ -10,8 +10,8 @@ function Settings() {
     dispatch(
       setHeading({
         title: 'Settings',
-        subTitle: 'Update your settings',
-        showOnDesktop: false,
+        subTitle: 'View and update the settings of your organisation',
+        showOnDesktop: true,
       })
     );
   }, [dispatch]);
