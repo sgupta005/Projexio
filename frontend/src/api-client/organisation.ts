@@ -97,3 +97,15 @@ export const getOrganisationAnalytics = async function (
   if (!responseBody.success) throw new Error(responseBody.message);
   return responseBody.data;
 };
+
+export const deleteOrganisation = async function (organisationId: string) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${organisationId}`,
+    {
+      method: 'DELETE',
+      credentials: 'include',
+    }
+  );
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+};

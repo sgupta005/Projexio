@@ -217,3 +217,18 @@ export const getTaskById = asyncHandler(async function (
 
   return res.status(200).json(new ApiResponse(200, formattedTask));
 });
+
+export const deleteTask = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { taskId } = req.params;
+  if (!taskId) throw new CustomError('Task Id not provided.', 400);
+  //find task and delete it
+  const task = await TaskModel.findByIdAndDelete(taskId);
+  if (!task) throw new CustomError('Task not found', 404);
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, 'Task deleted successfully'));
+});

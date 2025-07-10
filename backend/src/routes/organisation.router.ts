@@ -8,6 +8,7 @@ import {
   makeAdmin,
   removeMember,
   getOrganisationAnalytics,
+  deleteOrganisation,
 } from '../controllers/organisation.controller';
 import { verifyToken } from '../middlewares/verifyToken';
 import { verifyAdmin } from '../middlewares/verifyAdmin';
@@ -24,6 +25,7 @@ router.post(
 router.get('/all', verifyToken, getOrganisations);
 router.post('/join', verifyToken, joinOrganisation);
 router.get('/:orgId', verifyToken, verifyMember, getOrganisationDetails);
+router.delete('/:orgId', verifyToken, verifyAdmin, deleteOrganisation);
 
 //members
 router.get('/:id/members', verifyToken, getMembers);

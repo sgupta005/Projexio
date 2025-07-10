@@ -3,9 +3,12 @@ import ImageUpload from '@/ui/ImageUpload';
 import useCurrentOrganisation from '../organisations/useCurrentOrganisaiton';
 import { LoadingSpinner } from '@/ui/Spinner';
 import InviteMembersCard from './InviteMembersCard';
+import { useDeleteOrganisation } from './useDeleteOrganisation';
+import ConfirmationModal from '@/ui/ConfirmationModal';
 
 function UpdateSettings() {
   const { currentOrg, isGettingCurrentOrg } = useCurrentOrganisation();
+  const { deleteOrganisation, isDeleting } = useDeleteOrganisation();
   if (isGettingCurrentOrg) return <LoadingSpinner />;
   return (
     <div className="mx-6 flex flex-col gap-4 mb-4">
@@ -39,9 +42,16 @@ function UpdateSettings() {
           associated with it.
         </p>
         <div className="flex">
-          <Button className="mt-6 mr-0 ml-auto " variant="danger">
-            Delete Organisation
-          </Button>
+          <ConfirmationModal
+            resourceType="Organisation"
+            resourceName={currentOrg?.name}
+            onConfirm={() => deleteOrganisation(currentOrg?._id)}
+            isLoading={isDeleting}
+          >
+            <Button className="mt-6 mr-0 ml-auto " variant="danger">
+              Delete Organisation
+            </Button>
+          </ConfirmationModal>
         </div>
       </div>
     </div>

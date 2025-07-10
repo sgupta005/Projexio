@@ -4,6 +4,7 @@ import {
   getProjectDetails,
   getProjects,
   getProjectAnalytics,
+  deleteProject,
 } from '../controllers/project.controller';
 import { verifyMember } from '../middlewares/verifyMember';
 import { verifyToken } from '../middlewares/verifyToken';
@@ -26,5 +27,6 @@ router.get(
   verifyMember,
   getProjectAnalytics
 );
+router.delete('/:projectId', verifyToken, verifyMember, deleteProject);
 
 export default router;

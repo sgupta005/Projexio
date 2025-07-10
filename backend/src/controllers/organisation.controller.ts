@@ -292,3 +292,22 @@ export const getOrganisationAnalytics = asyncHandler(async function (
     )
   );
 });
+
+export const deleteOrganisation = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { orgId } = req.params;
+  if (!orgId) throw new CustomError('Organisation Id not provided.', 400);
+  //find organisation and delete it
+  const org = await OrganisationModel.findByIdAndDelete(orgId);
+  if (!org) throw new CustomError('Organisation not found', 404);
+  //delete all memberships, projects, tasks
+  await MembershipModel.deleteMany({ organisationId: orgId });
+  await ProjectModel.deleteMany({ organisationId: orgId });
+  await TaskModel.deleteMany({ organisationId: orgId });
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, 'Organisation deleted successfully'));
+});

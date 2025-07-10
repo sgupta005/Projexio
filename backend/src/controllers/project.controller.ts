@@ -128,3 +128,20 @@ export const getProjectAnalytics = asyncHandler(async function (
     )
   );
 });
+
+export const deleteProject = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { projectId } = req.params;
+  if (!projectId) throw new CustomError('Project Id not provided.', 400);
+  //find project and delete it
+  const project = await ProjectModel.findByIdAndDelete(projectId);
+  if (!project) throw new CustomError('Project not found', 404);
+  //delete all tasks
+  await TaskModel.deleteMany({ projectId: projectId });
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, 'Project deleted successfully'));
+});
