@@ -5,14 +5,21 @@ import Button from '@/ui/Button';
 import { Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import TaskTabs from '../tasks/TaskTabs';
+import useGetProjectAnalytics from './useGetProjectAnalytics';
+import Analytics from '../dashboard/Analytics';
 
 function ProjectDetails() {
   const { currentProject, isGettingCurrentProject } = useCurrentProject();
   const navigate = useNavigate();
+  const { analytics, isGettingAnalytics } = useGetProjectAnalytics(
+    currentProject?.organisationId,
+    currentProject?._id
+  );
 
-  if (isGettingCurrentProject) return <LoadingSpinner />;
+  if (isGettingCurrentProject || isGettingAnalytics) return <LoadingSpinner />;
   return (
-    <div className="px-6 my-1">
+    <div className="px-6 space-y-6">
+      <Analytics analytics={analytics} />
       <div className="flex items-center gap-2">
         {currentProject?.avatar ? (
           <AvatarImage src={currentProject?.avatar} className="size-10" />

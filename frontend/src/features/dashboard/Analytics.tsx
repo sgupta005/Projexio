@@ -38,12 +38,16 @@ export default function Analytics({ analytics }: AnalyticsProps) {
   } = analytics;
 
   const stats = [
-    {
-      title: 'Total Projects',
-      value: totalProjects,
-      weeklyValue: thisWeekProjects,
-      weeklyColor: 'green' as const,
-    },
+    ...(totalProjects !== undefined && thisWeekProjects !== undefined
+      ? [
+          {
+            title: 'Total Projects',
+            value: totalProjects,
+            weeklyValue: thisWeekProjects,
+            weeklyColor: 'green' as const,
+          },
+        ]
+      : []),
     {
       title: 'Total Tasks',
       value: totalTasks,

@@ -5,6 +5,7 @@
 - [x] Redesign Home page
 - [x] Work on dashboard page
 - [ ] Create my tasks page
+- [x] show analytics on project page
 - [ ] Redeploy backend to some faster provider
 - [ ] Create Readme file
 - [ ] Create Profile page

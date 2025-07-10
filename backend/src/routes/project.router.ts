@@ -3,6 +3,7 @@ import {
   createProject,
   getProjectDetails,
   getProjects,
+  getProjectAnalytics,
 } from '../controllers/project.controller';
 import { verifyMember } from '../middlewares/verifyMember';
 import { verifyToken } from '../middlewares/verifyToken';
@@ -18,6 +19,12 @@ router.post(
   verifyMember,
   upload.single('avatar'),
   createProject
+);
+router.get(
+  '/:projectId/analytics',
+  verifyToken,
+  verifyMember,
+  getProjectAnalytics
 );
 
 export default router;

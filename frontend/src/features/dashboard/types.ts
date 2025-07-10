@@ -1,8 +1,8 @@
 import { Task } from '../tasks/types';
 
 export type Analytics = {
-  totalProjects: number;
-  thisWeekProjects: number;
+  totalProjects?: number;
+  thisWeekProjects?: number;
   totalTasks: number;
   thisWeekTasks: number;
   assignedTasks: number;

@@ -40,3 +40,18 @@ export const getCurrentProject = async function (
   const responseBody = await response.json();
   return responseBody.data;
 };
+
+export const getProjectAnalytics = async function (
+  orgId: string,
+  projectId: string
+) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${orgId}/project/${projectId}/analytics`,
+    {
+      credentials: 'include',
+    }
+  );
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+  return responseBody.data;
+};
