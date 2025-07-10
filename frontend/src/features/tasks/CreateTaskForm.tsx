@@ -15,7 +15,11 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<CreateTaskFormFields>();
+  } = useForm<CreateTaskFormFields>({
+    defaultValues: {
+      dueDate: format(new Date(), 'yyyy-MM-dd') as unknown as Date,
+    },
+  });
 
   const { createTask } = useCreateTask();
   const { orgId, projectId } = useParams();

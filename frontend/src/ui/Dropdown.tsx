@@ -80,7 +80,7 @@ function Title({
   className?: string;
 }) {
   return (
-    <p className={cn('font-semibold px-2 py-1 border-b', className)}>
+    <p className={cn('font-semibold px-3 py-2 border-b ', className)}>
       {children}
     </p>
   );
@@ -96,7 +96,7 @@ function Item({ children, onClick, className }: DropdownItemProps) {
   return (
     <div
       className={cn(
-        'flex items-center gap-2 px-2 py-1 w-full text-left hover:bg-muted',
+        'flex items-center gap-2 px-3 py-2 w-full text-left hover:bg-muted transition-colors',
         className
       )}
       onClick={onClick}
