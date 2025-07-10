@@ -9,6 +9,9 @@ export default function useCreateProject() {
       createProjectApi(data, orgId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['allProjects'] });
+      queryClient.invalidateQueries({
+        queryKey: ['organisationAnalytics'],
+      });
       toast.success('Project created successfully');
     },
     onError: (err) => {

@@ -7,7 +7,6 @@ interface ConfirmationModalProps {
   resourceName: string;
   onConfirm: () => void;
   isLoading?: boolean;
-  message?: string;
   children: React.ReactElement;
 }
 
@@ -16,7 +15,6 @@ interface ConfirmationModalWindowProps {
   resourceName: string;
   onConfirm: () => void;
   isLoading?: boolean;
-  message?: string;
   onClose?: () => void;
 }
 
@@ -25,17 +23,12 @@ function ConfirmationModalWindow({
   resourceName,
   onConfirm,
   isLoading = false,
-  message,
   onClose,
 }: ConfirmationModalWindowProps) {
   function handleConfirm() {
     onConfirm();
     // Don't close modal here - let the parent handle it based on success/error
   }
-
-  const confirmationMessage =
-    message ||
-    `Are you sure you want to delete ${resourceType} ${resourceName}?`;
 
   return (
     <div className="space-y-6">
@@ -92,7 +85,6 @@ function ConfirmationModal({
   resourceName,
   onConfirm,
   isLoading = false,
-  message,
   children,
 }: ConfirmationModalProps) {
   return (
@@ -104,7 +96,6 @@ function ConfirmationModal({
           resourceName={resourceName}
           onConfirm={onConfirm}
           isLoading={isLoading}
-          message={message}
         />
       </Modal.Window>
     </Modal>

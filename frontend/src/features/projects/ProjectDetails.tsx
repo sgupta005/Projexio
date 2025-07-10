@@ -1,5 +1,5 @@
 import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
-import useCurrentProject from './useCurrentProject';
+import useCurrentProject from './useCurrentProject.ts';
 import { LoadingSpinner } from '@/ui/Spinner';
 import Button from '@/ui/Button';
 import { Pencil } from 'lucide-react';

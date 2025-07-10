@@ -1,10 +1,19 @@
 import Button from '@/ui/Button';
+import ConfirmationModal from '@/ui/ConfirmationModal';
 import ImageUpload from '@/ui/ImageUpload';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useDeleteProject } from './useDeleteProject';
+import useCurrentProject from './useCurrentProject.ts';
+import { LoadingSpinner } from '@/ui/Spinner';
 
 function ProjectSettings() {
   const navigate = useNavigate();
+  const { currentProject, isGettingCurrentProject } = useCurrentProject();
+  const { deleteProject, isDeleting } = useDeleteProject();
+
+  if (isGettingCurrentProject) return <LoadingSpinner />;
+
   return (
     <div className="mx-6 flex flex-col gap-4 mb-4">
       <Button
@@ -43,9 +52,16 @@ function ProjectSettings() {
           with it.
         </p>
         <div className="flex">
-          <Button className="mt-6 mr-0 ml-auto " variant="danger">
-            Delete Project
-          </Button>
+          <ConfirmationModal
+            resourceType="Project"
+            resourceName={currentProject?.name}
+            onConfirm={() => deleteProject(currentProject?._id as string)}
+            isLoading={isDeleting}
+          >
+            <Button className="mt-6 mr-0 ml-auto " variant="danger">
+              Delete Project
+            </Button>
+          </ConfirmationModal>
         </div>
       </div>
     </div>

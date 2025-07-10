@@ -3,7 +3,7 @@ import { Task } from '@/features/tasks/types';
 import { StatusBadge } from '@/features/tasks/StatusBadge';
 import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { format } from 'date-fns';
-import { Calendar, User } from 'lucide-react';
+import { Calendar, ClipboardList, User } from 'lucide-react';
 import Button from '@/ui/Button';
 import { UpcomingTasksProps } from './types';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -35,6 +35,7 @@ export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
     <DashboardCard title={`Upcoming Tasks (${upcomingTasks.length})`}>
       {upcomingTasks.length === 0 ? (
         <div className="text-center py-6">
+          <ClipboardList className="h-12 w-12 text-gray-400 mx-auto mb-3" />
           <p className="text-gray-500">No upcoming tasks</p>
         </div>
       ) : (

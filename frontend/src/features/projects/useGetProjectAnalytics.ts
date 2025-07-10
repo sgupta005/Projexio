@@ -11,7 +11,7 @@ export default function useGetProjectAnalytics(
     error,
     refetch,
   } = useQuery({
-    queryKey: ['ProjectAnalytics', orgId, projectId],
+    queryKey: ['projectAnalytics', orgId, projectId],
     queryFn: () => getProjectAnalytics(orgId, projectId),
     enabled: !!orgId && !!projectId,
     retry: false,
