@@ -8,6 +8,7 @@ import useRemoveMember from './useRemoveMember';
 import useMakeAdmin from './useMakeAdmin';
 import useCurrentOrganisation from '../organisations/useCurrentOrganisaiton';
 import { Member } from './types';
+import InviteMembersCard from '../settings/InviteMembersCard';
 
 export default function OrganizationMembersTable() {
   const { currentOrg: currentOrganisation, isGettingCurrentOrg } =
@@ -21,7 +22,7 @@ export default function OrganizationMembersTable() {
 
   if (isGettingMembers || isGettingCurrentOrg) return <LoadingSpinner />;
   return (
-    <div className="pb-4 px-6">
+    <div className="pb-4 px-6 space-y-8">
       {/* Desktop view */}
       <div className="hidden md:block border rounded-lg ">
         <table className="border-muted w-full p-4 ">
@@ -101,6 +102,7 @@ export default function OrganizationMembersTable() {
           </div>
         ))}
       </div>
+      <InviteMembersCard inviteCode={currentOrganisation?.inviteCode} />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import Button from '@/ui/Button';
 import ImageUpload from '@/ui/ImageUpload';
 import useCurrentOrganisation from '../organisations/useCurrentOrganisaiton';
 import { LoadingSpinner } from '@/ui/Spinner';
-import CopyButton from '@/ui/CopyButton';
+import InviteMembersCard from './InviteMembersCard';
 
 function UpdateSettings() {
   const { currentOrg, isGettingCurrentOrg } = useCurrentOrganisation();
@@ -31,23 +31,7 @@ function UpdateSettings() {
           </div>
         </form>
       </div>
-      <div className="py-4 px-6 border rounded-md ">
-        <h1 className="font-semibold text-xl ">Invite Members</h1>
-        <p className="text-primary/60 text-sm">
-          Use the invite code to add members to your Organisation
-        </p>
-        <div className="flex gap-2 mt-2">
-          <div className="border rounded py-1 px-2 md:w-[50%] w-full">
-            {currentOrg?.inviteCode}
-          </div>
-          <CopyButton textToCopy={currentOrg?.inviteCode} />
-        </div>
-        <div className="flex">
-          <Button className="mt-6 mr-0 ml-auto " variant="danger">
-            Reset Invite Code
-          </Button>
-        </div>
-      </div>
+      <InviteMembersCard inviteCode={currentOrg?.inviteCode} />
       <div className="py-4 px-6 border rounded-md ">
         <h1 className="font-semibold text-xl ">Danger Zone</h1>
         <p className="text-primary/60 text-sm">
