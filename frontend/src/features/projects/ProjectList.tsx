@@ -1,5 +1,4 @@
 import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
-import TruncatedText from '@/ui/TruncatedText';
 import { Project } from './types';
 import Tooltip from '@/ui/Tooltip';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -48,13 +47,13 @@ function ProjectList({
             </AvatarFallback>
           )}
 
-          <TruncatedText
-            className={`text-muted-foreground font-semibold tran w-full ${
+          <div
+            className={`text-muted-foreground font-semibold tran w-full truncate ${
               isSidebarOpen ? 'opacity-1' : 'opacity-0'
             }`}
           >
             {project.name}
-          </TruncatedText>
+          </div>
         </div>
       ))}
     </div>

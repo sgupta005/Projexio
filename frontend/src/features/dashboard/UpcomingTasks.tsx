@@ -10,12 +10,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { cn } from '@/utils/helper';
 import { Status } from '@/features/tasks/types';
 
-const borderColors: Record<Status, string> = {
-  BACKLOG: 'border-orange-100 ',
-  TODO: 'border-blue-100 ',
-  IN_PROGRESS: 'border-yellow-100 ',
-  IN_REVIEW: 'border-purple-100 ',
-  DONE: 'border-green-100 ',
+const colors: Record<Status, { border: string; hover: string }> = {
+  BACKLOG: {
+    border: 'border-orange-200 ',
+    hover: 'hover:border-orange-600',
+  },
+  TODO: { border: 'border-blue-200 ', hover: 'hover:border-blue-600' },
+  IN_PROGRESS: {
+    border: 'border-yellow-200 ',
+    hover: 'hover:border-yellow-600',
+  },
+  IN_REVIEW: { border: 'border-purple-200 ', hover: 'hover:border-purple-600' },
+  DONE: { border: 'border-green-100 ', hover: 'hover:border-green-600' },
 };
 
 export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
@@ -49,10 +55,11 @@ export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
                   navigate(`/organisation/${orgId}/task/${task._id}`);
                 }}
                 className={cn(
-                  'p-4 rounded-lg border-2 cursor-pointer',
+                  'p-4 rounded-lg border cursor-pointer',
                   isOverdue
                     ? 'border-red-200 bg-red-50'
-                    : borderColors[task.status]
+                    : colors[task.status].border,
+                  colors[task.status].hover
                 )}
               >
                 <div className="flex items-start justify-between mb-2">

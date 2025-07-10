@@ -83,6 +83,7 @@ function Window({ children, name, heading, subheading }: WindowPropTypes) {
   return createPortal(
     <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/80">
       <div
+        id="modal-window"
         ref={ref}
         className="bg-background relative py-6 px-8 rounded-lg w-[90%] sm:w-max sm:min-w-[500px] max-h-[90%] overflow-auto no-scrollbar"
       >

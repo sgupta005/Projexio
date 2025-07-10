@@ -11,7 +11,6 @@ import {
 } from 'lucide-react';
 import DashedLine from './DashedLine';
 import Logo from './Logo';
-import TruncatedText from './TruncatedText';
 import { AvatarFallback, AvatarImage } from './Avatar';
 import Modal from './Modal';
 import CreateProject from '@/features/projects/CreateProject';
@@ -91,13 +90,13 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
               {currentOrg?.name.charAt(0).toUpperCase()}
             </AvatarFallback>
           )}
-          <TruncatedText
-            className={`w-[65%] font-semibold text-md tran ${
+          <div
+            className={`w-[65%] font-semibold text-md tran truncate ${
               isSidebarOpen ? 'opacity-1' : 'opacity-0'
             }`}
           >
             {currentOrg?.name}
-          </TruncatedText>
+          </div>
           <ChevronsUpDown className="mr-0 ml-auto size-4 text-gray-500 " />
         </div>
 
@@ -113,13 +112,13 @@ export function SidebarContent({ isSidebarOpen, setIsSidebarOpen }: PropTypes) {
                 <span>{route.icon}</span>
               )}
 
-              <TruncatedText
-                className={` tran w-full ${
+              <div
+                className={` tran w-full truncate ${
                   isSidebarOpen ? 'opacity-1' : 'opacity-0'
                 }`}
               >
                 {route.name}
-              </TruncatedText>
+              </div>
             </SidebarLink>
           ))}
         </div>

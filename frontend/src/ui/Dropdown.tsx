@@ -1,11 +1,14 @@
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { cn } from '@/utils/helper';
-import { ReactNode, useContext, useState } from 'react';
+import { ReactNode, useContext, useState, useEffect } from 'react';
 import { createContext } from 'react';
 
 interface DropdownContextType {
   isOpen: boolean;
   toggleDropdown: () => void;
+  position: 'top' | 'bottom';
+  setTriggerElement: (element: HTMLElement | null) => void;
+  dropdownCoords: { top: number; left: number };
 }
 
 const DropdownContext = createContext<DropdownContextType | undefined>(
@@ -14,13 +17,52 @@ const DropdownContext = createContext<DropdownContextType | undefined>(
 
 function Dropdown({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
+  const [dropdownCoords, setDropdownCoords] = useState({ top: 0, left: 0 });
+  const [triggerElement, setTriggerElement] = useState<HTMLElement | null>(
+    null
+  );
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const dropdownRef = useOutsideClick(() => setIsOpen(false));
 
+  // Calculate position and coordinates when dropdown opens
+  useEffect(() => {
+    if (isOpen && triggerElement) {
+      const triggerRect = triggerElement.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const spaceBelow = viewportHeight - triggerRect.bottom;
+      const spaceAbove = triggerRect.top;
+
+      // Estimate dropdown height (you can adjust this value)
+      const estimatedDropdownHeight = 200;
+
+      // Use bottom position if there's enough space, otherwise use top
+      const useBottomPosition = spaceBelow >= estimatedDropdownHeight;
+      setPosition(useBottomPosition ? 'bottom' : 'top');
+
+      // Calculate fixed positioning coordinates
+      const top = useBottomPosition
+        ? triggerRect.bottom + 4 // 4px margin below trigger
+        : triggerRect.top - 4; // 4px margin above trigger (dropdown will grow upward)
+
+      const left = triggerRect.right - 100; // Move 20px closer to trigger
+
+      setDropdownCoords({ top, left });
+    }
+  }, [isOpen, triggerElement]);
+
   return (
-    <DropdownContext.Provider value={{ isOpen, toggleDropdown }}>
+    <DropdownContext.Provider
+      value={{
+        isOpen,
+        toggleDropdown,
+        position,
+        setTriggerElement,
+        dropdownCoords,
+      }}
+    >
       <div className="relative" ref={dropdownRef}>
         {children}
       </div>
@@ -35,10 +77,14 @@ function Trigger({ children }: { children: ReactNode }) {
     throw new Error('DropdownTrigger must be used within a Dropdown');
   }
 
-  const { toggleDropdown } = context;
+  const { toggleDropdown, setTriggerElement } = context;
 
   return (
-    <button className="" onClick={toggleDropdown}>
+    <button
+      className=""
+      onClick={toggleDropdown}
+      ref={(element) => setTriggerElement(element)}
+    >
       {children}
     </button>
   );
@@ -57,19 +103,26 @@ function Menu({
     throw new Error('DropdownMenu must be used within a Dropdown');
   }
 
-  const { isOpen } = context;
+  const { isOpen, position, dropdownCoords } = context;
 
-  if (isOpen)
+  if (isOpen) {
     return (
       <div
         className={cn(
-          'bg-background border cursor-pointer rounded-md shadow-lg absolute z-20 w-max ',
+          'bg-background border cursor-pointer rounded-md shadow-lg fixed z-50 w-max',
+          position === 'top' ? 'origin-bottom' : 'origin-top',
           className
         )}
+        style={{
+          top: dropdownCoords.top,
+          left: dropdownCoords.left,
+          transform: position === 'top' ? 'translateY(-100%)' : 'translateY(0)',
+        }}
       >
         {children}
       </div>
     );
+  }
 }
 
 function Title({

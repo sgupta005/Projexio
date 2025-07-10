@@ -4,14 +4,15 @@ import { StatusBadge } from './StatusBadge';
 import { Task } from './types';
 import TaskFilters from './TaskFilters';
 import useTaskFilters from './useTaskFilters';
-import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ArrowDownIcon, ArrowUpIcon, Ellipsis, Trash2 } from 'lucide-react';
+import { EllipsisVertical } from 'lucide-react';
+import Dropdown from '@/ui/Dropdown';
+import { useDeleteTask } from './useDeleteTask';
+import ConfirmationModal from '@/ui/ConfirmationModal';
 
 export default function TableView({ tasks }: { tasks: Task[] }) {
   const { setFilters, filteredTasks, sortByDate, setSortByDate } =
     useTaskFilters(tasks || []);
-  const navigate = useNavigate();
-  const { orgId } = useParams<{ orgId: string }>();
 
   const handleSortClick = () => {
     setSortByDate((current) => (current === 'asc' ? 'desc' : 'asc'));
@@ -39,7 +40,7 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-hidden md:overflow-x-auto max-h-[calc(100vh-465px)] overflow-y-auto">
+          <div className="overflow-x-hidden md:overflow-x-auto sm:max-h-[calc(100vh-465px)] overflow-y-auto">
             <table className="min-w-full divide-y divide-gray-200 ">
               <thead>
                 <tr className="bg-gray-50">
@@ -83,6 +84,7 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                       </span>
                     </div>
                   </th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 ">
@@ -92,12 +94,12 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                     className={`hover:bg-gray-50 transition-colors cursor-pointer ${
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'
                     }`}
-                    onClick={() =>
-                      navigate(`/organisation/${orgId}/task/${task._id}`)
-                    }
+                    // onClick={() =>
+                    //   navigate(`/organisation/${orgId}/task/${task._id}`)
+                    // }
                   >
                     <td className="px-6 py-2 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
+                      <div className="text-sm font-medium text-gray-900 truncate max-w-[100px]">
                         {task.name}
                       </div>
                     </td>
@@ -137,6 +139,11 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                         {format(new Date(task.dueDate), 'MMM dd, yyyy')}
                       </div>
                     </td>
+                    <td className="px-6 py-2 whitespace-nowrap hidden md:table-cell">
+                      <div className="text-sm text-gray-500 font-medium">
+                        <TaskActions taskId={task._id} taskName={task.name} />
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -145,5 +152,41 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
         )}
       </div>
     </div>
+  );
+}
+
+function TaskActions({
+  taskId,
+  taskName,
+}: {
+  taskId: string;
+  taskName: string;
+}) {
+  const { deleteTask, isDeletingTask } = useDeleteTask();
+  return (
+    <Dropdown>
+      <Dropdown.Trigger>
+        <Ellipsis className="size-6 md:hidden" />
+        <EllipsisVertical className="size-4 hidden md:block" />
+      </Dropdown.Trigger>
+      <Dropdown.Menu>
+        <Dropdown.Title>Actions</Dropdown.Title>
+        <ConfirmationModal
+          isLoading={isDeletingTask}
+          resourceType="task"
+          resourceName={taskName}
+          onConfirm={() => {
+            deleteTask(taskId);
+          }}
+        >
+          <Dropdown.Item className="text-red-500 text-sm">
+            <span>
+              <Trash2 className="size-4" />
+            </span>
+            <span>Remove Task</span>
+          </Dropdown.Item>
+        </ConfirmationModal>
+      </Dropdown.Menu>
+    </Dropdown>
   );
 }

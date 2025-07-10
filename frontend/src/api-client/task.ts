@@ -93,3 +93,15 @@ export async function getTaskById(orgId: string, taskId: string) {
   const resBody = await response.json();
   return resBody.data;
 }
+
+export const deleteTask = async function (taskId: string, orgId: string) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${orgId}/task/${taskId}`,
+    {
+      method: 'DELETE',
+      credentials: 'include',
+    }
+  );
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+};

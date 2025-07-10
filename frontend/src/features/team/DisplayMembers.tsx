@@ -116,7 +116,7 @@ function MemberActions({ member, orgId }: { member: Member; orgId: string }) {
         <Ellipsis className="size-6 md:hidden" />
         <EllipsisVertical className="size-4 hidden md:block" />
       </Dropdown.Trigger>
-      <Dropdown.Menu className="top-6 -left-28 md:-left-[50%]">
+      <Dropdown.Menu>
         <Dropdown.Title>Actions</Dropdown.Title>
         <Dropdown.Item
           onClick={() => {
