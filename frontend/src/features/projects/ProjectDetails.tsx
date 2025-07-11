@@ -28,7 +28,7 @@ function ProjectDetails() {
             {currentProject?.name.charAt(0).toUpperCase()}
           </AvatarFallback>
         )}
-        <div>{currentProject?.name}</div>
+        <div className="truncate sm:not-truncate">{currentProject?.name}</div>
         <Button
           variant="outline"
           className="flex gap-1 items-center justify-center mr-0 ml-auto"

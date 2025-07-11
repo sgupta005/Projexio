@@ -16,6 +16,10 @@ export interface CreateTaskFormFields {
 export type Task = {
   _id: string;
   name: string;
+  projectId: {
+    _id: string;
+    name: string;
+  };
   projectName: string;
   status: Status;
   assignee: {
@@ -30,6 +34,8 @@ export interface Member {
   _id: string;
   firstName: string;
   lastName: string;
+  name: string;
+  avatar?: string;
 }
 
 export type SortDirection = 'asc' | 'desc';

@@ -10,12 +10,12 @@
 - [ ] Create Readme file
 - [ ] Create Profile page
 - [ ] Calendar View
-- [ ] Add dropdown to task table
+- [x] Add dropdown to task table
 - [ ] Make settings page work
 - [ ] Make edit project page work
 - [ ] Edit task details
 - [ ] Fix mobile ui bugs
 - [x] Add a filter for selecting due date
 - [x] Instead of filter for toggling due date there should be arrows next to due date in the table header for doing this.
-- [ ] Ability to delete tasks, project and workspaces.
+- [x] Ability to delete tasks, project and organisations.
 - [x] Increase size of auth pages

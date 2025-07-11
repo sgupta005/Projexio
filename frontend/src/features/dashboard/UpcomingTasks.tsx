@@ -21,7 +21,6 @@ const colors: Record<Status, { border: string; hover: string }> = {
     hover: 'hover:border-yellow-600',
   },
   IN_REVIEW: { border: 'border-purple-200 ', hover: 'hover:border-purple-600' },
-  DONE: { border: 'border-green-100 ', hover: 'hover:border-green-600' },
 };
 
 export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
@@ -57,9 +56,9 @@ export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
                 className={cn(
                   'p-4 rounded-lg border cursor-pointer',
                   isOverdue
-                    ? 'border-red-200 bg-red-50'
+                    ? 'border-red-200 bg-red-50 hover:border-red-500'
                     : colors[task.status].border,
-                  colors[task.status].hover
+                  !isOverdue && colors[task.status].hover
                 )}
               >
                 <div className="flex items-start justify-between mb-2">
@@ -106,15 +105,17 @@ export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
           })}
 
           <div className="">
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => {
-                /* TODO: Navigate to all tasks view */
-              }}
-            >
-              View All Tasks
-            </Button>
+            {upcomingTasks.length > 3 && (
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  /* TODO: Navigate to all tasks view */
+                }}
+              >
+                View All Tasks
+              </Button>
+            )}
           </div>
         </div>
       )}

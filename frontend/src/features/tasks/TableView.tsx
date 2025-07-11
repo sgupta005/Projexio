@@ -9,8 +9,11 @@ import { EllipsisVertical } from 'lucide-react';
 import Dropdown from '@/ui/Dropdown';
 import { useDeleteTask } from './useDeleteTask';
 import ConfirmationModal from '@/ui/ConfirmationModal';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function TableView({ tasks }: { tasks: Task[] }) {
+  const navigate = useNavigate();
+  const { orgId } = useParams();
   const { setFilters, filteredTasks, sortByDate, setSortByDate } =
     useTaskFilters(tasks || []);
 
@@ -21,7 +24,7 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
   if (!tasks || tasks.length === 0) return null;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mb-6 sm:mb-0">
       <TaskFilters
         tasks={tasks}
         onFilterChange={setFilters}
@@ -94,9 +97,9 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
                     className={`hover:bg-gray-50 transition-colors cursor-pointer ${
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'
                     }`}
-                    // onClick={() =>
-                    //   navigate(`/organisation/${orgId}/task/${task._id}`)
-                    // }
+                    onClick={() =>
+                      navigate(`/organisation/${orgId}/task/${task._id}`)
+                    }
                   >
                     <td className="px-6 py-2 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900 truncate max-w-[100px]">
@@ -163,30 +166,37 @@ function TaskActions({
   taskName: string;
 }) {
   const { deleteTask, isDeletingTask } = useDeleteTask();
+
+  const handleDropdownClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling to table row
+  };
+
   return (
-    <Dropdown>
-      <Dropdown.Trigger>
-        <Ellipsis className="size-6 md:hidden" />
-        <EllipsisVertical className="size-4 hidden md:block" />
-      </Dropdown.Trigger>
-      <Dropdown.Menu>
-        <Dropdown.Title>Actions</Dropdown.Title>
-        <ConfirmationModal
-          isLoading={isDeletingTask}
-          resourceType="task"
-          resourceName={taskName}
-          onConfirm={() => {
-            deleteTask(taskId);
-          }}
-        >
-          <Dropdown.Item className="text-red-500 text-sm">
-            <span>
-              <Trash2 className="size-4" />
-            </span>
-            <span>Remove Task</span>
-          </Dropdown.Item>
-        </ConfirmationModal>
-      </Dropdown.Menu>
-    </Dropdown>
+    <div onClick={handleDropdownClick}>
+      <Dropdown>
+        <Dropdown.Trigger>
+          <Ellipsis className="size-6 md:hidden" />
+          <EllipsisVertical className="size-4 hidden md:block" />
+        </Dropdown.Trigger>
+        <Dropdown.Menu>
+          <Dropdown.Title>Actions</Dropdown.Title>
+          <ConfirmationModal
+            isLoading={isDeletingTask}
+            resourceType="task"
+            resourceName={taskName}
+            onConfirm={() => {
+              deleteTask(taskId);
+            }}
+          >
+            <Dropdown.Item className="text-red-500 text-sm">
+              <span>
+                <Trash2 className="size-4" />
+              </span>
+              <span>Remove Task</span>
+            </Dropdown.Item>
+          </ConfirmationModal>
+        </Dropdown.Menu>
+      </Dropdown>
+    </div>
   );
 }
