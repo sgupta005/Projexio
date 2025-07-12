@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import useGetUserTasks from './useGetUserTasks';
+import useGetUserTasks from '../tasks/useGetUserTasks';
 import { LoadingSpinner } from '@/ui/Spinner';
 import Analytics from './Analytics';
 import UpcomingTasks from './UpcomingTasks';

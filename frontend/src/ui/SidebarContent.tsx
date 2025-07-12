@@ -3,6 +3,7 @@ import SidebarLink from './SidebarLink';
 import {
   ChevronsUpDown,
   CirclePlus,
+  ClipboardList,
   Home,
   PanelLeftClose,
   PanelLeftOpen,
@@ -21,6 +22,7 @@ import useGetAllProjects from '@/features/projects/useGetAllProjects';
 
 const routes = [
   { path: 'dashboard', name: 'Dashboard', icon: <Home /> },
+  { path: 'my-tasks', name: 'My Tasks', icon: <ClipboardList /> },
   { path: 'team', name: 'Team', icon: <Users /> },
   { path: 'settings', name: 'Settings', icon: <Settings /> },
 ];

@@ -13,6 +13,7 @@ import Settings from './pages/Settings';
 import Project from './pages/Project';
 import ProjectSettings from './features/projects/ProjectSettings';
 import Task from './pages/Task';
+import MyTasks from './pages/MyTasks';
 
 function App() {
   return (
@@ -48,8 +49,8 @@ function App() {
           >
             <Route index element={<Navigate to="dashboard" replace={true} />} />
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="my-tasks" element={<MyTasks />} />
             <Route path="team" element={<Team />} />
-            <Route path="reports" element={<h1>Reports</h1>} />
             <Route path="settings" element={<Settings />} />
             <Route path="project/:projectId" element={<Project />} />
             <Route path="task/:taskId" element={<Task />} />

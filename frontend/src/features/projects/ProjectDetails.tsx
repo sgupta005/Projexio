@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import TaskTabs from '../tasks/TaskTabs';
 import useGetProjectAnalytics from './useGetProjectAnalytics';
 import Analytics from '../dashboard/Analytics';
+import useGetAllTasks from '../tasks/useGetAllTasks.ts';
 
 function ProjectDetails() {
   const { currentProject, isGettingCurrentProject } = useCurrentProject();
@@ -15,8 +16,13 @@ function ProjectDetails() {
     currentProject?.organisationId,
     currentProject?._id
   );
+  const { tasks, isGettingTasks } = useGetAllTasks(
+    currentProject?.organisationId,
+    currentProject?._id
+  );
 
-  if (isGettingCurrentProject || isGettingAnalytics) return <LoadingSpinner />;
+  if (isGettingCurrentProject || isGettingAnalytics || isGettingTasks)
+    return <LoadingSpinner />;
   return (
     <div className="px-6 space-y-6">
       <Analytics analytics={analytics} />
@@ -38,7 +44,7 @@ function ProjectDetails() {
           Edit Project
         </Button>
       </div>
-      <TaskTabs />
+      <TaskTabs tasks={tasks} />
     </div>
   );
 }

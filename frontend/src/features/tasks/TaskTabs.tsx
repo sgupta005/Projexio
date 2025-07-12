@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import TableView from './TableView';
 import CreateTask from './CreateTask';
-import useGetAllTasks from './useGetAllTasks';
-import { useParams } from 'react-router-dom';
 import KanbanView from './KanbanView';
+import { Task } from './types';
 
 const EmptyState = () => (
   <div className="flex flex-col items-center justify-center py-12">
@@ -14,15 +13,13 @@ const EmptyState = () => (
   </div>
 );
 
-export default function TaskTabs() {
+export default function TaskTabs({ tasks }: { tasks: Task[] }) {
   const [activeTab, setActiveTab] = useState<'table' | 'kanban' | 'calendar'>(
     'table'
   );
-  const { orgId, projectId } = useParams();
-  const { tasks } = useGetAllTasks(orgId as string, projectId as string);
 
   return (
-    <div className="mt-6">
+    <>
       <div className="border-b border-gray-200 flex justify-between">
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
           {['table', 'kanban'].map((tab) => (
@@ -51,6 +48,6 @@ export default function TaskTabs() {
         {activeTab === 'kanban' && <KanbanView tasks={tasks} />}
         {/* {activeTab === 'calendar' && <CalendarView />} */}
       </div>
-    </div>
+    </>
   );
 }

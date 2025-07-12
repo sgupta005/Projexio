@@ -1,0 +1,36 @@
+import { setHeading } from '@/store/slices/headerSlice';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import TaskTabs from '@/features/tasks/TaskTabs';
+import { LoadingSpinner } from '@/ui/Spinner';
+import useGetUserTasks from '@/features/tasks/useGetUserTasks';
+import { useParams } from 'react-router-dom';
+import useCurrentUser from '@/features/auth/useCurrentUser';
+
+function MyTasks() {
+  const dispatch = useDispatch();
+  const { orgId } = useParams();
+  const { user, isGettingUser } = useCurrentUser();
+  const { tasks, isGettingTasks } = useGetUserTasks(
+    orgId as string,
+    user?._id as string
+  );
+  useEffect(() => {
+    dispatch(
+      setHeading({
+        title: 'My Tasks',
+        subTitle: 'Monitor all the tasks assigned to you',
+        showOnDesktop: true,
+      })
+    );
+  }, [dispatch]);
+
+  if (isGettingTasks || isGettingUser) return <LoadingSpinner />;
+  return (
+    <div className="px-6">
+      <TaskTabs tasks={tasks} />
+    </div>
+  );
+}
+
+export default MyTasks;

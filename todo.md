@@ -8,7 +8,7 @@
 - [x] show analytics on project page
 - [ ] Redeploy backend to some faster provider
 - [ ] Create Readme file
-- [ ] Create Profile page
+- [ ] Create Profile icon and dropdown
 - [ ] Calendar View
 - [x] Add dropdown to task table
 - [ ] Make settings page work
