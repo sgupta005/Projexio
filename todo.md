@@ -4,11 +4,11 @@
 - [x] Create task page
 - [x] Redesign Home page
 - [x] Work on dashboard page
-- [ ] Create my tasks page
+- [x] Create my tasks page
 - [x] show analytics on project page
 - [ ] Redeploy backend to some faster provider
 - [ ] Create Readme file
-- [ ] Create Profile icon and dropdown
+- [x] Create Profile icon and dropdown
 - [ ] Calendar View
 - [x] Add dropdown to task table
 - [ ] Make settings page work

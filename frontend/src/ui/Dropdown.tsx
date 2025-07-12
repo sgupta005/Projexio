@@ -33,7 +33,7 @@ function Dropdown({ children }: { children: ReactNode }) {
       const triggerRect = triggerElement.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       const spaceBelow = viewportHeight - triggerRect.bottom;
-      const spaceAbove = triggerRect.top;
+      // const spaceAbove = triggerRect.top;
 
       // Estimate dropdown height (you can adjust this value)
       const estimatedDropdownHeight = 200;
