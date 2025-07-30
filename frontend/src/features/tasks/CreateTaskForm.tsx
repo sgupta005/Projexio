@@ -1,13 +1,22 @@
-import Button from '@/ui/Button';
+import { Button } from '@/components/ui/button';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import { format } from 'date-fns';
+import { format, isBefore } from 'date-fns';
 import { useCreateTask } from './useCreateTask';
 import { CreateTaskFormFields, Member, statuses } from './types';
 import { useParams } from 'react-router-dom';
 import useGetMembers from '../team/useGetMembers';
-import Input from '@/ui/Input';
-
-import Select from 'react-select';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+} from '@/components/ui/select';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { DatePicker } from '@/components/ui/date-picker';
 
 export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
   const {
@@ -29,15 +38,11 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
     data.projectId = projectId!;
     data.position = 0;
     createTask(data);
-    console.log(data);
     onClose?.();
   };
 
   const { members } = useGetMembers(orgId!);
 
-  const inputClassName =
-    'w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary appearance-none pr-8';
-  const labelClassName = 'text-muted-foreground font-semibold';
   const errorClassName = 'text-red-400 text-sm mt-1';
 
   return (
@@ -60,37 +65,24 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
       />
 
       <div className="space-y-1">
-        <label htmlFor="status" className={labelClassName}>
-          Status
-        </label>
+        <Label htmlFor="status">Status</Label>
         <Controller
           name="status"
           control={control}
           rules={{ required: 'Status is required' }}
           render={({ field }) => (
-            <Select
-              {...field}
-              options={statuses.map((status) => ({
-                value: status,
-                label: status.replace('_', ' '),
-              }))}
-              value={
-                statuses
-                  .map((status) => ({
-                    value: status,
-                    label: status.replace('_', ' '),
-                  }))
-                  .find(
-                    (option: { value: string; label: string }) =>
-                      option.value === field.value
-                  ) || null
-              }
-              onChange={(selectedOption) =>
-                field.onChange(selectedOption?.value)
-              }
-              placeholder="Select Status"
-              isClearable={false}
-            />
+            <Select {...field} onValueChange={field.onChange}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Status" />
+              </SelectTrigger>
+              <SelectContent>
+                {statuses?.map((status) => (
+                  <SelectItem key={status} value={status}>
+                    {status.replace('_', ' ')}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           )}
         />
         {errors.status && (
@@ -99,39 +91,31 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
       </div>
 
       <div className="space-y-1">
-        <label htmlFor="assigneeId" className={labelClassName}>
-          Assignee
-        </label>
+        <Label htmlFor="assigneeId">Assignee</Label>
         <Controller
           name="assigneeId"
           control={control}
           rules={{ required: 'Assignee is required' }}
           render={({ field }) => (
-            <Select
-              {...field}
-              options={
-                members?.map((member: Member) => ({
-                  value: member._id,
-                  label: `${member.firstName} ${member.lastName}`,
-                })) || []
-              }
-              value={
-                members
-                  ?.map((member: Member) => ({
-                    value: member._id,
-                    label: `${member.firstName} ${member.lastName}`,
-                  }))
-                  .find(
-                    (option: { value: string; label: string }) =>
-                      option.value === field.value
-                  ) || null
-              }
-              onChange={(selectedOption) =>
-                field.onChange(selectedOption?.value)
-              }
-              placeholder="Select Assignee"
-              isClearable={false}
-            />
+            <Select {...field} onValueChange={field.onChange}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Assignee" />
+              </SelectTrigger>
+              <SelectContent>
+                {members?.map((member: Member) => (
+                  <SelectItem key={member._id} value={member._id}>
+                    <Avatar>
+                      <AvatarImage src={member.avatar} />
+                      <AvatarFallback>
+                        {member.firstName.charAt(0)}
+                        {member.lastName.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    {member.firstName} {member.lastName}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           )}
         />
         {errors.assigneeId && (
@@ -139,22 +123,53 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
         )}
       </div>
 
-      <Input
-        id="dueDate"
-        type="date"
-        label="Due Date"
-        min={format(new Date(), 'yyyy-MM-dd')}
-        {...register('dueDate', { required: 'Due date is required' })}
-      />
+      <div className="space-y-1">
+        <Label htmlFor="dueDate">Due Date</Label>
+        <Controller
+          name="dueDate"
+          control={control}
+          rules={{
+            required: 'Due date is required',
+            validate: (value) => {
+              if (
+                value &&
+                isBefore(
+                  value,
+                  new Date(new Date().setDate(new Date().getDate() - 1))
+                )
+              ) {
+                return 'Due date cannot be in the past';
+              }
+              return true;
+            },
+          }}
+          render={({ field }) => (
+            <DatePicker
+              className="w-full"
+              {...field}
+              date={field.value}
+              onChange={field.onChange}
+              modal={true}
+            />
+          )}
+        />
+        {errors.dueDate && (
+          <div className={errorClassName}>{errors.dueDate.message}</div>
+        )}
+      </div>
 
       <div className="space-y-1">
-        <label htmlFor="description" className={labelClassName}>
-          Description (Optional)
-        </label>
-        <textarea
-          id="description"
-          className={`${inputClassName} min-h-[80px]`}
-          {...register('description')}
+        <Label htmlFor="description">Description (Optional)</Label>
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <Textarea
+              {...field}
+              onChange={field.onChange}
+              placeholder="Enter description"
+            />
+          )}
         />
       </div>
 

@@ -2,10 +2,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import useGetMembers from '@/features/team/useGetMembers';
 import DashboardCard from './DashboardCard';
 import { Member } from '@/features/team/types';
-import { LoadingSpinner } from '@/ui/Spinner';
-import { AvatarFallback } from '@/ui/Avatar';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
 import { UsersIcon, ShieldIcon, UserIcon } from 'lucide-react';
-import Button from '@/ui/Button';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 export default function TeamMembers() {
   const { orgId } = useParams<{ orgId: string }>();
@@ -36,11 +36,13 @@ export default function TeamMembers() {
           {members.slice(0, 6).map((member: Member) => (
             <div
               key={member._id}
-              className="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors text-center"
+              className="flex flex-col items-center p-4 rounded-lg border text-center"
             >
-              <AvatarFallback className="h-12 w-12 bg-primary text-background mb-3">
-                {member.firstName.charAt(0).toUpperCase()}
-              </AvatarFallback>
+              <Avatar>
+                <AvatarFallback>
+                  {member.firstName.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
 
               <div className="mb-2">
                 <h4 className="font-medium text-gray-900 text-sm truncate">
@@ -53,7 +55,7 @@ export default function TeamMembers() {
                 className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
                   member.role === 'admin'
                     ? 'bg-primary text-background'
-                    : 'bg-gray-100 text-gray-700'
+                    : 'bg-muted'
                 }`}
               >
                 {member.role === 'admin' ? (

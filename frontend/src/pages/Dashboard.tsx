@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setHeading } from '@/store/slices/headerSlice';
 import DashboardLayout from '@/features/dashboard/DashboardLayout';
 import useCurrentUser from '@/features/auth/useCurrentUser';
-import { LoadingSpinner } from '@/ui/Spinner';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
 
 function Dashboard() {
   const dispatch = useDispatch();

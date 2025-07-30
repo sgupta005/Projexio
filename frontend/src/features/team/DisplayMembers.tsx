@@ -1,14 +1,29 @@
 import { Ellipsis, EllipsisVertical, ShieldCheck, Trash2 } from 'lucide-react';
 import useGetMembers from './useGetMembers';
-import Dropdown from '@/ui/Dropdown';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import useCurrentUser from '../auth/useCurrentUser';
-import { AvatarFallback } from '@/ui/Avatar';
-import { LoadingSpinner } from '@/ui/Spinner';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
 import useRemoveMember from './useRemoveMember';
 import useMakeAdmin from './useMakeAdmin';
 import useCurrentOrganisation from '../organisations/useCurrentOrganisaiton';
 import { Member } from './types';
 import InviteMembersCard from '../settings/InviteMembersCard';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 export default function OrganizationMembersTable() {
   const { currentOrg: currentOrganisation, isGettingCurrentOrg } =
@@ -25,47 +40,48 @@ export default function OrganizationMembersTable() {
     <div className="pb-4 px-6 space-y-8">
       {/* Desktop view */}
       <div className="hidden md:block border rounded-lg ">
-        <table className="border-muted w-full p-4 ">
-          <tr className="bg-muted">
-            <td className="font-semibold text-primary/70 p-4">Name</td>
-            <td className="font-semibold text-primary/70">Email</td>
-            <td className="font-semibold text-primary/70">Role</td>
-            {isAdmin && members.length > 1 && (
-              <td className="font-semibold text-primary/70">Actions</td>
-            )}
-          </tr>
-          {members?.map((member: Member) => (
-            <tr
-              key={member._id}
-              className="hover:bg-gray-50 border-b  border-muted "
-            >
-              <td className="flex items-center gap-2 p-4 ">
-                <AvatarFallback>{member.firstName[0]}</AvatarFallback>
-                <span className="font-medium">{`${member.firstName} ${member.lastName}`}</span>
-              </td>
-              <td>{member.email}</td>
-              <td>
-                <div
-                  className={`capitalize rounded-2xl w-max px-3 md:px-4 py-1 text-xs md:text-sm ${
-                    member.role == 'admin' && 'bg-primary text-background'
-                  } ${member.role == 'member' && 'bg-muted-foreground/20'}`}
-                >
-                  {member.role}
-                </div>
-              </td>
-              {isAdmin && members.length > 1 && (
-                <td>
-                  {member._id !== user._id && (
-                    <MemberActions
-                      member={member}
-                      orgId={currentOrganisation?._id as string}
-                    />
-                  )}
-                </td>
-              )}
-            </tr>
-          ))}
-        </table>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Role</TableHead>
+              {isAdmin && members.length > 1 && <TableHead>Actions</TableHead>}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {members?.map((member: Member) => (
+              <TableRow key={member._id}>
+                <TableCell className="flex items-center gap-2 p-4">
+                  <Avatar>
+                    <AvatarFallback>{member.firstName[0]}</AvatarFallback>
+                  </Avatar>
+                  <span className="font-medium">{`${member.firstName} ${member.lastName}`}</span>
+                </TableCell>
+                <TableCell>{member.email}</TableCell>
+                <TableCell>
+                  <div
+                    className={`capitalize rounded-2xl w-max px-3 md:px-4 py-1 text-xs md:text-sm ${
+                      member.role == 'admin' && 'bg-primary text-background'
+                    } ${member.role == 'member' && 'bg-muted-foreground/20'}`}
+                  >
+                    {member.role}
+                  </div>
+                </TableCell>
+                {isAdmin && members.length > 1 && (
+                  <TableCell>
+                    {member._id !== user._id && (
+                      <MemberActions
+                        member={member}
+                        orgId={currentOrganisation?._id as string}
+                      />
+                    )}
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
 
       {/* Mobile view */}
@@ -77,7 +93,9 @@ export default function OrganizationMembersTable() {
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
-                <AvatarFallback>{member.firstName[0]}</AvatarFallback>
+                <Avatar>
+                  <AvatarFallback>{member.firstName[0]}</AvatarFallback>
+                </Avatar>
                 <div>
                   <h3 className="font-medium">{`${member.firstName} ${member.lastName}`}</h3>
                   <p className="text-sm text-muted-foreground">
@@ -111,38 +129,40 @@ function MemberActions({ member, orgId }: { member: Member; orgId: string }) {
   const { removeMember } = useRemoveMember();
   const { makeAdmin } = useMakeAdmin();
   return (
-    <Dropdown>
-      <Dropdown.Trigger>
-        <Ellipsis className="size-6 md:hidden" />
-        <EllipsisVertical className="size-4 hidden md:block" />
-      </Dropdown.Trigger>
-      <Dropdown.Menu>
-        <Dropdown.Title>Actions</Dropdown.Title>
-        <Dropdown.Item
-          onClick={() => {
-            removeMember({ organisationId: orgId, memberId: member._id });
-          }}
-          className="text-red-500 text-sm"
-        >
-          <span>
-            <Trash2 className="size-4" />
-          </span>
-          <span>Remove Member</span>
-        </Dropdown.Item>
-        {member.role !== 'admin' && (
-          <Dropdown.Item
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Ellipsis className="size-6 md:hidden cursor-pointer" />
+        <EllipsisVertical className="size-4 hidden md:block cursor-pointer" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuItem
             onClick={() => {
-              makeAdmin({ organisationId: orgId, memberId: member._id });
+              removeMember({ organisationId: orgId, memberId: member._id });
             }}
-            className=" text-sm"
+            className="text-red-500 text-sm"
           >
             <span>
-              <ShieldCheck className="size-4" />
+              <Trash2 className="size-4" />
             </span>
-            <span>Make admin</span>
-          </Dropdown.Item>
-        )}
-      </Dropdown.Menu>
-    </Dropdown>
+            <span>Remove Member</span>
+          </DropdownMenuItem>
+          {member.role !== 'admin' && (
+            <DropdownMenuItem
+              onClick={() => {
+                makeAdmin({ organisationId: orgId, memberId: member._id });
+              }}
+              className=" text-sm"
+            >
+              <span>
+                <ShieldCheck className="size-4" />
+              </span>
+              <span>Make admin</span>
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

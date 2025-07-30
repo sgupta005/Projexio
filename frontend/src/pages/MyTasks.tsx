@@ -1,8 +1,8 @@
 import { setHeading } from '@/store/slices/headerSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import TaskTabs from '@/features/tasks/TaskTabs';
-import { LoadingSpinner } from '@/ui/Spinner';
+import TaskTabs from '@/features/tasks/TaskTabs.tsx';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
 import useGetUserTasks from '@/features/tasks/useGetUserTasks';
 import { useParams } from 'react-router-dom';
 import useCurrentUser from '@/features/auth/useCurrentUser';
@@ -28,7 +28,12 @@ function MyTasks() {
   if (isGettingTasks || isGettingUser) return <LoadingSpinner />;
   return (
     <div className="px-6">
-      <TaskTabs tasks={tasks} />
+      <TaskTabs
+        tasks={tasks}
+        showProject={true}
+        showAssigne={false}
+        itemsPerPage={12}
+      />
     </div>
   );
 }

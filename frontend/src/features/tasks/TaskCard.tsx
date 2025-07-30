@@ -1,4 +1,4 @@
-import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { format } from 'date-fns';
 import { Task } from './types';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -24,7 +24,7 @@ export function TaskCard({
 
   return (
     <div
-      className={`bg-white p-3 rounded-lg shadow-sm cursor-pointer ${
+      className={`bg-background p-3 rounded-lg shadow-sm cursor-pointer ${
         isDragging && 'border-2 border-blue-500'
       }`}
       onClick={handleClick}
@@ -35,13 +35,10 @@ export function TaskCard({
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          {task.assignee.avatar ? (
-            <AvatarImage src={task.assignee.avatar} className="size-6" />
-          ) : (
-            <AvatarFallback className="size-6">
-              {task.assignee.name.charAt(0)}
-            </AvatarFallback>
-          )}
+          <Avatar>
+            <AvatarImage src={task.assignee.avatar as string} />
+            <AvatarFallback>{task.assignee.name.charAt(0)}</AvatarFallback>
+          </Avatar>
           <span className="ml-2 text-sm">{task.assignee.name}</span>
         </div>
         <div className="text-sm text-gray-500">

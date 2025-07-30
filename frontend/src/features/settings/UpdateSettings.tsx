@@ -1,10 +1,10 @@
-import Button from '@/ui/Button';
+import { Button } from '@/components/ui/button';
 import ImageUpload from '@/ui/ImageUpload';
 import useCurrentOrganisation from '../organisations/useCurrentOrganisaiton';
-import { LoadingSpinner } from '@/ui/Spinner';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
 import InviteMembersCard from './InviteMembersCard';
 import { useDeleteOrganisation } from './useDeleteOrganisation';
-import ConfirmationModal from '@/ui/ConfirmationModal';
+import ConfirmationDialog from '@/ui/ConfirmationDialog';
 
 function UpdateSettings() {
   const { currentOrg, isGettingCurrentOrg } = useCurrentOrganisation();
@@ -42,16 +42,16 @@ function UpdateSettings() {
           associated with it.
         </p>
         <div className="flex">
-          <ConfirmationModal
+          <ConfirmationDialog
             resourceType="Organisation"
             resourceName={currentOrg?.name}
             onConfirm={() => deleteOrganisation(currentOrg?._id)}
             isLoading={isDeleting}
           >
-            <Button className="mt-6 mr-0 ml-auto " variant="danger">
+            <Button className="mt-6 mr-0 ml-auto " variant="destructive">
               Delete Organisation
             </Button>
-          </ConfirmationModal>
+          </ConfirmationDialog>
         </div>
       </div>
     </div>

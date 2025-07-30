@@ -68,7 +68,7 @@ export default function KanbanView({ tasks }: { tasks: Task[] }) {
     const overIndex = items.indexOf(overTask);
 
     let newItems;
-    let newStatus = overTask.status;
+    const newStatus = overTask.status;
 
     // Update status if dropped in different column
     if (activeTask.status !== overTask.status) {

@@ -1,61 +1,77 @@
-import Button from '@/ui/Button';
-import ImageUpload from '@/ui/ImageUpload';
-import useCreateProject from './useCreateProject';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
+import { Plus } from 'lucide-react';
+import CreateProjectForm from './CreateProjectForm';
 import { useState } from 'react';
-import SpinnerMini from '@/ui/SpinnerMini';
-import { Project } from './types';
-import { useForm } from 'react-hook-form';
-import useCurrentOrganisation from '../organisations/useCurrentOrganisaiton';
-import Input from '@/ui/Input';
+import useResize from '@/hooks/useResize';
 
-function CreateProject({ onClose }: { onClose?: () => void }) {
-  const { createProject, isCreatingProject } = useCreateProject();
-  const { currentOrg } = useCurrentOrganisation();
-  const [image, setImage] = useState<File | null>(null);
+function CreateProject({ children }: { children?: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const { isMobile } = useResize();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Project>();
-
-  function submit({ name }: { name: string }) {
-    if (!currentOrg) return;
-    const data = new FormData();
-    data.append('name', name);
-    if (image) data.append('avatar', image);
-    createProject(
-      { data, orgId: currentOrg._id as string },
-      { onSuccess: onClose }
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          {children ? (
+            children
+          ) : (
+            <Button className="flex items-center gap-2 w-fit">
+              <Plus className="size-4" />
+              Create Project
+            </Button>
+          )}
+        </DrawerTrigger>
+        <DrawerContent className="px-6 pb-4">
+          <DrawerHeader>
+            <DrawerTitle>Create Project</DrawerTitle>
+            <DrawerDescription>
+              Create a new project to get started.
+            </DrawerDescription>
+          </DrawerHeader>
+          <CreateProjectForm onClose={() => setOpen(false)} />
+        </DrawerContent>
+      </Drawer>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-6 ">
-      <Input
-        id="name"
-        label="Name"
-        type="text"
-        error={errors.name?.message}
-        {...register('name', {
-          required: 'Name is required',
-        })}
-      />
-      <ImageUpload title="Project Icon" setImage={setImage} />
-      <div className=" space-x-2 flex items-center ml-auto mr-0 ">
-        <Button
-          className="w-max"
-          variant={'outline'}
-          type="reset"
-          onClick={onClose}
-        >
-          Cancel
-        </Button>
-        <Button type="submit">
-          {isCreatingProject ? <SpinnerMini /> : 'Create Project'}
-        </Button>
-      </div>
-    </form>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        {children ? (
+          children
+        ) : (
+          <Button className="flex items-center gap-2 w-fit">
+            <Plus className="size-4" />
+            Create Project
+          </Button>
+        )}
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create Project</DialogTitle>
+          <DialogDescription>
+            Create a new project to get started.
+          </DialogDescription>
+        </DialogHeader>
+        <CreateProjectForm onClose={() => setOpen(false)} />
+      </DialogContent>
+    </Dialog>
   );
 }
 

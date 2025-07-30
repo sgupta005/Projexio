@@ -1,10 +1,10 @@
 import DashboardCard from './DashboardCard';
 import { Task } from '@/features/tasks/types';
 import { StatusBadge } from '@/features/tasks/StatusBadge';
-import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { format } from 'date-fns';
 import { Calendar, ClipboardList, User } from 'lucide-react';
-import Button from '@/ui/Button';
+import { Button } from '@/components/ui/button';
 import { UpcomingTasksProps } from './types';
 import { useNavigate, useParams } from 'react-router-dom';
 import { cn } from '@/utils/helper';
@@ -81,16 +81,12 @@ export default function UpcomingTasks({ tasks }: UpcomingTasksProps) {
                   <div className="flex items-center gap-1">
                     <User className="h-4 w-4" />
                     <div className="flex items-center gap-1">
-                      {task.assignee.avatar ? (
-                        <AvatarImage
-                          src={task.assignee.avatar}
-                          className="h-5 w-5"
-                        />
-                      ) : (
-                        <AvatarFallback className="h-5 w-5 text-xs">
-                          {task.assignee.name.charAt(0).toUpperCase()}
+                      <Avatar>
+                        <AvatarImage src={task.assignee.avatar as string} />
+                        <AvatarFallback>
+                          {task.assignee.name.charAt(0)}
                         </AvatarFallback>
-                      )}
+                      </Avatar>
                       <span>{task.assignee.name}</span>
                     </div>
                   </div>

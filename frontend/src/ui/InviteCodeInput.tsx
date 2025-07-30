@@ -1,8 +1,8 @@
 import React, { useState, useRef, KeyboardEvent, ChangeEvent } from 'react';
 
-import SpinnerMini from './SpinnerMini';
-import Input from './Input';
-import Button from './Button';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { LoadingSpinner } from './LoadingSpinner';
 
 export default function InviteCodeInput({
   setInviteCode,
@@ -69,7 +69,7 @@ export default function InviteCodeInput({
         ))}
       </div>
       <Button onClick={handleSubmit} disabled={!isCodeComplete}>
-        {isLoading ? <SpinnerMini /> : 'Submit'}
+        {isLoading ? <LoadingSpinner variant="small" /> : 'Submit'}
       </Button>
     </div>
   );

@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { LoadingSpinner } from '@/ui/Spinner';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
 import useCurrentUser from './useCurrentUser';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {

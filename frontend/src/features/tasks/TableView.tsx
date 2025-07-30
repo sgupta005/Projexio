@@ -1,4 +1,4 @@
-import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { format } from 'date-fns';
 import { StatusBadge } from './StatusBadge';
 import { Task } from './types';
@@ -6,20 +6,105 @@ import TaskFilters from './TaskFilters';
 import useTaskFilters from './useTaskFilters';
 import { ArrowDownIcon, ArrowUpIcon, Ellipsis, Trash2 } from 'lucide-react';
 import { EllipsisVertical } from 'lucide-react';
-import Dropdown from '@/ui/Dropdown';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 import { useDeleteTask } from './useDeleteTask';
-import ConfirmationModal from '@/ui/ConfirmationModal';
+import ConfirmationDialog from '@/ui/ConfirmationDialog';
 import { useNavigate, useParams } from 'react-router-dom';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { useState, useMemo } from 'react';
 
-export default function TableView({ tasks }: { tasks: Task[] }) {
+export default function TableView({
+  tasks,
+  itemsPerPage = 6,
+  showProjectName = false,
+  showAssigne = true,
+}: {
+  tasks: Task[];
+  itemsPerPage?: number;
+  showProjectName?: boolean;
+  showAssigne?: boolean;
+}) {
   const navigate = useNavigate();
   const { orgId } = useParams();
   const { setFilters, filteredTasks, sortByDate, setSortByDate } =
     useTaskFilters(tasks || []);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+
   const handleSortClick = () => {
     setSortByDate((current) => (current === 'asc' ? 'desc' : 'asc'));
   };
+
+  // Reset to first page when filters change
+  const handleFilterChange = (filters: any) => {
+    setCurrentPage(1);
+    setFilters(filters);
+  };
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredTasks.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentTasks = filteredTasks.slice(startIndex, endIndex);
+
+  // Generate page numbers for pagination
+  const pageNumbers = useMemo(() => {
+    const pages = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  }, [currentPage, totalPages]);
 
   if (!tasks || tasks.length === 0) return null;
 
@@ -27,131 +112,140 @@ export default function TableView({ tasks }: { tasks: Task[] }) {
     <div className="space-y-6 mb-6 sm:mb-0">
       <TaskFilters
         tasks={tasks}
-        onFilterChange={setFilters}
+        onFilterChange={handleFilterChange}
         sortByDate={sortByDate}
         onSortChange={setSortByDate}
       />
 
-      <div className="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden">
+      <div className="rounded-lg shadow-md border overflow-hidden">
         {filteredTasks.length === 0 ? (
           <div className="py-16 text-center">
-            <h3 className="mt-4 text-lg font-medium text-gray-700">
-              No tasks found
-            </h3>
-            <p className="mt-1 text-gray-500">
-              No tasks match your filter criteria
-            </p>
+            <h3 className="mt-4 text-lg font-medium">No tasks found</h3>
+            <p className="mt-1">No tasks match your filter criteria</p>
           </div>
         ) : (
-          <div className="overflow-x-hidden md:overflow-x-auto sm:max-h-[calc(100vh-465px)] overflow-y-auto">
-            <table className="min-w-full divide-y divide-gray-200 ">
-              <thead>
-                <tr className="bg-gray-50">
-                  <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
-                  >
-                    Task
-                  </th>
-                  {/* <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell"
-                  >
-                    Project
-                  </th> */}
-                  <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
-                  >
-                    Status
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell"
-                  >
-                    Assignee
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell cursor-pointer hover:bg-gray-100"
+          <>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Task</TableHead>
+                  {showProjectName && <TableHead>Project</TableHead>}
+                  <TableHead>Status</TableHead>
+                  {showAssigne && <TableHead>Assignee</TableHead>}
+                  <TableHead
+                    className="flex items-center"
                     onClick={handleSortClick}
                   >
-                    <div className="flex items-center">
-                      Due Date
-                      <span className="ml-2">
-                        {sortByDate === 'asc' ? (
-                          <ArrowUpIcon className="w-4 h-4 text-blue-500" />
-                        ) : (
-                          <ArrowDownIcon className="w-4 h-4 text-blue-500" />
-                        )}
-                      </span>
-                    </div>
-                  </th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 ">
-                {filteredTasks.map((task: Task, index) => (
-                  <tr
+                    Due Date
+                    <span className="ml-2">
+                      {sortByDate === 'asc' ? (
+                        <ArrowUpIcon className="w-4 h-4 text-blue-500" />
+                      ) : (
+                        <ArrowDownIcon className="w-4 h-4 text-blue-500" />
+                      )}
+                    </span>
+                  </TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {currentTasks.map((task: Task) => (
+                  <TableRow
                     key={task._id}
-                    className={`hover:bg-gray-50 transition-colors cursor-pointer ${
-                      index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'
-                    }`}
                     onClick={() =>
                       navigate(`/organisation/${orgId}/task/${task._id}`)
                     }
+                    className="cursor-pointer"
                   >
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900 truncate max-w-[100px]">
-                        {task.name}
-                      </div>
-                    </td>
-                    {/* <td className="px-6 py-2 whitespace-nowrap hidden md:table-cell">
-                      <div className="text-sm text-gray-500 font-medium">
-                        {task.projectName}
-                      </div>
-                    </td> */}
-                    <td className="px-6 py-2 whitespace-nowrap">
+                    <TableCell>{task.name}</TableCell>
+                    {showProjectName && (
+                      <TableCell>{task.projectName}</TableCell>
+                    )}
+                    <TableCell>
                       <StatusBadge status={task.status} />
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap hidden sm:table-cell">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-8 w-8">
-                          {task.assignee.avatar ? (
-                            <AvatarImage
-                              src={task.assignee.avatar}
-                              className="h-8 w-8 rounded-full"
-                            />
-                          ) : (
-                            <AvatarFallback className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
-                              <span className="text-xs font-medium text-gray-600">
-                                {task.assignee.name.charAt(0)}
-                              </span>
-                            </AvatarFallback>
-                          )}
-                        </div>
-                        <div className="ml-3">
-                          <div className="text-sm font-medium text-gray-900">
-                            {task.assignee.name}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap hidden sm:table-cell">
-                      <div className="text-sm text-gray-500">
-                        {format(new Date(task.dueDate), 'MMM dd, yyyy')}
-                      </div>
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap hidden md:table-cell">
-                      <div className="text-sm text-gray-500 font-medium">
-                        <TaskActions taskId={task._id} taskName={task.name} />
-                      </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                    {showAssigne && (
+                      <TableCell className="flex items-center">
+                        <Avatar>
+                          <AvatarImage src={task.assignee.avatar as string} />
+                          <AvatarFallback>
+                            {task.assignee.name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span>{task.assignee.name}</span>
+                      </TableCell>
+                    )}
+                    <TableCell>
+                      {format(new Date(task.dueDate), 'MMM dd, yyyy')}
+                    </TableCell>
+                    <TableCell>
+                      <TaskActions taskId={task._id} taskName={task.name} />
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </TableBody>
+            </Table>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="px-6 py-4 border-t">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-muted-foreground">
+                    Showing {startIndex + 1} to{' '}
+                    {Math.min(endIndex, filteredTasks.length)} of{' '}
+                    {filteredTasks.length} results
+                  </div>
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          onClick={() =>
+                            setCurrentPage(Math.max(1, currentPage - 1))
+                          }
+                          className={
+                            currentPage === 1
+                              ? 'pointer-events-none opacity-50'
+                              : 'cursor-pointer'
+                          }
+                        />
+                      </PaginationItem>
+
+                      {pageNumbers.map((page, index) => (
+                        <PaginationItem key={index}>
+                          {page === '...' ? (
+                            <span className="px-3 py-2 text-gray-500">...</span>
+                          ) : (
+                            <PaginationLink
+                              onClick={() => setCurrentPage(page as number)}
+                              isActive={currentPage === page}
+                              className="cursor-pointer"
+                            >
+                              {page}
+                            </PaginationLink>
+                          )}
+                        </PaginationItem>
+                      ))}
+
+                      <PaginationItem>
+                        <PaginationNext
+                          onClick={() =>
+                            setCurrentPage(
+                              Math.min(totalPages, currentPage + 1)
+                            )
+                          }
+                          className={
+                            currentPage === totalPages
+                              ? 'pointer-events-none opacity-50'
+                              : 'cursor-pointer'
+                          }
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
@@ -167,36 +261,32 @@ function TaskActions({
 }) {
   const { deleteTask, isDeletingTask } = useDeleteTask();
 
-  const handleDropdownClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event bubbling to table row
-  };
-
   return (
-    <div onClick={handleDropdownClick}>
-      <Dropdown>
-        <Dropdown.Trigger>
-          <Ellipsis className="size-6 md:hidden" />
-          <EllipsisVertical className="size-4 hidden md:block" />
-        </Dropdown.Trigger>
-        <Dropdown.Menu>
-          <Dropdown.Title>Actions</Dropdown.Title>
-          <ConfirmationModal
-            isLoading={isDeletingTask}
-            resourceType="task"
-            resourceName={taskName}
-            onConfirm={() => {
-              deleteTask(taskId);
-            }}
-          >
-            <Dropdown.Item className="text-red-500 text-sm">
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Ellipsis className="size-6 md:hidden cursor-pointer" />
+        <EllipsisVertical className="size-4 hidden md:block cursor-pointer" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <ConfirmationDialog
+          isLoading={isDeletingTask}
+          resourceType="task"
+          resourceName={taskName}
+          onConfirm={() => {
+            deleteTask(taskId);
+          }}
+        >
+          <DropdownMenuGroup>
+            <DropdownMenuItem className="text-red-500 text-sm">
               <span>
                 <Trash2 className="size-4" />
               </span>
               <span>Remove Task</span>
-            </Dropdown.Item>
-          </ConfirmationModal>
-        </Dropdown.Menu>
-      </Dropdown>
-    </div>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </ConfirmationDialog>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

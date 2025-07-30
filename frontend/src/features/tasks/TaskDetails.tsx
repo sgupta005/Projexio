@@ -1,11 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
 import useGetTask from './useGetTask';
-import { LoadingSpinner } from '@/ui/Spinner';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
 import { format } from 'date-fns';
 import { StatusBadge } from './StatusBadge';
-import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-import Button from '@/ui/Button';
+import { Button } from '@/components/ui/button';
 import {
   Calendar,
   User,
@@ -13,11 +13,17 @@ import {
   FileText,
   Edit,
   Trash2,
-  ChevronRight,
 } from 'lucide-react';
 import { useDeleteTask } from './useDeleteTask';
-import ConfirmationModal from '@/ui/ConfirmationModal';
+import ConfirmationDialog from '@/ui/ConfirmationDialog';
 import { useNavigate } from 'react-router-dom';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
 function TaskDetails() {
   const { orgId, taskId } = useParams<{
@@ -52,20 +58,28 @@ function TaskDetails() {
     <div>
       {/* Top Navigation Bar */}
       <div className="flex items-center justify-between ml-6 mr-6 mt-2 mb-6">
-        <nav className="flex items-center space-x-2 ">
-          <AvatarFallback className="rounded-sm bg-primary text-muted size-8">
-            {task.projectName.charAt(0).toUpperCase()}
-          </AvatarFallback>
-          <Link
-            to={`/organisation/${orgId}/project/${task.projectId._id}`}
-            className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
-          >
-            {task.projectName}
-          </Link>
-          <ChevronRight className="w-4 h-4 text-gray-400 mx-2" />
-          <span className="text-gray-900 font-semibold">{task.name}</span>
-        </nav>
-        <ConfirmationModal
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <Avatar>
+                <AvatarFallback>
+                  {task.projectName.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <BreadcrumbLink asChild>
+                <Link
+                  to={`/organisation/${orgId}/project/${task.projectId._id}`}
+                  className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
+                >
+                  {task.projectName}
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>{task.name}</BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <ConfirmationDialog
           isLoading={isDeletingTask}
           resourceType="task"
           resourceName={task.name}
@@ -86,12 +100,12 @@ function TaskDetails() {
             <Trash2 className="w-4 h-4" />
             Delete Task
           </Button>
-        </ConfirmationModal>
+        </ConfirmationDialog>
       </div>
 
       {/* First Container - Task Overview */}
       <div className="max-w-6xl mx-auto px-6 space-y-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-background rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           {/* Header with Edit Button */}
           <div className="bg-muted px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">
@@ -138,16 +152,12 @@ function TaskDetails() {
                   </div>
                   <div className="flex items-center">
                     <div className="relative">
-                      {task.assignee.avatar ? (
-                        <AvatarImage
-                          src={task.assignee.avatar}
-                          className="h-12 w-12 rounded-full border-2 border-gray-100"
-                        />
-                      ) : (
-                        <AvatarFallback className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 text-white font-semibold text-lg border-2 border-gray-100">
+                      <Avatar>
+                        <AvatarImage src={task.assignee.avatar as string} />
+                        <AvatarFallback>
                           {task.assignee.name.charAt(0)}
                         </AvatarFallback>
-                      )}
+                      </Avatar>
                       <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
                     </div>
                     <div className="ml-4">
@@ -164,7 +174,7 @@ function TaskDetails() {
         </div>
 
         {/* Second Container - Details & Project Info */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-background rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           {/* Header with Edit Button */}
           <div className="bg-muted px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">

@@ -1,81 +1,80 @@
-import useCreateOrganisation from './useCreateOrganisation';
-import { useForm } from 'react-hook-form';
-import { Organisation } from './types';
-import SpinnerMini from '@/ui/SpinnerMini';
-import { useNavigate } from 'react-router-dom';
-import useCurrentUser from '../auth/useCurrentUser';
-import { LoadingSpinner } from '@/ui/Spinner';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Card, CardContent } from '@/components/ui/card';
+import { PlusCircle } from 'lucide-react';
+import CreateOrganisationForm from './CreateOrganisationForm';
 import { useState } from 'react';
-import ImageUpload from '@/ui/ImageUpload';
-import Input from '@/ui/Input';
-import Button from '@/ui/Button';
+import useResize from '@/hooks/useResize';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
 
-function CreateOrganisation({ onClose }: { onClose?: () => void }) {
-  const { createOrganisation, isCreatingOrganisation } =
-    useCreateOrganisation();
+function CreateOrganisation() {
+  const [open, setOpen] = useState(false);
+  const { isMobile } = useResize();
 
-  const { user, isGettingUser } = useCurrentUser();
-
-  const navigate = useNavigate();
-
-  const [image, setImage] = useState<File | null>(null);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Organisation>();
-  function onCreateFormSubmit({ name }: { name: string }) {
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('admin', user.id);
-    if (image) {
-      formData.append('avatar', image);
-    } else {
-      formData.append('avatar', '');
-    }
-    createOrganisation(formData, {
-      onSuccess: (organisation) => {
-        navigate(`/organisation/${organisation._id}`);
-      },
-    });
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          <Card className=" flex flex-col xl:flex-row text-lg cursor-pointer gap-4 justify-center items-center h-40 hover:bg-muted w-[400px]">
+            <CardContent>
+              <PlusCircle className="size-8 text-muted-foreground" />
+              <div>
+                <p>Create</p>
+                <p className="text-sm text-muted-foreground">
+                  New Organisation
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </DrawerTrigger>
+        <DrawerContent className="px-6 pb-4">
+          <DrawerHeader>
+            <DrawerTitle>Create Organisation</DrawerTitle>
+            <DrawerDescription>
+              Select a name and avatar for your organisation.
+            </DrawerDescription>
+          </DrawerHeader>
+          <CreateOrganisationForm onClose={() => setOpen(false)} />
+        </DrawerContent>
+      </Drawer>
+    );
   }
-
-  if (isGettingUser) return <LoadingSpinner />;
   return (
-    <form
-      onSubmit={handleSubmit(onCreateFormSubmit)}
-      className="flex flex-col gap-6 "
-    >
-      <Input
-        id="name"
-        label="Name"
-        type="text"
-        error={errors.name?.message}
-        {...register('name', {
-          required: 'Name is required',
-          maxLength: {
-            value: 16,
-            message: 'Name cannot be longer than 16 characters',
-          },
-        })}
-      />
-
-      <ImageUpload title="Organisation Icon" setImage={setImage} />
-      <div className=" space-x-2 flex items-center ml-auto mr-0 ">
-        <Button
-          className="w-max"
-          variant={'outline'}
-          type="reset"
-          onClick={onClose}
-        >
-          Cancel
-        </Button>
-        <Button type="submit">
-          {isCreatingOrganisation ? <SpinnerMini /> : 'Create Organisation'}
-        </Button>
-      </div>
-    </form>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Card className=" flex flex-col xl:flex-row text-lg cursor-pointer gap-4 justify-center items-center h-40 hover:bg-gray-50 w-[400px]">
+          <CardContent>
+            <PlusCircle className="size-8 text-muted-foreground" />
+            <div>
+              <p>Create</p>
+              <p className="text-sm text-muted-foreground">New Organisation</p>
+            </div>
+          </CardContent>
+        </Card>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create a new Organisation</DialogTitle>
+          <DialogDescription>
+            Select a name and avatar for your organisation.
+          </DialogDescription>
+        </DialogHeader>
+        <CreateOrganisationForm onClose={() => setOpen(false)} />
+      </DialogContent>
+    </Dialog>
   );
 }
 

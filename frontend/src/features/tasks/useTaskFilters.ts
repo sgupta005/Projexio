@@ -42,7 +42,8 @@ export default function useTaskFilters(tasks: Task[]) {
       // Date filter
       if (filters.dueDate) {
         const taskDate = format(new Date(task.dueDate), 'yyyy-MM-dd');
-        if (taskDate !== filters.dueDate) {
+        const filterDate = format(new Date(filters.dueDate), 'yyyy-MM-dd');
+        if (taskDate !== filterDate) {
           return false;
         }
       }

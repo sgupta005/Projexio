@@ -1,8 +1,8 @@
 import { formatDistanceToNow } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { Organisation } from './types';
-import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
-import Card from '@/ui/Card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent } from '@/components/ui/card';
 
 function SelectOrganisation({
   organisations,
@@ -16,26 +16,27 @@ function SelectOrganisation({
         <Card
           onClick={() => navigate(`${org._id}`)}
           key={org.name}
-          className=" flex flex-col xl:flex-row text-lg cursor-pointer gap-4 justify-center items-center h-40 xl:w-96 xl:h-32 hover:bg-gray-50"
+          className=" flex flex-col xl:flex-row text-lg cursor-pointer gap-4 justify-center items-center h-40 hover:bg-gray-50 w-[400px]"
         >
-          {org.avatar ? (
-            <AvatarImage src={org.avatar} className="size-12 rounded-full" />
-          ) : (
-            <AvatarFallback className="size-12 rounded-full bg-muted-foreground/10">
-              {org.name.charAt(0)}
-            </AvatarFallback>
-          )}
+          <CardContent>
+            <Avatar>
+              <AvatarImage src={org.avatar as string} />
+              <AvatarFallback>
+                {org.name.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
 
-          <div>
-            <p>{org.name}</p>
-            {org.updatedAt && (
-              <p className="text-sm text-muted-foreground">
-                {formatDistanceToNow(new Date(org.updatedAt), {
-                  addSuffix: true,
-                })}
-              </p>
-            )}
-          </div>
+            <div>
+              <p>{org.name}</p>
+              {org.updatedAt && (
+                <p className="text-sm text-muted-foreground">
+                  {formatDistanceToNow(new Date(org.updatedAt), {
+                    addSuffix: true,
+                  })}
+                </p>
+              )}
+            </div>
+          </CardContent>
         </Card>
       ))}
     </>

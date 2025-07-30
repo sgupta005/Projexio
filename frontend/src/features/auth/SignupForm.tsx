@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRegisterUsers } from './useRegisterUser';
-import Button from '@/ui/Button';
-import Input from '@/ui/Input';
-import SpinnerMini from '@/ui/SpinnerMini';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
 import GoogleLogo from '@/ui/GoogleLogo';
 import { useGoogleAuth } from './useGoogleAuth';
 import MotionDiv from '@/ui/MotionDiv';
@@ -35,7 +35,7 @@ export function SignupForm() {
     <div className="flex min-h-svh justify-center items-center overflow-x-hidden p-6">
       <MotionDiv>
         <GradientShadow>
-          <div className="w-full max-w-md md:max-w-lg mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="w-full max-w-md md:max-w-lg mx-auto bg-background rounded-xl shadow-lg overflow-hidden">
             <div className="p-6 md:p-8 space-y-4 md:space-y-6">
               <div className="space-y-1">
                 <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
@@ -101,8 +101,12 @@ export function SignupForm() {
                       })}
                     />
                   </div>
-                  <Button type="submit" variant="primary" className="w-full">
-                    {isRegistering ? <SpinnerMini /> : 'Sign up'}
+                  <Button type="submit" className="w-full">
+                    {isRegistering ? (
+                      <LoadingSpinner variant="small" />
+                    ) : (
+                      'Sign up'
+                    )}
                   </Button>
                 </form>
 

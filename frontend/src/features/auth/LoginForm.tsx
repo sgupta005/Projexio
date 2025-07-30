@@ -1,15 +1,14 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useLoginUser } from './useLoginUser';
-import SpinnerMini from '@/ui/SpinnerMini';
 import GoogleLogo from '@/ui/GoogleLogo';
-import { LoadingSpinner } from '@/ui/Spinner';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
 import { useGoogleAuthQuery } from './useGoogleAuthQuery';
 import { useGoogleAuth } from './useGoogleAuth';
 import MotionDiv from '@/ui/MotionDiv';
 import GradientShadow from '@/ui/GradientShadow';
-import Input from '@/ui/Input';
-import Button from '@/ui/Button';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export type LoginFormFields = {
   email: string;
@@ -32,14 +31,12 @@ export function LoginForm() {
   };
   const handleLoginWithGoogle = useGoogleAuth();
 
-  const errorClassName = 'text-red-400 text-sm';
-
   if (isLoggingGoogle) return <LoadingSpinner />;
   return (
     <div className="flex min-h-svh justify-center items-center overflow-x-hidden p-6">
       <MotionDiv>
         <GradientShadow>
-          <div className="w-full max-w-md md:max-w-lg mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="w-full max-w-md md:max-w-lg mx-auto bg-background rounded-xl shadow-lg overflow-hidden">
             <div className="p-6 md:p-8 space-y-4 md:space-y-6">
               <div className=" space-y-1">
                 <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
@@ -57,6 +54,7 @@ export function LoginForm() {
                       <Input
                         label="Email"
                         id="email"
+                        error={errors.email?.message}
                         type="email"
                         placeholder="m@example.com"
                         {...register('email', {
@@ -68,16 +66,12 @@ export function LoginForm() {
                           },
                         })}
                       />
-                      {errors.email && (
-                        <div className={errorClassName}>
-                          {errors.email.message}
-                        </div>
-                      )}
                     </div>
                     <div className="grid gap-2 mt-2">
                       <Input
                         label="Password"
                         id="password"
+                        error={errors.password?.message}
                         type="password"
                         {...register('password', {
                           required: 'Password is required',
@@ -87,15 +81,10 @@ export function LoginForm() {
                           },
                         })}
                       />
-                      {errors.password && (
-                        <div className={errorClassName}>
-                          {errors.password.message}
-                        </div>
-                      )}
                     </div>
                   </div>
                   <Button type="submit" className="w-full">
-                    {islogging ? <SpinnerMini /> : 'Login'}
+                    {islogging ? <LoadingSpinner variant="small" /> : 'Login'}
                   </Button>
                 </form>
 

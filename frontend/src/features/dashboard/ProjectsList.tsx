@@ -2,11 +2,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import useGetAllProjects from '@/features/projects/useGetAllProjects';
 import DashboardCard from './DashboardCard';
 import { Project } from '@/features/projects/types';
-import { LoadingSpinner } from '@/ui/Spinner';
-import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { FolderIcon, ArrowRightIcon, Plus } from 'lucide-react';
-import Button from '@/ui/Button';
-import Modal from '@/ui/Modal';
+import { Button } from '@/components/ui/button';
 import CreateProject from '@/features/projects/CreateProject';
 
 export default function ProjectsList() {
@@ -28,22 +27,11 @@ export default function ProjectsList() {
 
   return (
     <DashboardCard title={`Projects (${projects.length})`} className="relative">
-      <Modal>
-        <Modal.Open opens="createProject">
-          <button
-            className={`absolute top-6 right-8 border border-primary/20 rounded-md p-2 hover:bg-muted`}
-          >
-            <Plus className="size-4" />
-          </button>
-        </Modal.Open>
-        <Modal.Window
-          name="createProject"
-          heading="Create a new project"
-          subheading="Select a name and avatar for your project."
-        >
-          <CreateProject />
-        </Modal.Window>
-      </Modal>
+      <CreateProject>
+        <Button className={`absolute top-6 right-8`}>
+          <Plus className="size-4" />
+        </Button>
+      </CreateProject>
       {!projects || projects.length === 0 ? (
         <div className="text-center py-6">
           <FolderIcon className="size-12 text-gray-800 mx-auto mb-3" />
@@ -54,20 +42,16 @@ export default function ProjectsList() {
           {projects.map((project: Project) => (
             <div
               key={project._id}
-              className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-primary hover:bg-gray-50 transition-colors cursor-pointer"
+              className="flex items-center justify-between p-3 rounded-lg border hover:border-primary hover:bg-background transition-colors cursor-pointer"
               onClick={() => handleProjectClick(project._id)}
             >
               <div className="flex items-center gap-3">
-                {project.avatar ? (
-                  <AvatarImage
-                    src={project.avatar}
-                    className="h-10 w-10 rounded-sm"
-                  />
-                ) : (
-                  <AvatarFallback className="h-10 w-10 rounded-sm bg-primary text-background">
+                <Avatar>
+                  <AvatarImage src={project.avatar as string} />
+                  <AvatarFallback>
                     {project.name.charAt(0).toUpperCase()}
                   </AvatarFallback>
-                )}
+                </Avatar>
                 <div>
                   <h4 className="font-medium text-gray-900">{project.name}</h4>
                   <p className="text-sm text-gray-500">Click to view details</p>

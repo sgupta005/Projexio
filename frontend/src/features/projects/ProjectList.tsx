@@ -1,7 +1,11 @@
-import { AvatarFallback, AvatarImage } from '@/ui/Avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Project } from './types';
-import Tooltip from '@/ui/Tooltip';
 import { useNavigate, useParams } from 'react-router-dom';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 function ProjectList({
   isSidebarOpen,
@@ -15,8 +19,8 @@ function ProjectList({
 
   return (
     <div
-      className={`overflow-scroll no-scrollbar mb-4 mt-2 space-y-2 tran ${
-        isSidebarOpen ? 'px-4' : 'px-1'
+      className={`overflow-scroll no-scrollbar mb-4 space-y-2 tran ${
+        isSidebarOpen ? 'px-2' : ''
       }  `}
     >
       {projects?.map((project: Project) => (
@@ -30,26 +34,29 @@ function ProjectList({
           key={project._id}
         >
           {!isSidebarOpen ? (
-            <Tooltip content={project.name}>
-              {project.avatar ? (
-                <AvatarImage className="size-8 min-w-8" src={project.avatar} />
-              ) : (
-                <AvatarFallback className="bg-primary size-8 text-background rounded-sm">
-                  {project.name.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              )}
+            <Tooltip>
+              <TooltipTrigger className="cursor-pointer">
+                <Avatar>
+                  <AvatarImage src={project.avatar as string} />
+                  <AvatarFallback className="bg-muted">
+                    {project.name.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </TooltipTrigger>
+              <TooltipContent side="right">{project.name}</TooltipContent>
             </Tooltip>
-          ) : project.avatar ? (
-            <AvatarImage className="size-8 min-w-8" src={project.avatar} />
           ) : (
-            <AvatarFallback className="bg-primary size-8 text-background rounded-sm">
-              {project.name.charAt(0).toUpperCase()}
-            </AvatarFallback>
+            <Avatar>
+              <AvatarImage src={project.avatar as string} />
+              <AvatarFallback>
+                {project.name.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
           )}
 
           <div
             className={`text-muted-foreground font-semibold tran w-full truncate ${
-              isSidebarOpen ? 'opacity-1' : 'opacity-0'
+              isSidebarOpen ? 'opacity-100' : 'opacity-0'
             }`}
           >
             {project.name}

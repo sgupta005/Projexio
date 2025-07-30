@@ -1,4 +1,4 @@
-import Button from '@/ui/Button';
+import { Button } from '@/components/ui/button';
 import CopyButton from '@/ui/CopyButton';
 
 interface InviteMembersCardProps {
@@ -19,7 +19,7 @@ function InviteMembersCard({ inviteCode }: InviteMembersCardProps) {
         <CopyButton textToCopy={inviteCode || ''} />
       </div>
       <div className="flex">
-        <Button className="mt-6 mr-0 ml-auto " variant="danger">
+        <Button className="mt-6 mr-0 ml-auto " variant="destructive">
           Reset Invite Code
         </Button>
       </div>

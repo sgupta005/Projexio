@@ -1,5 +1,5 @@
 import { Image } from 'lucide-react';
-import { AvatarFallback, AvatarImage } from './Avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useState } from 'react';
 
 function ImageUpload({
@@ -21,13 +21,12 @@ function ImageUpload({
   };
   return (
     <div className="flex gap-4 items-center ">
-      {selectedImage ? (
-        <AvatarImage src={selectedImage} className="size-20" />
-      ) : (
-        <AvatarFallback className="size-20">
+      <Avatar>
+        <AvatarImage src={selectedImage} />
+        <AvatarFallback>
           <Image className="size-8" />
         </AvatarFallback>
-      )}
+      </Avatar>
       <div>
         <p className="font-semibold">{title}</p>
         <p className="text-muted-foreground text-sm mb-1">
