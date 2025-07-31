@@ -2,9 +2,9 @@ import { Dispatch, SetStateAction } from 'react';
 import { LogOut, PanelLeftOpen } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
-import useCurrentUser from '@/features/auth/useCurrentUser';
+import useCurrentUser from '@/features/auth/hooks/useCurrentUser';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { useLogoutUser } from '@/features/auth/useLogoutUser';
+import { useLogoutUser } from '@/features/auth/hooks/useLogoutUser';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from './LoadingSpinner';
 import {

@@ -1,5 +1,5 @@
-import { LoginFormFields } from '@/features/auth/LoginForm';
-import { SignupFormFields } from '@/features/auth/SignupForm';
+import { LoginFormFields } from '@/features/auth/components/LoginForm';
+import { SignupFormFields } from '@/features/auth/components/SignupForm';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

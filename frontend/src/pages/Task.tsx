@@ -1,4 +1,4 @@
-import TaskDetails from '@/features/tasks/TaskDetails';
+import TaskDetails from '@/features/tasks/components/TaskDetails';
 import { setHeading } from '@/store/slices/headerSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';

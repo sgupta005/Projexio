@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setHeading } from '@/store/slices/headerSlice';
-import UpdateSettings from '@/features/settings/UpdateSettings';
+import UpdateSettings from '@/features/settings/components/UpdateSettings';
 
 function Settings() {
   const dispatch = useDispatch();

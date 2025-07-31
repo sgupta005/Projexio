@@ -15,10 +15,10 @@ import {
 import { Separator } from '@/components/ui/separator';
 import Logo from './Logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import CreateProject from '@/features/projects/CreateProject';
-import ProjectList from '@/features/projects/ProjectList';
-import useCurrentOrganisaiton from '@/features/organisations/useCurrentOrganisaiton';
-import useGetAllProjects from '@/features/projects/useGetAllProjects';
+import CreateProject from '@/features/projects/components/CreateProject';
+import ProjectList from '@/features/projects/components/ProjectList';
+import useCurrentOrganisaiton from '@/features/organisations/hooks/useCurrentOrganisaiton';
+import useGetAllProjects from '@/features/projects/hooks/useGetAllProjects';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,

@@ -1,0 +1,19 @@
+import { Navigate } from 'react-router-dom';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
+import useCurrentUser from '../hooks/useCurrentUser';
+
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { user, isGettingUser } = useCurrentUser();
+  if (isGettingUser) return <LoadingSpinner />;
+  if (!user)
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ redirectUrl: window.location.pathname }}
+      />
+    );
+  return children;
+}
+
+export default ProtectedRoute;

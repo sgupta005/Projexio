@@ -5,13 +5,13 @@ import Organisations from './pages/Organisations';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { Toaster } from 'react-hot-toast';
-import ProtectedRoute from './features/auth/ProtectedRoute';
-import DisplayOrganisation from './features/organisations/DisplayOrganisation';
+import ProtectedRoute from './features/auth/components/ProtectedRoute';
+import DisplayOrganisation from './features/organisations/components/DisplayOrganisation';
 import 'react-image-crop/dist/ReactCrop.css';
 import Team from './pages/Team';
 import Settings from './pages/Settings';
 import Project from './pages/Project';
-import ProjectSettings from './features/projects/ProjectSettings';
+import ProjectSettings from './features/projects/components/ProjectSettings';
 import Task from './pages/Task';
 import MyTasks from './pages/MyTasks';
 

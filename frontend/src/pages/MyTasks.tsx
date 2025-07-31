@@ -1,11 +1,11 @@
 import { setHeading } from '@/store/slices/headerSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import TaskTabs from '@/features/tasks/TaskTabs.tsx';
+import TaskTabs from '@/features/tasks/components/TaskTabs';
 import { LoadingSpinner } from '@/ui/LoadingSpinner';
-import useGetUserTasks from '@/features/tasks/useGetUserTasks';
+import useGetUserTasks from '@/features/tasks/hooks/useGetUserTasks';
 import { useParams } from 'react-router-dom';
-import useCurrentUser from '@/features/auth/useCurrentUser';
+import useCurrentUser from '@/features/auth/hooks/useCurrentUser';
 
 function MyTasks() {
   const dispatch = useDispatch();

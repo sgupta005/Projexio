@@ -1,4 +1,4 @@
-import ProjectDetails from '@/features/projects/ProjectDetails';
+import ProjectDetails from '@/features/projects/components/ProjectDetails';
 import { setHeading } from '@/store/slices/headerSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';

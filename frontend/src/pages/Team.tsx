@@ -1,4 +1,4 @@
-import DisplayMembers from '@/features/team/DisplayMembers';
+import DisplayMembers from '@/features/team/components/DisplayMembers';
 import { setHeading } from '@/store/slices/headerSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';

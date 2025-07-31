@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setHeading } from '@/store/slices/headerSlice';
-import DashboardLayout from '@/features/dashboard/DashboardLayout';
-import useCurrentUser from '@/features/auth/useCurrentUser';
+import DashboardLayout from '@/features/dashboard/components/DashboardLayout';
+import useCurrentUser from '@/features/auth/hooks/useCurrentUser';
 import { LoadingSpinner } from '@/ui/LoadingSpinner';
 
 function Dashboard() {
