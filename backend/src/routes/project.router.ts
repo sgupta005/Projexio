@@ -5,6 +5,7 @@ import {
   getProjects,
   getProjectAnalytics,
   deleteProject,
+  updateProject,
 } from '../controllers/project.controller';
 import { verifyMember } from '../middlewares/verifyMember';
 import { verifyToken } from '../middlewares/verifyToken';
@@ -20,6 +21,13 @@ router.post(
   verifyMember,
   upload.single('avatar'),
   createProject
+);
+router.put(
+  '/:projectId',
+  verifyToken,
+  verifyMember,
+  upload.single('avatar'),
+  updateProject
 );
 router.get(
   '/:projectId/analytics',

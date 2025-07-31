@@ -145,3 +145,33 @@ export const deleteProject = asyncHandler(async function (
     .status(200)
     .json(new ApiResponse(200, {}, 'Project deleted successfully'));
 });
+
+export const updateProject = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { projectId } = req.params;
+  const { name } = req.body;
+
+  if (!projectId) throw new CustomError('Project Id not provided.', 400);
+  if (!name) throw new CustomError('Name is required.', 400);
+
+  const localeFilePath = req?.file?.path;
+  const avatar = localeFilePath
+    ? await uploadOnCloudinary(localeFilePath)
+    : undefined;
+
+  const updateData: any = { name };
+  if (avatar) updateData.avatar = avatar;
+
+  const project = await ProjectModel.findByIdAndUpdate(projectId, updateData, {
+    new: true,
+  });
+
+  if (!project) throw new CustomError('Project not found', 404);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { project }, 'Project updated successfully'));
+});
