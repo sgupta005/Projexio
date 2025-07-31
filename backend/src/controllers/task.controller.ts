@@ -119,6 +119,72 @@ export const updateTaskStatus = asyncHandler(async function (
   return res.status(200).json(new ApiResponse(200, updatedTask));
 });
 
+export const updateTask = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { taskId } = req.params;
+  const { name, description, dueDate, assigneeId, status } = req.body;
+
+  if (!taskId) {
+    throw new CustomError('Task ID is required', 400);
+  }
+
+  if (!name) {
+    throw new CustomError('Task name is required', 400);
+  }
+
+  const updateData: any = { name };
+  if (description !== undefined) updateData.description = description;
+  if (dueDate !== undefined) updateData.dueDate = dueDate;
+  if (assigneeId !== undefined) updateData.assigneeId = assigneeId;
+  if (status !== undefined) updateData.status = status;
+
+  const updatedTask = await TaskModel.findByIdAndUpdate(taskId, updateData, {
+    new: true,
+  }).populate([
+    {
+      path: 'assigneeId',
+      model: UserModel,
+      select: 'firstName lastName avatar',
+    },
+    {
+      path: 'projectId',
+      model: ProjectModel,
+      select: 'name',
+    },
+  ]);
+
+  if (!updatedTask) {
+    throw new CustomError('Task not found', 404);
+  }
+
+  const formattedTask = {
+    _id: updatedTask._id,
+    name: updatedTask.name,
+    projectName: (updatedTask.projectId as any).name,
+    projectId: {
+      _id: (updatedTask.projectId as any)._id,
+      name: (updatedTask.projectId as any).name,
+    },
+    status: updatedTask.status,
+    assignee: {
+      _id: (updatedTask.assigneeId as any)._id,
+      name: `${(updatedTask.assigneeId as any).firstName} ${
+        (updatedTask.assigneeId as any).lastName
+      }`,
+      avatar: (updatedTask.assigneeId as any).avatar,
+    },
+    dueDate: updatedTask.dueDate,
+    description: updatedTask.description,
+  };
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, formattedTask, 'Task updated successfully'));
+});
+
 export const getUserTasksByOrganisation = asyncHandler(async function (
   req: Request,
   res: Response,

@@ -17,7 +17,8 @@
 - [x] Add dropdown to task table
 - [x] Make settings page work
 - [x] Make edit project page work
-- [ ] Edit task details
+- [ ] Create Tasks from My Tasks page
+- [x] Edit task details
 - [ ] Fix mobile ui bugs
 - [x] Add a filter for selecting due date
 - [x] Instead of filter for toggling due date there should be arrows next to due date in the table header for doing this.
