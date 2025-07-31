@@ -5,7 +5,7 @@ import { Member } from '@/features/team/types';
 import { LoadingSpinner } from '@/ui/LoadingSpinner';
 import { UsersIcon, ShieldIcon, UserIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function TeamMembers() {
   const { orgId } = useParams<{ orgId: string }>();
@@ -39,6 +39,7 @@ export default function TeamMembers() {
               className="flex flex-col items-center p-4 rounded-lg border text-center"
             >
               <Avatar>
+                <AvatarImage src={member.avatar} />
                 <AvatarFallback>
                   {member.firstName.charAt(0).toUpperCase()}
                 </AvatarFallback>

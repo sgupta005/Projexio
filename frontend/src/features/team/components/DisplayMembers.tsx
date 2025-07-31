@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LoadingSpinner } from '@/ui/LoadingSpinner';
 import useRemoveMember from '../hooks/useRemoveMember';
 import useMakeAdmin from '../hooks/useMakeAdmin';
@@ -54,6 +54,7 @@ export default function OrganizationMembersTable() {
               <TableRow key={member._id}>
                 <TableCell className="flex items-center gap-2 p-4">
                   <Avatar>
+                    <AvatarImage src={member.avatar} />
                     <AvatarFallback>{member.firstName[0]}</AvatarFallback>
                   </Avatar>
                   <span className="font-medium">{`${member.firstName} ${member.lastName}`}</span>

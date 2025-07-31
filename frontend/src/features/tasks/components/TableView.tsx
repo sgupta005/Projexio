@@ -165,7 +165,7 @@ export default function TableView({
                       <StatusBadge status={task.status} />
                     </TableCell>
                     {showAssigne && (
-                      <TableCell className="flex items-center">
+                      <TableCell className="flex items-center gap-2">
                         <Avatar>
                           <AvatarImage src={task.assignee.avatar as string} />
                           <AvatarFallback>

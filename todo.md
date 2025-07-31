@@ -17,7 +17,7 @@
 - [x] Add dropdown to task table
 - [x] Make settings page work
 - [x] Make edit project page work
-- [ ] Create Tasks from My Tasks page
+- [x] Create Tasks from My Tasks page
 - [x] Edit task details
 - [ ] Fix mobile ui bugs
 - [x] Add a filter for selecting due date

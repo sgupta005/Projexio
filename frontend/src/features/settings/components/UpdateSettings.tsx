@@ -2,13 +2,15 @@ import { Button } from '@/components/ui/button';
 import ImageUpload from '@/ui/ImageUpload';
 import useCurrentOrganisation from '../../organisations/hooks/useCurrentOrganisaiton';
 import { LoadingSpinner } from '@/ui/LoadingSpinner';
-import InviteMembersCard from './InviteMembersCard';
 import { useDeleteOrganisation } from './useDeleteOrganisation';
 import { useUpdateOrganisation } from '../hooks/useUpdateOrganisation';
 import ConfirmationDialog from '@/ui/ConfirmationDialog';
 import { useState, FormEvent, useEffect } from 'react';
+import { ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function UpdateSettings() {
+  const navigate = useNavigate();
   const { currentOrg, isGettingCurrentOrg } = useCurrentOrganisation();
   const { deleteOrganisation, isDeleting } = useDeleteOrganisation();
   const { updateOrganisation, isUpdating } = useUpdateOrganisation();
@@ -42,6 +44,13 @@ function UpdateSettings() {
 
   return (
     <div className="mx-6 flex flex-col gap-4 mb-4">
+      <Button
+        variant="outline"
+        className="w-max flex gap-1"
+        onClick={() => navigate(-1)}
+      >
+        <ArrowLeft className="size-4" /> Back
+      </Button>
       <div className=" py-4 px-6 border rounded-md">
         <h1 className="font-semibold text-xl ">Organisation Settings</h1>
         <p className="text-primary/60  text-sm mb-4">
@@ -75,7 +84,6 @@ function UpdateSettings() {
           </div>
         </form>
       </div>
-      <InviteMembersCard inviteCode={currentOrg?.inviteCode} />
       <div className="py-4 px-6 border rounded-md ">
         <h1 className="font-semibold text-xl ">Danger Zone</h1>
         <p className="text-primary/60 text-sm">

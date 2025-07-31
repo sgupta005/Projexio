@@ -8,6 +8,7 @@ import generateTokenSetCookie from '../utils/generateTokenSetCookie';
 import { loginSchema } from '../schemas/login.schema';
 import bcrypt from 'bcryptjs';
 import { oauth2client } from '../utils/googleOAuthConfig';
+import uploadOnCloudinary from '../utils/cloudinary';
 
 export const signup = asyncHandler(async function (
   req: Request,
@@ -68,9 +69,55 @@ export const logout = asyncHandler(async function (
   res: Response,
   next: NextFunction
 ) {
+  res.cookie('accessToken', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
   return res
-    .clearCookie('auth_token')
-    .json(new ApiResponse(200, {}, 'User logged out successfully.'));
+    .status(200)
+    .json(new ApiResponse(200, {}, 'Logged out successfully'));
+});
+
+export const updateUser = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { firstName, lastName, email } = req.body;
+
+  if (!firstName || !lastName || !email) {
+    throw new CustomError('First name, last name, and email are required', 400);
+  }
+
+  // Check if email is already taken by another user
+  const existingUser = await UserModel.findOne({
+    email,
+    _id: { $ne: req.userId },
+  });
+
+  if (existingUser) {
+    throw new CustomError('An user with that email already exists', 400);
+  }
+
+  const localeFilePath = req?.file?.path;
+  const avatar = localeFilePath
+    ? await uploadOnCloudinary(localeFilePath)
+    : undefined;
+
+  const updateData: any = { firstName, lastName, email };
+  if (avatar) updateData.avatar = avatar;
+
+  const user = await UserModel.findByIdAndUpdate(req.userId, updateData, {
+    new: true,
+  }).select('-password -googleId');
+
+  if (!user) {
+    throw new CustomError('User not found', 404);
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { user }, 'Profile updated successfully'));
 });
 
 type userResT = {

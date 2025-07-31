@@ -5,6 +5,7 @@ import CustomError from '../utils/CustomError';
 
 export interface User {
   _id: string;
+  avatar: string;
   email: string;
   password: string;
   firstName: string;
@@ -32,6 +33,9 @@ const UserSchema = new Schema(
       required: true,
     },
     googleId: {
+      type: String,
+    },
+    avatar: {
       type: String,
     },
   },

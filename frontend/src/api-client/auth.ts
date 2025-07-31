@@ -58,3 +58,14 @@ export const googleAuth = async function (code: string) {
   const responseBody = await response.json();
   if (!responseBody.success) throw new Error(responseBody.message);
 };
+
+export const updateUser = async function (data: FormData) {
+  const response = await fetch(`${API_BASE_URL}/auth/user`, {
+    method: 'PUT',
+    credentials: 'include',
+    body: data,
+  });
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+  return responseBody.data.user;
+};

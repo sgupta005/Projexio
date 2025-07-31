@@ -10,6 +10,7 @@ import DisplayOrganisation from './features/organisations/components/DisplayOrga
 import 'react-image-crop/dist/ReactCrop.css';
 import Team from './pages/Team';
 import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 import Project from './pages/Project';
 import ProjectSettings from './features/projects/components/ProjectSettings';
 import Task from './pages/Task';
@@ -52,6 +53,7 @@ function App() {
             <Route path="my-tasks" element={<MyTasks />} />
             <Route path="team" element={<Team />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="profile" element={<Profile />} />
             <Route path="project/:projectId" element={<Project />} />
             <Route path="task/:taskId" element={<Task />} />
             <Route
