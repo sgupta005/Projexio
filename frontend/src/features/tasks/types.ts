@@ -54,3 +54,19 @@ export type TaskFiltersProps = {
   sortByDate: SortDirection;
   onSortChange: (direction: SortDirection) => void;
 };
+
+export interface CalendarViewProps {
+  tasks: Task[];
+}
+
+export interface EventCardProps {
+  id: string;
+  title: string;
+  status: Status;
+  assignee: {
+    _id: string;
+    name: string;
+    avatar?: string | undefined;
+  };
+  project: string;
+}

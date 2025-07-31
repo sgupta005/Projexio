@@ -3,6 +3,7 @@ import { Task } from './types';
 import CreateTask from './CreateTask';
 import TableView from './TableView';
 import KanbanView from './KanbanView';
+import CalendarView from './CalendarView';
 
 function TaskTabs({
   tasks,
@@ -22,6 +23,7 @@ function TaskTabs({
           <TabsList>
             <TabsTrigger value="table">Table</TabsTrigger>
             <TabsTrigger value="kanban">Kanban</TabsTrigger>
+            <TabsTrigger value="calendar">Calendar</TabsTrigger>
           </TabsList>
         )}
         <CreateTask className="ml-auto" />
@@ -38,6 +40,9 @@ function TaskTabs({
           </TabsContent>
           <TabsContent value="kanban">
             <KanbanView tasks={tasks} />
+          </TabsContent>
+          <TabsContent value="calendar">
+            <CalendarView tasks={tasks} />
           </TabsContent>
         </>
       ) : (
