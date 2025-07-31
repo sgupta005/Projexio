@@ -17,6 +17,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { DatePicker } from '@/components/ui/date-picker';
+import useGetAllProjects from '@/features/projects/hooks/useGetAllProjects';
+import { Project } from '@/features/projects/types';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
 
 export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
   const {
@@ -30,20 +33,33 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
     },
   });
 
+  let showProjectSelect = false;
+
   const { createTask } = useCreateTask();
   const { orgId, projectId } = useParams();
 
+  if (!projectId) {
+    showProjectSelect = true;
+  }
+
   const onSubmit: SubmitHandler<CreateTaskFormFields> = (data) => {
     data.organisationId = orgId!;
-    data.projectId = projectId!;
+    if (!showProjectSelect) {
+      data.projectId = projectId!;
+    }
     data.position = 0;
     createTask(data);
     onClose?.();
   };
 
-  const { members } = useGetMembers(orgId!);
+  const { members, isGettingMembers } = useGetMembers(orgId!);
+  const { projects, isGettingProjects } = useGetAllProjects(orgId!);
 
   const errorClassName = 'text-red-400 text-sm mt-1';
+
+  if (isGettingMembers || isGettingProjects) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <form
@@ -63,6 +79,34 @@ export default function CreateTaskForm({ onClose }: { onClose?: () => void }) {
           },
         })}
       />
+
+      {showProjectSelect && (
+        <div className="space-y-1">
+          <Label htmlFor="projectId">Project</Label>
+          <Controller
+            name="projectId"
+            control={control}
+            rules={{ required: 'Project is required' }}
+            render={({ field }) => (
+              <Select {...field} onValueChange={field.onChange}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Project" />
+                </SelectTrigger>
+                <SelectContent>
+                  {projects?.map((project: Project) => (
+                    <SelectItem key={project._id} value={project._id}>
+                      {project.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.projectId && (
+            <div className={errorClassName}>{errors.projectId.message}</div>
+          )}
+        </div>
+      )}
 
       <div className="space-y-1">
         <Label htmlFor="status">Status</Label>
