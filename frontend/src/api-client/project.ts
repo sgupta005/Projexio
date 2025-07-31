@@ -67,3 +67,21 @@ export const deleteProject = async function (projectId: string, orgId: string) {
   const responseBody = await response.json();
   if (!responseBody.success) throw new Error(responseBody.message);
 };
+
+export const updateProject = async function (
+  projectId: string,
+  orgId: string,
+  data: FormData
+) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${orgId}/project/${projectId}`,
+    {
+      method: 'PUT',
+      credentials: 'include',
+      body: data,
+    }
+  );
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+  return responseBody.data.project;
+};

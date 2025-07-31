@@ -7,12 +7,16 @@
 - [x] Create my tasks page
 - [x] show analytics on project page
 - [ ] Redeploy backend to some faster provider
+- [ ] Profile page and profile avatar
 - [ ] Create Readme file
+- [ ] Make empty ui look beautiful
+- [ ] Create Landing page
+- [ ] Add AI features??
 - [x] Create Profile icon and dropdown
-- [ ] Calendar View
+- [x] Calendar View
 - [x] Add dropdown to task table
-- [ ] Make settings page work
-- [ ] Make edit project page work
+- [x] Make settings page work
+- [x] Make edit project page work
 - [ ] Edit task details
 - [ ] Fix mobile ui bugs
 - [x] Add a filter for selecting due date

@@ -6,7 +6,7 @@ export default function useCurrentProject() {
   const { orgId, projectId } = useParams();
   const { data: currentProject, isLoading: isGettingCurrentProject } = useQuery(
     {
-      queryKey: ['Project', projectId],
+      queryKey: ['project', projectId],
       queryFn: () => getCurrentProject(orgId as string, projectId as string),
       retry: false,
       staleTime: Infinity,
