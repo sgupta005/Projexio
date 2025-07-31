@@ -311,3 +311,75 @@ export const deleteOrganisation = asyncHandler(async function (
     .status(200)
     .json(new ApiResponse(200, {}, 'Organisation deleted successfully'));
 });
+
+export const updateOrganisation = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { orgId } = req.params;
+  const { name } = req.body;
+
+  if (!orgId) throw new CustomError('Organisation Id not provided.', 400);
+  if (!name) throw new CustomError('Name is required.', 400);
+
+  const localeFilePath = req?.file?.path;
+  const avatar = localeFilePath
+    ? await uploadOnCloudinary(localeFilePath)
+    : undefined;
+
+  const updateData: any = { name };
+  if (avatar) updateData.avatar = avatar;
+
+  const org = await OrganisationModel.findByIdAndUpdate(orgId, updateData, {
+    new: true,
+  });
+
+  if (!org) throw new CustomError('Organisation not found', 404);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { organisation: org },
+        'Organisation updated successfully'
+      )
+    );
+});
+
+export const resetInviteCode = asyncHandler(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { orgId } = req.params;
+
+  if (!orgId) throw new CustomError('Organisation Id not provided.', 400);
+
+  //delete all memberships except the admin
+  await MembershipModel.deleteMany({
+    organisationId: orgId,
+    role: { $ne: 'admin' },
+  });
+
+  const newInviteCode = generateInviteCode(4);
+
+  const org = await OrganisationModel.findByIdAndUpdate(
+    orgId,
+    { inviteCode: newInviteCode },
+    { new: true }
+  );
+
+  if (!org) throw new CustomError('Organisation not found', 404);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { inviteCode: newInviteCode },
+        'Invite code reset successfully'
+      )
+    );
+});

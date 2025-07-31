@@ -9,6 +9,8 @@ import {
   removeMember,
   getOrganisationAnalytics,
   deleteOrganisation,
+  updateOrganisation,
+  resetInviteCode,
 } from '../controllers/organisation.controller';
 import { verifyToken } from '../middlewares/verifyToken';
 import { verifyAdmin } from '../middlewares/verifyAdmin';
@@ -25,6 +27,19 @@ router.post(
 router.get('/all', verifyToken, getOrganisations);
 router.post('/join', verifyToken, joinOrganisation);
 router.get('/:orgId', verifyToken, verifyMember, getOrganisationDetails);
+router.put(
+  '/:orgId',
+  verifyToken,
+  verifyAdmin,
+  upload.single('avatar'),
+  updateOrganisation
+);
+router.patch(
+  '/:orgId/reset-invite-code',
+  verifyToken,
+  verifyAdmin,
+  resetInviteCode
+);
 router.delete('/:orgId', verifyToken, verifyAdmin, deleteOrganisation);
 
 //members
