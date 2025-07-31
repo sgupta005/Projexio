@@ -2,21 +2,13 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from './LoadingSpinner';
-import useResize from '@/hooks/useResize';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer';
 
 interface ConfirmationDialogProps {
   resourceType: string;
@@ -45,7 +37,7 @@ function ConfirmationDialogWindow({
   }
 
   return (
-    <div className="flex gap-3 justify-end">
+    <>
       <Button variant="outline" onClick={onClose} disabled={isLoading}>
         Cancel
       </Button>
@@ -57,7 +49,7 @@ function ConfirmationDialogWindow({
       >
         {isLoading ? <LoadingSpinner variant="small" /> : 'Delete'}
       </Button>
-    </div>
+    </>
   );
 }
 
@@ -83,38 +75,6 @@ function ConfirmationDialog({
   isLoading = false,
   children,
 }: ConfirmationDialogProps) {
-  const { isMobile } = useResize();
-
-  if (isMobile) {
-    return (
-      <Drawer>
-        <DrawerTrigger asChild>{children}</DrawerTrigger>
-        <DrawerContent className="px-6 pb-4">
-          <DrawerHeader>
-            <DrawerTitle>Confirm Deletion</DrawerTitle>
-            <DrawerDescription>
-              <p>
-                {`Are you sure you want to delete ${resourceType} `}
-                <span className="text-sm text-red-600 font-medium">
-                  {resourceName}
-                </span>{' '}
-                ?
-              </p>
-              <p className="text-sm text-red-600 font-medium">
-                This action cannot be undone.
-              </p>
-            </DrawerDescription>
-          </DrawerHeader>
-          <ConfirmationDialogWindow
-            resourceType={resourceType}
-            resourceName={resourceName}
-            onConfirm={onConfirm}
-            isLoading={isLoading}
-          />
-        </DrawerContent>
-      </Drawer>
-    );
-  }
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -122,24 +82,24 @@ function ConfirmationDialog({
         <DialogHeader>
           <DialogTitle>Confirm Deletion</DialogTitle>
           <DialogDescription>
-            <p>
-              {`Are you sure you want to delete ${resourceType} `}
-              <span className="text-sm text-red-600 font-medium">
-                {resourceName}
-              </span>{' '}
-              ?
-            </p>
-            <p className="text-sm text-red-600 font-medium">
+            {`Are you sure you want to delete ${resourceType} `}
+            <span className="text-sm text-red-600 font-medium">
+              {resourceName}
+            </span>
+            ?{' '}
+            <span className="text-sm text-red-600 font-medium">
               This action cannot be undone.
-            </p>
+            </span>
           </DialogDescription>
         </DialogHeader>
-        <ConfirmationDialogWindow
-          resourceType={resourceType}
-          resourceName={resourceName}
-          onConfirm={onConfirm}
-          isLoading={isLoading}
-        />
+        <DialogFooter>
+          <ConfirmationDialogWindow
+            resourceType={resourceType}
+            resourceName={resourceName}
+            onConfirm={onConfirm}
+            isLoading={isLoading}
+          />
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

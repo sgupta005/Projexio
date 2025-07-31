@@ -5,9 +5,11 @@ import { useState } from 'react';
 function ImageUpload({
   title,
   setImage,
+  defaultImage,
 }: {
   title: string;
   setImage: React.Dispatch<React.SetStateAction<File | null>>;
+  defaultImage?: string;
 }) {
   const [selectedImage, setSelectedImage] = useState<string>('');
 
@@ -22,7 +24,7 @@ function ImageUpload({
   return (
     <div className="flex gap-4 items-center ">
       <Avatar>
-        <AvatarImage src={selectedImage} />
+        <AvatarImage src={selectedImage || defaultImage} />
         <AvatarFallback>
           <Image className="size-8" />
         </AvatarFallback>

@@ -109,3 +109,33 @@ export const deleteOrganisation = async function (organisationId: string) {
   const responseBody = await response.json();
   if (!responseBody.success) throw new Error(responseBody.message);
 };
+
+export const updateOrganisation = async function (
+  organisationId: string,
+  data: FormData
+) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${organisationId}`,
+    {
+      method: 'PUT',
+      credentials: 'include',
+      body: data,
+    }
+  );
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+  return responseBody.data.organisation;
+};
+
+export const resetInviteCode = async function (organisationId: string) {
+  const response = await fetch(
+    `${API_BASE_URL}/organisation/${organisationId}/reset-invite-code`,
+    {
+      method: 'PATCH',
+      credentials: 'include',
+    }
+  );
+  const responseBody = await response.json();
+  if (!responseBody.success) throw new Error(responseBody.message);
+  return responseBody.data.inviteCode;
+};
