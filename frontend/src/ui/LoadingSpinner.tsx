@@ -19,6 +19,7 @@ export function LoadingSpinner({
     );
   return (
     <LoaderCircle
+      strokeWidth={1.5}
       className={cn(
         'mx-auto my-20 flex h-32 w-32 animate-spin items-center justify-center',
         className

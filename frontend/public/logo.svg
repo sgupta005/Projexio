@@ -1,0 +1,16 @@
+<!-- public/logo.svg -->
+<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+  <rect width="40" height="40" rx="4" ry="4" fill="black" />
+  <text
+    x="50%"
+    y="50%"
+    fill="white"
+    font-size="20"
+    font-family="Arial, sans-serif"
+    font-weight="bold"
+    text-anchor="middle"
+    alignment-baseline="middle"
+  >
+    P
+  </text>
+</svg>
